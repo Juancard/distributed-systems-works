@@ -17,46 +17,37 @@ public class Main {
 		while (!salir){
 			showMenu();
 			opcion = sc.nextLine();
-			switch(opcion){
-			case "1":
+            if (opcion.equals("0")) {
+                salir = true;
+            } else if (opcion.equals("1")){
 				f1 = ingresarFraccion();
 				pause();
-				break;
-			case "2":
-				f2 = ingresarFraccion();
-				pause();
-				break;
-			case "3":
-				System.out.println(f1.toString() + " + " + f2.toString() + " = " + f1.sumar(f2));
-				pause();
-				break;
-			case "4":
-				System.out.println(f1.toString() + " - " + f2.toString() + " = " + f1.restar(f2));
-				pause();
-				break;
-			case "5":
-				int comparison = f1.compareTo(f2);
-				String comparisonString;
-				
-				if (comparison > 0){
-					comparisonString = " es mayor que ";
-				} else if (comparison < 0){
-					comparisonString = " es menor que ";
-				} else {
-					comparisonString = " es igual a ";
-				}
-				
-				System.out.println(f1.toString() + comparisonString + f2.toString());
-				pause();
-				break;
-			case "0":
-				salir=true;
-				break;
-			default:
-				System.out.println("Opción no válida");
-				pause();
-				break;
-			}
+            } else if (opcion.equals("2")){
+                f2 = ingresarFraccion();
+                pause();
+            } else if (opcion.equals("3")){
+                System.out.println(f1.toString() + " + " + f2.toString() + " = " + f1.sumar(f2));
+                pause();
+            } else if (opcion.equals("4")) {
+                System.out.println(f1.toString() + " - " + f2.toString() + " = " + f1.restar(f2));
+                pause();
+            } else if (opcion.equals("5")){
+                int comparison = f1.compareTo(f2);
+                String comparisonString;
+
+                if (comparison > 0){
+                    comparisonString = " es mayor que ";
+                } else if (comparison < 0){
+                    comparisonString = " es menor que ";
+                } else {
+                    comparisonString = " es igual a ";
+                }
+
+                System.out.println(f1.toString() + comparisonString + f2.toString());
+                pause();
+            } else {
+                System.out.println("Opción no válida");
+            }
 		}
 		System.out.println("Adios!");
 	}

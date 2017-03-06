@@ -28,6 +28,28 @@ public class ListItem {
             next = li;
     }
 
+    public void remove(){
+        ListItem newNext = next.getNext();
+        Object newValue = next.getValue();
+
+        // copy reference
+        next = this;
+
+        next.setValue(newValue);
+        next.setNext(newNext);
+    }
+
+    public void insertInThisPosition(ListItem li){
+        Object auxValueThis = this.getValue();
+        ListItem auxNextThis = this.getNext();
+        Object auxValueLi = li.getValue();
+
+        this.setValue(auxValueLi);
+        this.setNext(li);
+        li.setValue(auxValueThis);
+        li.setNext(auxNextThis);
+    }
+
     // GETTERS AND SETTERS
     public ListItem getNext() {
         return next;
@@ -42,5 +64,13 @@ public class ListItem {
 
     public void setValue(Object value) {
         this.value = value;
+    }
+
+    @Override
+    public String toString() {
+        return "ListItem{" +
+                "value=" + value +
+                ", next=" + next +
+                '}';
     }
 }

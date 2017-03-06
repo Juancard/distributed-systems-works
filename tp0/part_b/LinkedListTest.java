@@ -44,4 +44,22 @@ public class LinkedListTest {
             mockedIndex++;
         }
     }
+    @Test
+    public void backwards(){
+        LinkedList ll = new LinkedListBackwards();
+
+        Object[] toAdd = {1, "hola", 3};
+
+        for (int i= 0; i<toAdd.length; i++){
+            ll.add(toAdd[i]);
+        }
+
+        Iterator iterator = ll.iterator();
+        int mockedIndex = toAdd.length - 1;
+        while (iterator.hasNext()){
+            Object theNext = iterator.next();
+            Assert.assertEquals(theNext, toAdd[mockedIndex]);
+            mockedIndex--;
+        }
+    }
 }

@@ -8,7 +8,7 @@ import java.util.Iterator;
  * To change this template use File | Settings | File Templates.
  */
 public class LinkedList implements Iterable{
-    ListItem firstElement;
+    private ListItem firstElement;
 
     public LinkedList(){}
     public LinkedList(Object value){
@@ -35,4 +35,12 @@ public class LinkedList implements Iterable{
         return new LinkedListIterator(this);
     }
 
+
+    public ListItem getFirstElement() {
+        return firstElement;
+    }
+
+    public void setFirstElement(ListItem firstElement) {
+        this.firstElement = firstElement;
+    }
 }

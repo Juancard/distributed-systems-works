@@ -34,7 +34,7 @@ public class LinkedListIterator implements Iterator<Object> {
     public Object next() throws NoSuchElementException{
         if (list.isEmpty()) throw  new NoSuchElementException("List is empty");
         if (currentItem == null) {
-            this.currentItem = list.firstElement;
+            this.currentItem = list.getFirstElement();
         } else {
             this.currentItem = currentItem.getNext();
         }

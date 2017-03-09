@@ -17,47 +17,47 @@ public class AgendaTest {
     public void constructs(){
         String nombre = "Juan";
         String telefono = "422232";
-        Agenda agenda = new Agenda(nombre, telefono);
-        Assert.assertNotNull(agenda);
+        Contacto contacto = new Contacto(nombre, telefono);
+        Assert.assertNotNull(contacto);
     }
     @Test
     public void setsAndGets(){
         String nombre = "Juan";
         String telefono = "422232";
-        Agenda agenda = new Agenda(nombre, telefono);
-        Assert.assertEquals(agenda.getNombre(), nombre);
-        Assert.assertEquals(agenda.getTelefono(), telefono);
+        Contacto contacto = new Contacto(nombre, telefono);
+        Assert.assertEquals(contacto.getNombre(), nombre);
+        Assert.assertEquals(contacto.getTelefono(), telefono);
     }
     @Test
     public void compares(){
         String nombre1 = "Juan";
         String telefono1 = "422232";
-        Agenda agenda1 = new Agenda(nombre1, telefono1);
+        Contacto contacto1 = new Contacto(nombre1, telefono1);
 
         String nombre2 = "Pedro";
         String telefono2 = "432939";
-        Agenda agenda2 = new Agenda(nombre2, telefono2);
+        Contacto contacto2 = new Contacto(nombre2, telefono2);
 
-        Assert.assertTrue(agenda1.compareTo(agenda2) < 0);
+        Assert.assertTrue(contacto1.compareTo(contacto2) < 0);
     }
     @Test
     public void sortsArray(){
         String nombre1 = "Juan";
         String telefono1 = "422232";
-        Agenda agenda1 = new Agenda(nombre1, telefono1);
+        Contacto contacto1 = new Contacto(nombre1, telefono1);
 
         String nombre2 = "Pedro";
         String telefono2 = "432939";
-        Agenda agenda2 = new Agenda(nombre2, telefono2);
+        Contacto contacto2 = new Contacto(nombre2, telefono2);
 
         String nombre3 = "Adolfo";
         String telefono3 = "495431";
-        Agenda agenda3 = new Agenda(nombre3, telefono3);
+        Contacto contacto3 = new Contacto(nombre3, telefono3);
 
-        Agenda[] a = {agenda1, agenda2, agenda3};
+        Contacto[] a = {contacto1, contacto2, contacto3};
         Arrays.sort(a);
 
-        Assert.assertNotSame(a[0].getNombre(), agenda1.getNombre());
-        Assert.assertSame(a[0].getNombre(), agenda3.getNombre());
+        Assert.assertNotSame(a[0].getNombre(), contacto1.getNombre());
+        Assert.assertSame(a[0].getNombre(), contacto3.getNombre());
     }
 }

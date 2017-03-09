@@ -1,5 +1,8 @@
 package tp0.part_b;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 /**
  * User: juan
@@ -33,6 +36,25 @@ public class LinkedList implements Iterable{
     @Override
     public Iterator iterator() {
         return new LinkedListIterator(this);
+    }
+
+    public void sort(Comparator comparator){
+        Iterator iterator = this.iterator();
+        ArrayList<Object> listItemsToOrder = new ArrayList<Object>();
+        while (iterator.hasNext()){
+            listItemsToOrder.add(iterator.next());
+        }
+        Collections.sort(listItemsToOrder, comparator);
+        iterator = listItemsToOrder.iterator();
+        if (iterator.hasNext()) {
+            ListItem previousListItem = new ListItem(iterator.next());
+            this.firstElement = previousListItem;
+            while (iterator.hasNext()){
+                ListItem actualListItem = new ListItem(iterator.next());
+                previousListItem.setNext(actualListItem);
+                previousListItem = actualListItem;
+            }
+        }
     }
 
 

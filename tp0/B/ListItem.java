@@ -1,7 +1,4 @@
-package tp0.part_b;
-
-import java.util.Iterator;
-import java.util.NoSuchElementException;
+package tp0.B;
 
 /**
  * User: juan

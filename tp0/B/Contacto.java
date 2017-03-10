@@ -1,6 +1,5 @@
-package tp0.part_b;
+package tp0.B;
 
-import java.io.Serializable;
 import java.util.Comparator;
 
 /**

@@ -1,10 +1,6 @@
-package tp0.part_b;
+package tp0.B;
 
 import java.io.*;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.*;
 
 /**
@@ -79,7 +75,7 @@ public class AgendaMain {
 
     private static LinkedList readFromFile() {
         // The name of the file to open.
-        String fileName = "src/tp0/part_b/agenda.txt";
+        String fileName = "src/tp0/B/agenda.txt";
         LinkedList agenda = new LinkedList();
 
         // This will reference one line at a time
@@ -123,7 +119,7 @@ public class AgendaMain {
 
 
         // The name of the file to open.
-        String fileName = "src/tp0/part_b/agenda.txt";
+        String fileName = "src/tp0/B/agenda.txt";
 
         try {
             // Assume default encoding.

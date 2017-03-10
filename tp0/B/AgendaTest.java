@@ -1,7 +1,6 @@
-package tp0.part_b;
+package tp0.B;
 
 import junit.framework.Assert;
-import org.junit.Assert.*;
 import org.junit.Test;
 
 import java.util.Arrays;

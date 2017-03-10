@@ -1,4 +1,4 @@
-package tp0.part_b;
+package tp0.B;
 
 import org.junit.Assert;
 import org.junit.Test;

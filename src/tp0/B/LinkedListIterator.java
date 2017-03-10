@@ -1,4 +1,4 @@
-package tp0.part_b;
+package tp0.B;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;

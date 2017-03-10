@@ -1,8 +1,5 @@
-package tp0.part_a;
+package tp0.A;
 
-import static org.junit.Assert.*;
-
-import org.junit.Before;
 import org.junit.Test;
 
 import junit.framework.Assert;

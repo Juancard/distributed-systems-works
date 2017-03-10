@@ -1,4 +1,4 @@
-package tp0.part_a;
+package tp0.A;
 
 import java.util.Scanner;
 

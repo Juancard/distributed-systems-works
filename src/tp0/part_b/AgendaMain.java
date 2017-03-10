@@ -1,5 +1,10 @@
 package tp0.part_b;
 
+import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 
 /**
@@ -13,9 +18,8 @@ public class AgendaMain {
     private static Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) {
-        LinkedList agenda = new LinkedList();
-        agenda = loadContacts(agenda);
-        agenda = sortContacts(agenda);
+        LinkedList agenda = readFromFile();
+        //agenda = loadContacts(agenda);
 
         String opcion;
         boolean salir = false;
@@ -33,6 +37,7 @@ public class AgendaMain {
                 pause();
             } else if (opcion.equals("2")){
                 System.out.println("\n---- Lista de Contactos ---\n");
+                agenda = sortContacts(agenda);
                 Iterator iterator = agenda.iterator();
                 while (iterator.hasNext()){
                     System.out.println(iterator.next());
@@ -69,6 +74,86 @@ public class AgendaMain {
                 pause();
             }
         }
+        writeToFile(agenda);
+    }
+
+    private static LinkedList readFromFile() {
+        // The name of the file to open.
+        String fileName = "src/tp0/part_b/agenda.txt";
+        LinkedList agenda = new LinkedList();
+
+        // This will reference one line at a time
+        String line = null;
+
+        try {
+            // FileReader reads text files in the default encoding.
+            FileReader fileReader =
+                    new FileReader(fileName);
+
+            // Always wrap FileReader in BufferedReader.
+            BufferedReader bufferedReader =
+                    new BufferedReader(fileReader);
+
+            while((line = bufferedReader.readLine()) != null) {
+                String[] lineSplitted = line.split(";");
+                String nombre = lineSplitted[0];
+                String tel =  lineSplitted[1];
+                Contacto c = new Contacto(nombre, tel);
+                agenda.add(c);
+            }
+
+            // Always close files.
+            bufferedReader.close();
+        }
+        catch(FileNotFoundException ex) {
+            // If file does not exists, just return empty agenda
+        }
+        catch(IOException ex) {
+            System.out.println(
+                    "Error reading file '"
+                            + fileName + "'");
+            // Or we could just do this:
+            // ex.printStackTrace();
+        } finally {
+            return agenda;
+        }
+    }
+
+    private static void writeToFile(LinkedList agenda) {
+
+
+        // The name of the file to open.
+        String fileName = "src/tp0/part_b/agenda.txt";
+
+        try {
+            // Assume default encoding.
+            FileWriter fileWriter =
+                    new FileWriter(fileName);
+
+            // Always wrap FileWriter in BufferedWriter.
+            BufferedWriter bufferedWriter =
+                    new BufferedWriter(fileWriter);
+
+            // Note that write() does not automatically
+            // append a newline character.
+            Iterator i = agenda.iterator();
+            while (i.hasNext()){
+                Contacto c = (Contacto) i.next();
+                bufferedWriter.write(c.getNombre() + ";" + c.getTelefono());
+                bufferedWriter.newLine();
+            }
+
+            // Always close files.
+            bufferedWriter.close();
+        }
+        catch(IOException ex) {
+            System.out.println(
+                    "Error writing to file '"
+                            + fileName + "'");
+            // Or we could just do this:
+            // ex.printStackTrace();
+        }
+
     }
 
     private static void showSearchResults(ArrayList<Contacto> results) {

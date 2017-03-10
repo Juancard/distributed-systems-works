@@ -1,5 +1,6 @@
 package tp0.part_b;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 /**
@@ -9,6 +10,7 @@ import java.util.Comparator;
  * To change this template use File | Settings | File Templates.
  */
 public class Contacto implements Comparable<Contacto>{
+
     private String nombre;
     private String telefono;
 

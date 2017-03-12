@@ -36,7 +36,6 @@ public class MyServer {
                 this.sendMessage(clientSocket, toSend);
             }
 
-
         } catch (IOException e) {
             e.printStackTrace();
         }

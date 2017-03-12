@@ -73,7 +73,7 @@ public class MyClient {
         }
     }
 
-    public void sendMessage(String messageToSend) throws IOException{
+    public void sendMessage(String messageToSend){
         PrintWriter printWriter = new PrintWriter(outputStreamWriter, true);
         printWriter.println(messageToSend);
     }

@@ -11,11 +11,19 @@ import java.net.Socket;
  */
 public class MyServerThread implements Runnable{
 
-    private Socket clientSocket;
     private long threadId;
+    private Socket clientSocket;
+    private OutputStreamWriter outputStreamWriter;
+    private InputStreamReader inputStreamReader;
 
     public MyServerThread(Socket clientSocket) {
         this.clientSocket = clientSocket;
+        try {
+            this.outputStreamWriter = new OutputStreamWriter(this.clientSocket.getOutputStream());
+            this.inputStreamReader = new InputStreamReader(this.clientSocket.getInputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -32,22 +40,19 @@ public class MyServerThread implements Runnable{
 
                 sendMessage(toSend);
             }
+            this.clientSocket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public String readMessage() throws IOException {
-        InputStreamReader isr = new InputStreamReader(this.clientSocket.getInputStream());
-        BufferedReader bufferedReader = new BufferedReader(isr);
-
+        BufferedReader bufferedReader = new BufferedReader(this.inputStreamReader);
         return bufferedReader.readLine();
     }
 
     public void sendMessage(String messageToSend) throws IOException {
-        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(this.clientSocket.getOutputStream());
-        PrintWriter printWriter = new PrintWriter(outputStreamWriter, true);
-
+        PrintWriter printWriter = new PrintWriter(this.outputStreamWriter, true);
         printWriter.println(messageToSend);
     }
 

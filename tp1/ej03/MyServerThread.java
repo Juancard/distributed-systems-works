@@ -1,4 +1,4 @@
-package tp1.ej3;
+package tp1.ej03;
 
 import java.io.*;
 import java.net.Socket;
@@ -101,7 +101,7 @@ public class MyServerThread implements Runnable{
     }
 
     private void addMessage(Message message) {
-        String destination = message.getDestination();
+        String destination = message.getTo();
 
         messages.putIfAbsent(destination, new ArrayList<Message>());
         messages.get(destination).add(message);

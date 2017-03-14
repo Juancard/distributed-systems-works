@@ -1,6 +1,5 @@
-package tp1.ej3;
+package tp1.ej03;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -53,9 +52,9 @@ public class ej3Main {
         while (!isAuthenticated) {
             System.out.print("Enter your username: ");
             username = sc.nextLine();
-            myClient.sendMessage(username);
+            myClient.sendToSocket(username);
 
-            authenticationState = myClient.readMessage().toString();
+            authenticationState = myClient.readFromSocket().toString();
             isAuthenticated = authenticationState.equals(MessageProtocol.AUTHENTICATION_OK);
 
             if (!isAuthenticated)
@@ -65,8 +64,8 @@ public class ej3Main {
     }
 
     private static void handleReadMessages() {
-        myClient.sendMessage(MessageProtocol.READ_MESSAGES_RECEIVED);
-        List<Message> messagesReceived = (List<Message>) myClient.readMessage();
+        myClient.sendToSocket(MessageProtocol.READ_MESSAGES_RECEIVED);
+        List<Message> messagesReceived = (List<Message>) myClient.readFromSocket();
 
         int numberOfMessagesReceived = messagesReceived.size();
         if (numberOfMessagesReceived == 0) {
@@ -76,9 +75,9 @@ public class ej3Main {
 
             for (Message m : messagesReceived) {
                 System.out.println("");
-                System.out.println("From: " + m.getSource());
-                System.out.println("To: " + m.getDestination());
-                System.out.println(m.getValue());
+                System.out.println("From: " + m.getFrom());
+                System.out.println("To: " + m.getTo());
+                System.out.println(m.getBody());
                 System.out.println("");
             }
         }
@@ -89,8 +88,8 @@ public class ej3Main {
         String destination = getMessageDestination();
         String messageBody = getMessageBody();
         Message message = new Message(messageBody, username, destination);
-        myClient.sendMessage(message);
-        if (myClient.readMessage().equals(MessageProtocol.MESSAGE_SENT_OK)){
+        myClient.sendToSocket(message);
+        if (myClient.readFromSocket().equals(MessageProtocol.MESSAGE_SENT_OK)){
             System.out.println("Message was sent successfully");
         } else {
             System.out.println("Error in sending message. Try again later.");

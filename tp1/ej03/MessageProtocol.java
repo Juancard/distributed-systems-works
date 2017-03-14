@@ -1,4 +1,4 @@
-package tp1.ej3;
+package tp1.ej03;
 
 /**
  * User: juan

@@ -27,11 +27,11 @@ public class MyMessageServer {
     }
 
     public MyMessageServer(int port) {
-        this.prepareServer();
+        this.prepareServer(port);
         this.startServer();
     }
 
-    private void prepareServer() {
+    private void prepareServer(int port) {
         this.port = port;
         this.messages = new HashMap<String, List<Message>>();
         this.connectionsPool = new ArrayList<MyServerThread>();

@@ -7,7 +7,6 @@ import java.net.Socket;
  * User: juan
  * Date: 11/03/17
  * Time: 14:45
- * To change this template use File | Settings | File Templates.
  */
 public class MyClient {
 
@@ -38,22 +37,22 @@ public class MyClient {
 
     }
 
+    public Object readFromSocket(){
+        try {
+            return socketInput.readObject();
+        } catch (Exception e) {
+            System.out.println("Error in reading object from socket. Closing.");
+            this.close();
+            return null;
+        }
+    }
+
     public void close() {
         try {
             if (!this.clientSocket.isClosed())
                 this.clientSocket.close();
         } catch (IOException e) {
             e.printStackTrace();
-        }
-    }
-
-    public Object readFromSocket(){
-        try {
-            return socketInput.readObject();
-        } catch (Exception e) {
-            System.out.println("Error in reading messages. Closing.");
-            this.close();
-            return null;
         }
     }
 

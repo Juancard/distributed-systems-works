@@ -18,6 +18,7 @@ public class MessageClient extends SocketClient {
     }
 
     public boolean sendNewMessageRequest(Message message) {
+        this.sendToSocket(MessageProtocol.SEND_NEW_MESSAGE);
         this.sendToSocket(message);
         return isMessageSent();
     }

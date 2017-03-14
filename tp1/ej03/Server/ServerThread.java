@@ -70,28 +70,39 @@ public class ServerThread implements Runnable{
         if (protocolState == MessageProtocol.AUTHENTICATING){
             objectToClient = this.handleAuthentication(objectFromClient.toString());
         } else if (protocolState == MessageProtocol.READY) {
-            objectToClient = this.onClientRequest(objectFromClient);
+            objectToClient = this.onClientRequest(objectFromClient.toString());
         }
 
         if (objectToClient != null)
             this.sendToSocket(objectToClient);
     }
 
-    private Object onClientRequest(Object request) {
+    private Object onClientRequest(String request) {
         Object out = new Object();
 
-        if (request instanceof Message) {
+        if (request.equals(MessageProtocol.SEND_NEW_MESSAGE)) {
 
-            this.messagesHandler.addMessage((Message) request);
+            Message newMessage = readNewMessage();
+            this.messagesHandler.addMessage(newMessage);
             out = MessageProtocol.MESSAGE_SENT_OK;
 
-        }  else if (request.toString().equals(MessageProtocol.READ_MESSAGES)){
+        }  else if (request.equals(MessageProtocol.READ_MESSAGES)){
 
             out = this.messagesHandler.readMessagesSentTo(this.userAuthenticated);
 
         }
 
         return out;
+    }
+
+    private Message readNewMessage() {
+        try {
+            return (Message) readFromSocket();
+        } catch (Exception e) {
+            System.out.println("Error reading new message sent from client");
+            this.close();
+            return null;
+        }
     }
 
     private String handleAuthentication(String givenUser) {

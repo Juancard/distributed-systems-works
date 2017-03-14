@@ -2,6 +2,7 @@ package tp1.ej04.Server;
 
 import tp1.ej03.Message;
 import tp1.ej03.MessageProtocol;
+import tp1.ej03.Server.MessagesHandler;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -27,13 +28,13 @@ public class ServerThread implements Runnable{
 
     private MessageProtocol messageProtocol;
     private String userAuthenticated;
-    private HashMap<String, List<Message>> messages;
+    private MessagesHandler messagesHandler;
     private List<Message> messagesSentToClient;
 
-    public ServerThread(Socket clientSocket, HashMap<String, List<Message>> messages) {
+    public ServerThread(Socket clientSocket, MessagesHandler messagesHandler) {
         try {
             this.clientSocket = clientSocket;
-            this.messages = messages;
+            this.messagesHandler = messagesHandler;
             this.messageProtocol = new MessageProtocol();
             this.socketInput = new ObjectInputStream(clientSocket.getInputStream());
             this.socketOutput = new ObjectOutputStream(clientSocket.getOutputStream());
@@ -84,6 +85,30 @@ public class ServerThread implements Runnable{
             this.sendToSocket(objectToClient);
     }
 
+    private Object onClientRequest(Object request) {
+        Object out = new Object();
+
+        if (request instanceof Message) {
+
+            this.messagesHandler.addMessage((Message) request);
+            out = MessageProtocol.MESSAGE_SENT_OK;
+
+        } else if (request.toString().equals(MessageProtocol.READ_MESSAGES)){
+
+            this.messagesSentToClient = this.messagesHandler.readMessagesSentTo(this.userAuthenticated);
+            out = this.messagesSentToClient;
+
+        } else if (request.toString().equals(MessageProtocol.READ_MESSAGES_ACK)){
+
+            this.messagesHandler.removeMessagesFrom(this.messagesSentToClient, this.userAuthenticated);
+            this.messagesSentToClient.clear();
+            out = null;  //no response to client
+
+        }
+
+        return out;
+    }
+
     private String handleAuthentication(Object objectFromClient) {
 
         if (!(objectFromClient instanceof String))
@@ -101,53 +126,6 @@ public class ServerThread implements Runnable{
         this.userAuthenticated = givenUser;
         messageProtocol.setState(MessageProtocol.READY);
         return  MessageProtocol.AUTHENTICATION_OK;
-    }
-
-
-    private Object onClientRequest(Object request) {
-        Object out = new Object();
-
-        if (request instanceof Message) {
-            this.addMessage((Message) request);
-            out = MessageProtocol.MESSAGE_SENT_OK;
-        } else if (request.toString().equals(MessageProtocol.READ_MESSAGES)){
-            this.messagesSentToClient = this.readMessagesSentTo(this.userAuthenticated);
-            out = this.messagesSentToClient;
-        } else if (request.toString().equals(MessageProtocol.READ_MESSAGES_ACK)){
-            this.removeReadMessages();
-            out = null;  //no response to client
-        }
-        return out;
-    }
-
-    private List<Message> readMessagesSentTo(String userAuthenticated){
-        List<Message> messagesReceived = this.messages.get(userAuthenticated);
-        List<Message> out;
-        if (messagesReceived == null){
-            out = new ArrayList<Message>();
-        } else {
-            out = new ArrayList<Message>(messagesReceived);
-        }
-        return out;
-    }
-
-    private void addMessage(Message message) {
-        String destination = message.getTo();
-
-        messages.putIfAbsent(destination, new ArrayList<Message>());
-        messages.get(destination).add(message);
-
-        System.out.println("Message Added: \n - " + message);
-    }
-
-    private void removeReadMessages() {
-        List<Message> allUserMessages = messages.get(this.userAuthenticated);
-        for (Message messageToRemove : this.messagesSentToClient) {
-            if (allUserMessages.contains(messageToRemove)){
-                allUserMessages.remove(messageToRemove);
-            }
-        }
-        this.messagesSentToClient.clear();
     }
 
     public Object readFromSocket() throws IOException, ClassNotFoundException {

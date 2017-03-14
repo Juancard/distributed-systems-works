@@ -11,7 +11,6 @@ import java.net.SocketException;
  * User: juan
  * Date: 11/03/17
  * Time: 14:59
- * To change this template use File | Settings | File Templates.
  */
 public class ServerThread implements Runnable{
 

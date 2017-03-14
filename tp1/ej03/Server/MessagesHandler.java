@@ -36,4 +36,13 @@ public class MessagesHandler {
         }
         return out;
     }
+
+    public void removeMessagesFrom(List<Message> toRemoveList, String username) {
+        List<Message> allUserMessages = messages.get(username);
+        for (Message messageToRemove : toRemoveList) {
+            if (allUserMessages.contains(messageToRemove)){
+                allUserMessages.remove(messageToRemove);
+            }
+        }
+    }
 }

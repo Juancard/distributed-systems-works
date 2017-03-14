@@ -6,6 +6,7 @@ import tp1.ej03.MessageProtocol;
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.List;
 
 /**
  * User: juan
@@ -84,11 +85,14 @@ public class ServerThread implements Runnable{
 
             Message newMessage = readNewMessage();
             this.messagesHandler.addMessage(newMessage);
-            out = MessageProtocol.MESSAGE_SENT_OK;
+            out = MessageProtocol.MESSAGE_ADDED;
 
         }  else if (request.equals(MessageProtocol.READ_MESSAGES)){
 
-            out = this.messagesHandler.readMessagesSentTo(this.userAuthenticated);
+            List<Message> messagesToSend = this.messagesHandler.readMessagesSentTo(this.userAuthenticated);
+            for (Message m : messagesToSend)
+                this.sendToSocket(m);
+            out = MessageProtocol.READ_MESSAGES_END;
 
         }
 

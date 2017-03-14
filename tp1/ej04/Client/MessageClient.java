@@ -3,6 +3,8 @@ package tp1.ej04.Client;
 import tp1.ej03.Client.SocketClient;
 import tp1.ej03.Message;
 import tp1.ej03.MessageProtocol;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,18 +22,32 @@ public class MessageClient extends SocketClient {
     public boolean sendNewMessageRequest(Message message) {
         this.sendToSocket(MessageProtocol.SEND_NEW_MESSAGE);
         this.sendToSocket(message);
-        return isMessageSent();
+        return isMessageAdded();
     }
 
-    private boolean isMessageSent() {
+    private boolean isMessageAdded() {
         Object response = this.readFromSocket();
-        return response.equals(MessageProtocol.MESSAGE_SENT_OK);
+        return response.equals(MessageProtocol.MESSAGE_ADDED);
     }
 
     public List<Message> sendReadMessagesRequest(){
         this.sendToSocket(MessageProtocol.READ_MESSAGES);
-        List<Message> messagesReceived = (List<Message>) this.readFromSocket();
+        List<Message> messagesReceived = readMessagesFromServer();
         this.sendToSocket(MessageProtocol.READ_MESSAGES_ACK);
+        return messagesReceived;
+    }
+
+    private List<Message> readMessagesFromServer() {
+        List<Message> messagesReceived = new ArrayList<Message>();
+
+        Object read;
+        while (true) {
+            read = this.readFromSocket();
+            if (read.toString().equals(MessageProtocol.READ_MESSAGES_END))
+                break;
+            messagesReceived.add((Message) read);
+        }
+
         return messagesReceived;
     }
 

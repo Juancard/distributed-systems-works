@@ -90,13 +90,15 @@ public class ServerThread implements Runnable{
         if (request.equals(MessageProtocol.SEND_NEW_MESSAGE)) {
 
             Message newMessage = readNewMessage();
-            this.messagesHandler.addMessage((Message) request);
-            out = MessageProtocol.MESSAGE_SENT_OK;
+            this.messagesHandler.addMessage(newMessage);
+            out = MessageProtocol.MESSAGE_ADDED;
 
         } else if (request.toString().equals(MessageProtocol.READ_MESSAGES)){
 
             this.messagesSentToClient = this.messagesHandler.readMessagesSentTo(this.userAuthenticated);
-            out = this.messagesSentToClient;
+            for (Message m : this.messagesSentToClient)
+                this.sendToSocket(m);
+            out = MessageProtocol.READ_MESSAGES_END;
 
         } else if (request.toString().equals(MessageProtocol.READ_MESSAGES_ACK)){
 

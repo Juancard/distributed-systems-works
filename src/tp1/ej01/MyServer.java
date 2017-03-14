@@ -1,4 +1,4 @@
-package tp1.ej1;
+package tp1.ej01;
 
 import java.io.*;
 import java.net.ServerSocket;

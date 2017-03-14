@@ -1,8 +1,7 @@
-package tp1.ej3;
+package tp1.ej03;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.Scanner;
 
 /**
  * User: juan
@@ -15,26 +14,24 @@ public class MyClient {
     private String host;
     private int port;
     private Socket clientSocket;
-    private ObjectOutputStream objectOutputStream;
-    private ObjectInputStream objectInputStream;
+    private ObjectOutputStream socketOutput;
+    private ObjectInputStream socketInput;
 
     public MyClient(String host, int port){
-        this.host = host;
-        this.port = port;
         try {
-
+            this.host = host;
+            this.port = port;
             this.clientSocket = new Socket(host, port);
-            this.objectOutputStream = new ObjectOutputStream(this.clientSocket.getOutputStream());
-            this.objectInputStream = new ObjectInputStream(this.clientSocket.getInputStream());
-
+            this.socketOutput = new ObjectOutputStream(this.clientSocket.getOutputStream());
+            this.socketInput = new ObjectInputStream(this.clientSocket.getInputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void sendMessage(Object toSend){
+    public void sendToSocket(Object toSend){
         try {
-            objectOutputStream.writeObject(toSend);
+            socketOutput.writeObject(toSend);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -50,9 +47,9 @@ public class MyClient {
         }
     }
 
-    public Object readMessage(){
+    public Object readFromSocket(){
         try {
-            return objectInputStream.readObject();
+            return socketInput.readObject();
         } catch (Exception e) {
             System.out.println("Error in reading messages. Closing.");
             this.close();

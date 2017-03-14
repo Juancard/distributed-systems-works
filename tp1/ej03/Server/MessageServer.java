@@ -1,9 +1,6 @@
 package tp1.ej03.Server;
 
-import tp1.ej03.Message;
-
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -19,9 +16,9 @@ import java.util.List;
 public class MessageServer {
 
     private int port;
-    private HashMap<String, List<Message>> messages;
     private ServerSocket serverSocket;
-    private List<ServerThread> connectionsPool;
+    private List<ServerThread> threadsPool;
+    private MessagesHandler messagesHandler;
 
     public static void main(String[] args) {
         int port = 5003;
@@ -35,8 +32,8 @@ public class MessageServer {
 
     private void prepareServer(int port) {
         this.port = port;
-        this.messages = new HashMap<String, List<Message>>();
-        this.connectionsPool = new ArrayList<ServerThread>();
+        this.threadsPool = new ArrayList<ServerThread>();
+        this.messagesHandler = new MessagesHandler();
     }
 
     private void startServer() {
@@ -68,8 +65,8 @@ public class MessageServer {
     }
 
     private void newConnection(Socket clientSocket) {
-        ServerThread serverThread = new ServerThread(clientSocket, this.messages);
-        this.connectionsPool.add(serverThread);
+        ServerThread serverThread = new ServerThread(clientSocket, this.messagesHandler);
+        this.threadsPool.add(serverThread);
         this.newThread(serverThread).start();
         String toPrint = "New connection with client: " + clientSocket.getRemoteSocketAddress();
         this.out(toPrint);
@@ -81,11 +78,11 @@ public class MessageServer {
     }
 
     private void closeServer() {
-        Iterator i = this.connectionsPool.iterator();
+        Iterator i = this.threadsPool.iterator();
         while (i.hasNext()){
             ((ServerThread) i.next()).close();
         }
-        this.connectionsPool.clear();
+        this.threadsPool.clear();
     }
 
     public int getPort() {

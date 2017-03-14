@@ -6,9 +6,6 @@ import tp1.ej03.MessageProtocol;
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * User: juan
@@ -23,13 +20,14 @@ public class ServerThread implements Runnable{
     private ObjectInputStream socketInput;
 
     private MessageProtocol messageProtocol;
+    private MessagesHandler messagesHandler;
     private String userAuthenticated;
-    private HashMap<String, List<Message>> messages;
 
-    public ServerThread(Socket clientSocket, HashMap<String, List<Message>> messages) {
+
+    public ServerThread(Socket clientSocket, MessagesHandler messagesHandler) {
         try {
             this.clientSocket = clientSocket;
-            this.messages = messages;
+            this.messagesHandler = messagesHandler;
             this.messageProtocol = new MessageProtocol();
             this.socketInput = new ObjectInputStream(clientSocket.getInputStream());
             this.socketOutput = new ObjectOutputStream(clientSocket.getOutputStream());
@@ -71,7 +69,7 @@ public class ServerThread implements Runnable{
         int protocolState = this.messageProtocol.getState();
 
         if (protocolState == MessageProtocol.AUTHENTICATING){
-            objectToClient = this.handleAuthentication(objectFromClient);
+            objectToClient = this.handleAuthentication(objectFromClient.toString());
         } else if (protocolState == MessageProtocol.READY) {
             objectToClient = this.onClientRequest(objectFromClient);
         }
@@ -84,42 +82,20 @@ public class ServerThread implements Runnable{
         Object out = new Object();
 
         if (request instanceof Message) {
-            this.addMessage((Message) request);
+
+            this.messagesHandler.addMessage((Message) request);
             out = MessageProtocol.MESSAGE_SENT_OK;
+
         }  else if (request.toString().equals(MessageProtocol.READ_MESSAGES)){
-            out = this.readMessagesSentTo(this.userAuthenticated);
+
+            out = this.messagesHandler.readMessagesSentTo(this.userAuthenticated);
+
         }
 
         return out;
     }
 
-    private List<Message> readMessagesSentTo(String userAuthenticated){
-        List<Message> messagesReceived = this.messages.get(userAuthenticated);
-        List<Message> out;
-        if (messagesReceived == null){
-            out = new ArrayList<Message>();
-        } else {
-            out = new ArrayList<Message>(messagesReceived);
-        }
-        return out;
-    }
-
-    private void addMessage(Message message) {
-        String destination = message.getTo();
-
-        messages.putIfAbsent(destination, new ArrayList<Message>());
-        messages.get(destination).add(message);
-
-        System.out.println("Message Added: \n - " + message);
-    }
-
-    private String handleAuthentication(Object objectFromClient) {
-
-        if (!(objectFromClient instanceof String))
-            return  "Error: Username datatype is not valid";
-
-        String givenUser = objectFromClient.toString();
-
+    private String handleAuthentication(String givenUser) {
         if (givenUser.length() <= 0)
             return "Error: Username is empty";
 

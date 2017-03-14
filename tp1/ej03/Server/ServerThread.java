@@ -67,13 +67,13 @@ public class ServerThread implements Runnable{
     }
 
     private void handleClientInput(Object objectFromClient) {
-        Object objectToClient = this.messageProtocol.processInput(objectFromClient);
+        Object objectToClient = null;
         int protocolState = this.messageProtocol.getState();
 
         if (protocolState == MessageProtocol.AUTHENTICATING){
-            objectToClient = this.authenticate((String) objectToClient);
+            objectToClient = this.handleAuthentication(objectFromClient);
         } else if (protocolState == MessageProtocol.READY) {
-            objectToClient = this.onClientRequest(objectToClient);
+            objectToClient = this.onClientRequest(objectFromClient);
         }
 
         if (objectToClient != null)
@@ -113,19 +113,23 @@ public class ServerThread implements Runnable{
         System.out.println("Message Added: \n - " + message);
     }
 
+    private String handleAuthentication(Object objectFromClient) {
+
+        if (!(objectFromClient instanceof String))
+            return  "Error: Username datatype is not valid";
+
+        String givenUser = objectFromClient.toString();
+
+        if (givenUser.length() <= 0)
+            return "Error: Username is empty";
+
+        return authenticate(givenUser);
+    }
+
     private String authenticate(String givenUser) {
-        String out = "";
-
-        if (givenUser.length() > 0){
-            this.userAuthenticated = givenUser;
-            messageProtocol.isValidAuthentication(true);
-            out =  MessageProtocol.AUTHENTICATION_OK;
-        } else {
-            messageProtocol.isValidAuthentication(false);
-            out =  "Error: Username is empty";
-        }
-
-        return out;
+        this.userAuthenticated = givenUser;
+        messageProtocol.setState(MessageProtocol.READY);
+        return  MessageProtocol.AUTHENTICATION_OK;
     }
 
     public Object readFromSocket() throws IOException, ClassNotFoundException {

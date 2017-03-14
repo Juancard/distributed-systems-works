@@ -1,4 +1,6 @@
-package tp1.ej03;
+package tp1.ej03.Server;
+
+import tp1.ej03.Message;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -14,19 +16,19 @@ import java.util.List;
  * Time: 14:14
  * To change this template use File | Settings | File Templates.
  */
-public class MyMessageServer {
+public class MessageServer {
 
     private int port;
     private HashMap<String, List<Message>> messages;
     private ServerSocket serverSocket;
-    private List<MyServerThread> connectionsPool;
+    private List<ServerThread> connectionsPool;
 
     public static void main(String[] args) {
         int port = 5003;
-        MyMessageServer myMessageServer = new MyMessageServer(port);
+        MessageServer messageServer = new MessageServer(port);
     }
 
-    public MyMessageServer(int port) {
+    public MessageServer(int port) {
         this.prepareServer(port);
         this.startServer();
     }
@@ -34,7 +36,7 @@ public class MyMessageServer {
     private void prepareServer(int port) {
         this.port = port;
         this.messages = new HashMap<String, List<Message>>();
-        this.connectionsPool = new ArrayList<MyServerThread>();
+        this.connectionsPool = new ArrayList<ServerThread>();
     }
 
     private void startServer() {
@@ -66,22 +68,22 @@ public class MyMessageServer {
     }
 
     private void newConnection(Socket clientSocket) {
-        MyServerThread myServerThread = new MyServerThread(clientSocket, this.messages);
-        this.connectionsPool.add(myServerThread);
-        this.newThread(myServerThread).start();
+        ServerThread serverThread = new ServerThread(clientSocket, this.messages);
+        this.connectionsPool.add(serverThread);
+        this.newThread(serverThread).start();
         String toPrint = "New connection with client: " + clientSocket.getRemoteSocketAddress();
         this.out(toPrint);
     }
 
-    public Thread newThread(MyServerThread myServerThread){
-        Thread thread = new Thread(myServerThread);
+    public Thread newThread(ServerThread serverThread){
+        Thread thread = new Thread(serverThread);
         return thread;
     }
 
     private void closeServer() {
         Iterator i = this.connectionsPool.iterator();
         while (i.hasNext()){
-            ((MyServerThread) i.next()).close();
+            ((ServerThread) i.next()).close();
         }
         this.connectionsPool.clear();
     }

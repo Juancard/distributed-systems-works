@@ -1,6 +1,12 @@
-package tp1.ej03;
+package tp1.ej04.Server;
 
-import java.io.*;
+import tp1.ej03.Message;
+import tp1.ej03.MessageProtocol;
+
+import java.io.EOFException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
@@ -13,7 +19,7 @@ import java.util.List;
  * Time: 14:59
  * To change this template use File | Settings | File Templates.
  */
-public class MyServerThread implements Runnable{
+public class ServerThread implements Runnable{
 
     private Socket clientSocket;
     private ObjectOutputStream socketOutput;
@@ -22,8 +28,9 @@ public class MyServerThread implements Runnable{
     private MessageProtocol messageProtocol;
     private String userAuthenticated;
     private HashMap<String, List<Message>> messages;
+    private List<Message> messagesSentToClient;
 
-    public MyServerThread(Socket clientSocket, HashMap<String, List<Message>> messages) {
+    public ServerThread(Socket clientSocket, HashMap<String, List<Message>> messages) {
         try {
             this.clientSocket = clientSocket;
             this.messages = messages;
@@ -73,7 +80,8 @@ public class MyServerThread implements Runnable{
             objectToClient = this.onClientRequest(objectToClient);
         }
 
-        this.sendToSocket(objectToClient);
+        if (objectToClient != null)
+            this.sendToSocket(objectToClient);
     }
 
     private Object onClientRequest(Object request) {
@@ -82,10 +90,13 @@ public class MyServerThread implements Runnable{
         if (request instanceof Message) {
             this.addMessage((Message) request);
             out = MessageProtocol.MESSAGE_SENT_OK;
-        }  else if (request.toString().equals(MessageProtocol.READ_MESSAGES_RECEIVED)){
-            out = this.readMessagesSentTo(this.userAuthenticated);
+        } else if (request.toString().equals(MessageProtocol.READ_MESSAGES)){
+            this.messagesSentToClient = this.readMessagesSentTo(this.userAuthenticated);
+            out = this.messagesSentToClient;
+        } else if (request.toString().equals(MessageProtocol.READ_MESSAGES_ACK)){
+            this.removeReadMessages();
+            out = null;  //no response to client
         }
-
         return out;
     }
 
@@ -107,6 +118,16 @@ public class MyServerThread implements Runnable{
         messages.get(destination).add(message);
 
         System.out.println("Message Added: \n - " + message);
+    }
+
+    private void removeReadMessages() {
+        List<Message> allUserMessages = messages.get(this.userAuthenticated);
+        for (Message messageToRemove : this.messagesSentToClient) {
+            if (allUserMessages.contains(messageToRemove)){
+                allUserMessages.remove(messageToRemove);
+            }
+        }
+        this.messagesSentToClient.clear();
     }
 
     private String authenticate(String givenUser) {

@@ -1,4 +1,4 @@
-package tp1.ej03;
+package tp1.ej03.Client;
 
 import java.io.*;
 import java.net.Socket;
@@ -8,7 +8,7 @@ import java.net.Socket;
  * Date: 11/03/17
  * Time: 14:45
  */
-public class MyClient {
+public class SocketClient {
 
     private String host;
     private int port;
@@ -16,7 +16,7 @@ public class MyClient {
     private ObjectOutputStream socketOutput;
     private ObjectInputStream socketInput;
 
-    public MyClient(String host, int port){
+    public SocketClient(String host, int port){
         try {
             this.host = host;
             this.port = port;

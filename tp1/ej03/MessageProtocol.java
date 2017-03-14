@@ -13,7 +13,8 @@ public class MessageProtocol {
 
     public static final String AUTHENTICATION_OK = "AUTHENTICATION_OK";
     public static final String MESSAGE_SENT_OK = "MESSAGE_SENT_OK";
-    public static final String READ_MESSAGES_RECEIVED = "READ_MESSAGES_RECEIVED";
+    public static final String READ_MESSAGES = "READ_MESSAGES";
+    public static final String READ_MESSAGES_ACK = "READ_MESSAGES_ACK";
 
     private int state = CONNECTION_SET;
     private String userAuthenticated;

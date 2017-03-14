@@ -1,7 +1,8 @@
-package tp1.ej03;
+package tp1.ej04.Client;
+
+import tp1.ej03.Message;
 
 import java.util.List;
-import java.util.Iterator;
 import java.util.Scanner;
 
 /**
@@ -9,24 +10,24 @@ import java.util.Scanner;
  * Date: 12/03/17
  * Time: 12:20
  */
-public class RunClient {
+public class ClientConsole {
 
     private static Scanner sc = new Scanner(System.in);
     private static String username;
-    private static MyClient myClient;
+    private static MessageClient myMessageClient;
 
     public static void main(String[] args) {
         newClient();
         showWelcomeMessage();
         handleAuthentication();
         handleMainOptions();
-        myClient.close();
+        myMessageClient.close();
     }
 
     private static void newClient() {
         String host = "localhost";
-        int port = 5003;
-        myClient = new MyClient(host, port);
+        int port = 5004;
+        myMessageClient = new MessageClient(host, port);
     }
 
     private static void handleMainOptions() {
@@ -61,21 +62,13 @@ public class RunClient {
 
     private static void handleAuthentication() {
         String authenticationState;
-        boolean isAuthenticated = false;
-        while (!isAuthenticated) {
+        while (true) {
             username = askForAuthentication();
-            myClient.sendToSocket(username);
-
-            authenticationState = myClient.readFromSocket().toString();
-            isAuthenticated = checkAuthentication(authenticationState);
-            if (!isAuthenticated)
-                System.out.println(authenticationState);
+            authenticationState = myMessageClient.sendAuthenticationRequest(username);
+            if (authenticationState == "") break;
+            else System.out.println(authenticationState);
         }
         System.out.println("User has authenticated successfully");
-    }
-
-    private static boolean checkAuthentication(String authenticationState) {
-        return authenticationState.equals(MessageProtocol.AUTHENTICATION_OK);
     }
 
     private static String askForAuthentication() {
@@ -84,18 +77,13 @@ public class RunClient {
     }
 
     private static void handleReadMessages() {
-        List<Message> messagesReceived = getMessagesReceived();
+        List<Message> messagesReceived = myMessageClient.sendReadMessagesRequest();
         int totalMessages = messagesReceived.size();
         showNumberOfMessagesReceived(totalMessages);
         for (int i=0; i < totalMessages; i++){
             showReceivedMessage(messagesReceived.get(i));
             if (i < totalMessages - 1) pause();
         }
-    }
-
-    private static List<Message> getMessagesReceived() {
-        myClient.sendToSocket(MessageProtocol.READ_MESSAGES_RECEIVED);
-        return (List<Message>) myClient.readFromSocket();
     }
 
     private static void showNumberOfMessagesReceived(int numberMessagesReceived) {
@@ -118,13 +106,9 @@ public class RunClient {
     }
 
     private static void handleNewMessage() {
-        handleNewMessageRequest();
-        handleNewMessageResponse();
-    }
-
-    private static void handleNewMessageRequest() {
         Message message = askForMessage();
-        myClient.sendToSocket(message);
+        boolean isMessageSent = myMessageClient.sendNewMessageRequest(message);
+        showMessageSentState(isMessageSent);
     }
 
     private static Message askForMessage() {
@@ -143,22 +127,17 @@ public class RunClient {
         return sc.nextLine();
      }
 
-    private static void handleNewMessageResponse() {
-        Object response = myClient.readFromSocket();
-        if (isMessageSent(response)){
+    private static void showMessageSentState(boolean isMessageSent) {
+        if (isMessageSent){
             System.out.println("Message was sent successfully");
         } else {
             System.out.println("Error in sending message. Try again later.");
         }
     }
 
-    private static boolean isMessageSent(Object response) {
-        return response.equals(MessageProtocol.MESSAGE_SENT_OK);
-    }
-
     private static void showWelcomeMessage() {
         String title = "Sistemas Distribuidos y Programación Paralela";
-        String subtitle = "TP N°1 - Ej3 - Message Server";
+        String subtitle = "TP N°1 - Ej4 - Message Server";
         createSection(title + "\n" + subtitle);
     }
 

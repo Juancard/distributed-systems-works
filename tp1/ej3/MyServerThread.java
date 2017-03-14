@@ -15,55 +15,41 @@ import java.util.List;
  */
 public class MyServerThread implements Runnable{
 
-    private long threadId;
     private Socket clientSocket;
-    private ObjectOutputStream objectOutputStream;
-    private ObjectInputStream objectInputStream;
-    private MessageProtocol messageProtocol;
+    private ObjectOutputStream socketOutput;
+    private ObjectInputStream socketInput;
 
+    private MessageProtocol messageProtocol;
     private String userAuthenticated;
     private HashMap<String, List<Message>> messages;
 
     public MyServerThread(Socket clientSocket, HashMap<String, List<Message>> messages) {
-        this.clientSocket = clientSocket;
-        this.messages = messages;
         try {
-            this.objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
-            this.objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
+            this.clientSocket = clientSocket;
+            this.messages = messages;
             this.messageProtocol = new MessageProtocol();
+            this.socketInput = new ObjectInputStream(clientSocket.getInputStream());
+            this.socketOutput = new ObjectOutputStream(clientSocket.getOutputStream());
         } catch (IOException e) {
-            e.printStackTrace();
+            this.out("Error in instantiating new server thread");
+            this.close();
         }
     }
 
     @Override
     public void run() {
         try {
-            while (!this.clientSocket.isClosed()){
-                // It stays block until a new message arrive
-                Object objectFromClient = readMessage();
+
+            boolean socketClosed = this.clientSocket.isClosed();
+            while (!socketClosed){
+                Object objectFromClient = readFromSocket();
                 if (objectFromClient == null) break;
+                this.handleClientInput(objectFromClient);
 
-                Object objectToClient = messageProtocol.processInput(objectFromClient);
-                int protocolState = messageProtocol.getState();
-
-                if (protocolState == MessageProtocol.AUTHENTICATING){
-
-                    objectToClient = this.authenticate((String) objectToClient);
-
-                } else if (protocolState == MessageProtocol.READY) {
-
-                    if (objectToClient instanceof Message) {
-                        this.addMessage((Message) objectToClient);
-                        objectToClient = MessageProtocol.MESSAGE_SENT_OK;
-                    }  else if (objectToClient.toString().equals(MessageProtocol.READ_MESSAGES_RECEIVED)){
-                        objectToClient = this.readMessagesSentTo(this.userAuthenticated);
-                    }
-
-                }
-                System.out.println("Sending to CLient: " + objectToClient);
-                this.sendMessage(objectToClient);
+                socketClosed = this.clientSocket.isClosed();
             }
+            this.close();
+
         } catch (SocketException e) {
             System.out.println("Connection lost with client: " + this.clientSocket.getRemoteSocketAddress());
             this.close ();
@@ -77,7 +63,33 @@ public class MyServerThread implements Runnable{
         }
     }
 
-    private List<Message> readMessagesSentTo(String userAuthenticated) throws IOException{
+    private void handleClientInput(Object objectFromClient) {
+        Object objectToClient = this.messageProtocol.processInput(objectFromClient);
+        int protocolState = this.messageProtocol.getState();
+
+        if (protocolState == MessageProtocol.AUTHENTICATING){
+            objectToClient = this.authenticate((String) objectToClient);
+        } else if (protocolState == MessageProtocol.READY) {
+            objectToClient = this.onClientRequest(objectToClient);
+        }
+
+        this.sendToSocket(objectToClient);
+    }
+
+    private Object onClientRequest(Object request) {
+        Object out = new Object();
+
+        if (request instanceof Message) {
+            this.addMessage((Message) request);
+            out = MessageProtocol.MESSAGE_SENT_OK;
+        }  else if (request.toString().equals(MessageProtocol.READ_MESSAGES_RECEIVED)){
+            out = this.readMessagesSentTo(this.userAuthenticated);
+        }
+
+        return out;
+    }
+
+    private List<Message> readMessagesSentTo(String userAuthenticated){
         List<Message> messagesReceived = this.messages.get(userAuthenticated);
         List<Message> out;
         if (messagesReceived == null){
@@ -112,15 +124,17 @@ public class MyServerThread implements Runnable{
         return out;
     }
 
-    public Object readMessage() throws IOException, ClassNotFoundException {
-        return this.objectInputStream.readObject();
+    public Object readFromSocket() throws IOException, ClassNotFoundException {
+        return this.socketInput.readObject();
     }
 
-    public void sendMessage(Object toSend) throws IOException {
+    public void sendToSocket(Object toSend) {
         try {
-            objectOutputStream.writeObject(toSend);
+            System.out.println("Sending to Client: " + toSend);
+            socketOutput.writeObject(toSend);
         } catch (IOException e) {
-            e.printStackTrace();
+            out("IOException: Error in sending object to socket");
+            this.close();
         }
     }
 
@@ -132,13 +146,13 @@ public class MyServerThread implements Runnable{
 
     private void closeInput () {
         try {
-            this.objectInputStream.close ();
+            this.socketInput.close();
         } catch (Exception e) {}
     }
 
     private void closeOutput () {
         try {
-            this.objectOutputStream.close ();
+            this.socketOutput.close();
         } catch (Exception e) {}
     }
 
@@ -148,12 +162,8 @@ public class MyServerThread implements Runnable{
         } catch (Exception e) {}
     }
 
-    public long getThreadId() {
-        return threadId;
-    }
-
-    public void setThreadId(long threadId) {
-        this.threadId = threadId;
+    private void out(String toPrint){
+        System.out.println(toPrint);
     }
 
 }

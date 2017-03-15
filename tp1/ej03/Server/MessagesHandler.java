@@ -27,14 +27,9 @@ public class MessagesHandler {
     }
 
     public List<Message> readMessagesSentTo(String user){
-        List<Message> messagesReceived = this.messages.get(user);
-        List<Message> out;
-        if (messagesReceived == null){
-            out = new ArrayList<Message>();
-        } else {
-            out = new ArrayList<Message>(messagesReceived);
-        }
-        return out;
+        if (!this.messages.containsKey(user))
+            return new ArrayList<Message>();
+        return this.messages.get(user);
     }
 
     public void removeMessagesFrom(List<Message> toRemoveList, String username) {

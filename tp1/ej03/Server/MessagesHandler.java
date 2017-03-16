@@ -20,8 +20,9 @@ public class MessagesHandler {
 
     public void addMessage(Message message) {
         String destination = message.getTo();
-
-        messages.putIfAbsent(destination, new ArrayList<Message>());
+        
+        if (messages.get(destination) == null)
+        	messages.put(destination, new ArrayList<Message>());
         messages.get(destination).add(message);
 
     }

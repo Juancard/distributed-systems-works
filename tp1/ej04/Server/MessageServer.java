@@ -46,11 +46,12 @@ public class MessageServer {
     private void instantiateServer() {
         try {
             this.serverSocket = new ServerSocket(this.port);
-            String toPrint = String.format("Listening on port: %d...\n", this.port);
+            String toPrint = String.format("Listening on port: %d...", this.port);
             this.out(toPrint);
         } catch (IOException e) {
-            this.out("Error in creating new server socket");
-            this.closeServer();
+            //this.out("Error in creating new server socket");
+            e.printStackTrace();
+        	this.closeServer();
         }
     }
 

@@ -45,4 +45,10 @@ public class LinkedListIterator implements Iterator<Object> {
         return currentItem.getValue();
     }
 
+	@Override
+	public void remove() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

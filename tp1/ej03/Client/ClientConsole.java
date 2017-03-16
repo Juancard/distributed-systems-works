@@ -25,10 +25,39 @@ public class ClientConsole {
         myMessageClient.close();
     }
 
+
     private static void newClient() {
-        String host = "localhost";
-        int port = 5003;
+        String host = askForIp();
+        int port = askForPort();
         myMessageClient = new MessageClient(host, port);
+    }
+    
+    private static String askForIp(){
+    	final String DEFAULT_IP = "localhost";
+    	System.out.printf("Enter server Ip [%s]: ", DEFAULT_IP);
+    	String ip = sc.nextLine();
+    	if (ip.length() == 0)
+    		ip = DEFAULT_IP;
+    	return ip;
+    }
+    
+    private static int askForPort(){
+    	final int DEFAULT_PORT = 5004;
+    	
+    	System.out.printf("Enter server Port [%s]: ", DEFAULT_PORT);
+    	String givenPort = sc.nextLine();
+    	int port;
+    	if (givenPort.length() == 0)
+    		port = DEFAULT_PORT;
+    	else
+	    	try {
+	    		port = Integer.parseInt(givenPort);
+	    	} catch(NumberFormatException e){
+	    		System.out.println("Not a valid port number. Default port has been set.");
+	    		port = DEFAULT_PORT;
+	    	}
+    	
+    	return port;
     }
 
     private static void handleMainOptions() {

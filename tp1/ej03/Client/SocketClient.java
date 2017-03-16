@@ -2,6 +2,7 @@ package tp1.ej03.Client;
 
 import java.io.*;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 /**
  * User: juan
@@ -16,13 +17,15 @@ public class SocketClient {
     private ObjectOutputStream socketOutput;
     private ObjectInputStream socketInput;
 
-    public SocketClient(String host, int port){
+    public SocketClient(String host, int port) {
         try {
             this.host = host;
             this.port = port;
             this.clientSocket = new Socket(host, port);
             this.socketOutput = new ObjectOutputStream(this.clientSocket.getOutputStream());
             this.socketInput = new ObjectInputStream(this.clientSocket.getInputStream());
+        } catch (UnknownHostException e){
+        	System.out.println("UnknownHostException: Not a valid Ip and Port combination.");
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,84 +1,47 @@
 package tp0.C;
 
 /**
- * Created with IntelliJ IDEA.
  * User: juan
  * Date: 10/03/17
  * Time: 16:52
- * To change this template use File | Settings | File Templates.
  */
 public class Tv implements RemoteControl {
-    private static final int MAX_VOLUME = 50;
-    private static final int MIN_VOLUME = 0;
-    private static final String MAX_CHANNEL = "999";
-    private static final String MIN_CHANNEL = "000";
+    public static final int MAX_VOLUME = 50;
+    public static final int MIN_VOLUME = 0;
+    public static final int MAX_CHANNEL = 999;
+    public static final int MIN_CHANNEL = 1;
+    public static final String[] validDigits = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
 
     private int volume;
     private boolean isPowerOn;
     private boolean isMuted;
 
-    private String channel;
-    private String channelBeingSetted = "";
+    private int channel;
+	private String channelDigitsBeingSet = "";
 
-    public Tv() {
-        isPowerOn = false;
+	public Tv() {
+        isPowerOn = true;
         this.volume = 5;
         this.isMuted = false;
-        this.channel = "002";
+        this.channel = 2;
     }
 
-    @Override
+	@Override
     public void powerOnOff() {
         this.isPowerOn = !this.isPowerOn;
     }
 
     public void channelUp() {
         if (isPowerOn)  {
-            this.channelBeingSetted = "";
-            if (this.channel == MAX_CHANNEL) {
-                this.channel = MIN_CHANNEL;
-            } else {
-                boolean done = false;
-                int position = this.channel.length() - 1;
-                while (position >= 0 && !done){
-                    char thisChar = this.channel.charAt(position);
-                    if (thisChar == NUMBER_9){
-                        this.channel = this.channel.substring(0, position)
-                                + NUMBER_0
-                                + this.channel.substring(position + 1, this.channel.length());
-                    } else {
-                        int newChannel = Character.getNumericValue(thisChar) + 1;
-                        this.channel = Integer.toString(newChannel);
-                        done = true;
-                    }
-                    position--;
-                }
-            }
+            this.channelDigitsBeingSet = "";
+            this.channel = (this.channel == MAX_CHANNEL)? MIN_CHANNEL : this.channel + 1;
         }
     }
 
     public void channelDown() {
         if (isPowerOn)  {
-            this.channelBeingSetted = "";
-            if (this.channel == MIN_CHANNEL) {
-                this.channel = MAX_CHANNEL;
-            } else {
-                boolean done = false;
-                int position = this.channel.length() - 1;
-                while (position >= 0 && !done){
-                    char thisChar = this.channel.charAt(position);
-                    if (thisChar == NUMBER_0){
-                        this.channel = this.channel.substring(0, position)
-                                + NUMBER_9
-                                + this.channel.substring(position + 1, this.channel.length());
-                    } else {
-                        int newChannel = Character.getNumericValue(thisChar) - 1;
-                        this.channel = Integer.toString(newChannel);
-                        done = true;
-                    }
-                    position--;
-                }
-            }
+            this.channelDigitsBeingSet = "";
+            this.channel = (this.channel == MIN_CHANNEL)?  MAX_CHANNEL : this.channel - 1;
         }
     }
 
@@ -105,16 +68,39 @@ public class Tv implements RemoteControl {
         }
     }
 
-    private void onNumber(int number){
+    @Override
+	public String toString() {
+    	
+    	String tvIs = "Tv está: ";
+    	
+    	if (!this.isPowerOn) return tvIs + "Apagada.";
+
+    	String[] statesToPrint = {
+    			"Encendida.",
+				(this.isMuted)? 
+						"En volumen: " + "Silenciado" 
+						:  "En volumen: " + this.volume + ".",
+				"En canal: " + this.channel
+    	};
+    	
+    	for (String state : statesToPrint) {
+			tvIs += "\n- " + state;
+		}
+    	
+		return tvIs;
+	}
+    
+    private void onNumber(char number){
         if (isPowerOn) {
-            this.channelBeingSetted += number;
-            if (this.channelBeingSetted.length() == MAX_CHANNEL.length()){
-                this.channel = this.channelBeingSetted;
-                this.channelBeingSetted = "";
+            final int MAX_DIGITS = Integer.toString(MAX_CHANNEL).length(); 
+            this.channelDigitsBeingSet += number;
+            if (this.channelDigitsBeingSet.length() == MAX_DIGITS){
+                this.channel = Integer.parseInt(this.channelDigitsBeingSet);
+                this.channelDigitsBeingSet = "";
             }
         }
     }
-
+    
     @Override
     public void number0() {
         onNumber(NUMBER_0);
@@ -164,4 +150,16 @@ public class Tv implements RemoteControl {
     public void number9() {
         onNumber(NUMBER_9);
     }
+
+    public int getChannel() {
+		return channel;
+	}
+
+    public String getChannelBeingSet() {
+		return channelDigitsBeingSet;
+	}
+
+	public boolean isPowerOn() {
+		return this.isPowerOn;
+	}
 }

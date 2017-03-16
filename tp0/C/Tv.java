@@ -6,6 +6,17 @@ package tp0.C;
  * Time: 16:52
  */
 public class Tv implements RemoteControl {
+	private static final char NUMBER_0 = '0';
+	private static final char NUMBER_1 = '1';
+	private static final char NUMBER_2 = '2';
+	private static final char NUMBER_3 = '3';
+    private static final char NUMBER_4 = '4';
+    private static final char NUMBER_5 = '5';
+    private static final char NUMBER_6 = '6';
+    private static final char NUMBER_7 = '7';
+    private static final char NUMBER_8 = '8';
+    private static final char NUMBER_9 = '9';
+	
     public static final int MAX_VOLUME = 50;
     public static final int MIN_VOLUME = 0;
     public static final int MAX_CHANNEL = 999;
@@ -101,52 +112,42 @@ public class Tv implements RemoteControl {
         }
     }
     
-    @Override
     public void number0() {
         onNumber(NUMBER_0);
     }
 
-    @Override
     public void number1() {
         onNumber(NUMBER_1);
     }
 
-    @Override
     public void number2() {
         onNumber(NUMBER_2);
     }
 
-    @Override
     public void number3() {
         onNumber(NUMBER_3);
     }
 
-    @Override
     public void number4() {
         onNumber(NUMBER_4);
     }
 
-    @Override
     public void number5() {
         onNumber(NUMBER_5);
     }
 
-    @Override
     public void number6() {
         onNumber(NUMBER_6);
     }
 
-    @Override
     public void number7() {
         onNumber(NUMBER_7);
     }
 
-    @Override
     public void number8() {
         onNumber(NUMBER_8);
     }
 
-    @Override
     public void number9() {
         onNumber(NUMBER_9);
     }

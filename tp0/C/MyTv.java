@@ -5,10 +5,8 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 /**
- * User: juan
  * Date: 10/03/17
  * Time: 17:28
- * To change this template use File | Settings | File Templates.
  */
 public class MyTv {
     private static Scanner sc = new Scanner(System.in);

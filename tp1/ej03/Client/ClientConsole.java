@@ -13,6 +13,8 @@ import java.util.Scanner;
  */
 public class ClientConsole {
 
+    private static final String DEFAULT_IP = "localhost";
+    private static final int DEFAULT_PORT = 5003;
     private static Scanner sc = new Scanner(System.in);
     private static String username;
     private static MessageClient myMessageClient;
@@ -33,7 +35,6 @@ public class ClientConsole {
     }
     
     private static String askForIp(){
-    	final String DEFAULT_IP = "localhost";
     	System.out.printf("Enter server Ip [%s]: ", DEFAULT_IP);
     	String ip = sc.nextLine();
     	if (ip.length() == 0)
@@ -42,8 +43,6 @@ public class ClientConsole {
     }
     
     private static int askForPort(){
-    	final int DEFAULT_PORT = 5004;
-    	
     	System.out.printf("Enter server Port [%s]: ", DEFAULT_PORT);
     	String givenPort = sc.nextLine();
     	int port;

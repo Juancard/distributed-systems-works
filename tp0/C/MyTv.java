@@ -68,13 +68,13 @@ public class MyTv {
     
     private static void callTvDigit(String givenDigit) {
     	String method = "number" + givenDigit;
-		try {
-			myTv.getClass().getMethod(method).invoke(myTv);
-		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
-				| SecurityException e) {
-			System.out.println("Error seteando digito de canal en su Tv. Vuelva a intentarlo más tarde.");
-		}		
-	}
+        try {
+            myTv.getClass().getMethod(method).invoke(myTv);
+        } catch (Exception e) {
+            System.out.println("Error seteando digito de canal en su Tv. Vuelva a intentarlo más tarde.");
+        }
+
+    }
 
 	private static void showDigitsBeingSet() {
     	String ingresado = myTv.getChannelBeingSet();

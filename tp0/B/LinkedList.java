@@ -5,10 +5,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 /**
- * User: juan
  * Date: 06/03/17
  * Time: 13:31
- * To change this template use File | Settings | File Templates.
  */
 public class LinkedList implements Iterable{
     private ListItem firstElement;

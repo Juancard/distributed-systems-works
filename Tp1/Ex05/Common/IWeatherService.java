@@ -1,4 +1,4 @@
-package Tp1.Ex05;
+package Tp1.Ex05.Common;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -9,5 +9,5 @@ import java.rmi.RemoteException;
  * Time: 14:23
  */
 public interface IWeatherService extends Remote {
-    public Weather getWeatherInServer() throws RemoteException;
+    public Weather getWeatherInServer() throws RemoteException, NoApiIdException;
 }

@@ -1,4 +1,4 @@
-package Tp1.Ex03;
+package Tp1.Ex03.Common;
 
 import java.io.Serializable;
 

@@ -1,7 +1,7 @@
 package Tp1.Ex04.Client;
 
 import Common.CommonMain;
-import Tp1.Ex03.Message;
+import Tp1.Ex03.Common.Message;
 
 import java.util.List;
 import java.util.Scanner;

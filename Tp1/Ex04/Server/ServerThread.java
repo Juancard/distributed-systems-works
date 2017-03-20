@@ -1,7 +1,7 @@
 package Tp1.Ex04.Server;
 
-import Tp1.Ex03.Message;
-import Tp1.Ex03.MessageProtocol;
+import Tp1.Ex03.Common.Message;
+import Tp1.Ex03.Common.MessageProtocol;
 import Tp1.Ex03.Server.MessagesHandler;
 
 import java.io.EOFException;

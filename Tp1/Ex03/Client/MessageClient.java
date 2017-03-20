@@ -1,7 +1,7 @@
 package Tp1.Ex03.Client;
 
-import Tp1.Ex03.Message;
-import Tp1.Ex03.MessageProtocol;
+import Tp1.Ex03.Common.Message;
+import Tp1.Ex03.Common.MessageProtocol;
 
 import java.util.ArrayList;
 import java.util.List;

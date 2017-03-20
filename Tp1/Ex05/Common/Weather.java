@@ -1,4 +1,4 @@
-package Tp1.Ex05;
+package Tp1.Ex05.Common;
 
 import java.io.Serializable;
 
@@ -15,12 +15,13 @@ public class Weather implements Serializable{
 
     public double temperature;
     public String description;
+    public String place;
 
     public Weather() {}
 
     @Override
     public String toString() {
-        return "Weather{" +
+        return "Weather in "+ place + "{" +
                 "temperature=" + temperature +
                 ", description='" + description + '\'' +
                 '}';
@@ -42,4 +43,12 @@ public class Weather implements Serializable{
         this.temperature = temperature;
     }
 
+
+    public String getPlace() {
+        return place;
+    }
+
+    public void setPlace(String place) {
+        this.place = place;
+    }
 }

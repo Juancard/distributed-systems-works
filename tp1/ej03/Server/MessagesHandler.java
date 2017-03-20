@@ -23,8 +23,8 @@ public class MessagesHandler {
         
         if (messages.get(destination) == null)
         	messages.put(destination, new ArrayList<Message>());
-        messages.get(destination).add(message);
 
+        messages.get(destination).add(message);
     }
 
     public List<Message> readMessagesSentTo(String user){
@@ -40,6 +40,14 @@ public class MessagesHandler {
                 allUserMessages.remove(messageToRemove);
             }
         }
+        /*
+        Iterator iterator = allUserMessages.iterator();
+        while (iterator.hasNext()){
+            Message thisUserMessage = (Message) iterator.next();
+            if (toRemoveList.contains(thisUserMessage))
+                iterator.remove();
+        }
+        */
     }
 
 }

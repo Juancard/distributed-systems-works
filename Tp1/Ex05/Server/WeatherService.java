@@ -1,8 +1,10 @@
 package Tp1.Ex05.Server;
 
-import Tp1.Ex05.IWeatherService;
-import Tp1.Ex05.Weather;
+import Tp1.Ex05.Common.IWeatherService;
+import Tp1.Ex05.Common.NoApiIdException;
+import Tp1.Ex05.Common.Weather;
 
+import java.io.IOException;
 import java.util.Random;
 
 /**
@@ -14,16 +16,30 @@ import java.util.Random;
 public class WeatherService implements IWeatherService {
 
     @Override
-    public Weather getWeatherInServer() {
+    public Weather getWeatherInServer() throws NoApiIdException {
+        WeatherApi weatherApi = new WeatherApi();
+        String place = "Buenos Aires";
+        try {
+            return weatherApi.getByCityAndCountry(place, "ar");
+        } catch (IOException e) {
+            System.out.println("Error in calling Weather API. Randomizing data");
+            Weather randomWeather = this.getRandomWeather();
+            randomWeather.setPlace(place);
+            return randomWeather;
+        }
+    }
+
+    private Weather getRandomWeather(){
         Weather weather = new Weather();
-        weather.setDescription(this.getRandomWeatherDescription());
         weather.setTemperature(this.getRandomTemperature());
+        weather.setDescription(this.getRandomWeatherDescription());
+
         return weather;
     }
 
     private String getRandomWeatherDescription() {
         final String[] WEATHER_DESCRIPTIONS = {
-                "Cloudy", "Sunny", "Clear sky", "Rain", "Snow"
+                "cloudy", "sunny", "clear sky", "rainy", "snowy"
         };
         Random random = new Random();
         int position = random.nextInt(WEATHER_DESCRIPTIONS.length - 1);

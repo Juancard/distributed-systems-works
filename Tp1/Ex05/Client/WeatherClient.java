@@ -1,7 +1,8 @@
 package Tp1.Ex05.Client;
 
-import Tp1.Ex05.IWeatherService;
-import Tp1.Ex05.Weather;
+import Tp1.Ex05.Common.IWeatherService;
+import Tp1.Ex05.Common.NoApiIdException;
+import Tp1.Ex05.Common.Weather;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -22,7 +23,7 @@ public class WeatherClient {
         this.weatherService = (IWeatherService) registry.lookup("WEATHER_SERVICE");
     }
 
-    public Weather getWeatherInServer() throws RemoteException {
+    public Weather getWeatherInServer() throws RemoteException, NoApiIdException {
         return this.weatherService.getWeatherInServer();
     }
 }

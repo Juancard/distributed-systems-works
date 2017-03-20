@@ -1,7 +1,8 @@
 package Tp1.Ex05.Client;
 
 import Common.CommonMain;
-import Tp1.Ex05.Weather;
+import Tp1.Ex05.Common.NoApiIdException;
+import Tp1.Ex05.Common.Weather;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -25,11 +26,13 @@ public class ConsoleClient {
         CommonMain.showWelcomeMessage(TP_NUMBER, EXERCISE_NUMBER, "RMI Weather ServerWithSocket");
         try {
             weatherClient = newClient();
-            CommonMain.createSection("Weather in ServerWithSocket");
+            CommonMain.createSection("Weather in Server");
             showWeather(weatherClient.getWeatherInServer());
         } catch (RemoteException e) {
             CommonMain.display(e.toString());
         } catch (NotBoundException e) {
+            CommonMain.display(e.toString());
+        } catch (NoApiIdException e) {
             CommonMain.display(e.toString());
         }
 
@@ -43,7 +46,8 @@ public class ConsoleClient {
 
     private static void showWeather(Weather w) {
         String weatherString = String.format(
-                "The weather is %s, with a temperature of %.2f°",
+                "The weather in %s is %s, with a temperature of %.2f°",
+                w.getPlace(),
                 w.getDescription(),
                 w.getTemperature()
         );

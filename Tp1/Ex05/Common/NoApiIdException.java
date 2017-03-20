@@ -8,7 +8,7 @@ package Tp1.Ex05.Common;
 public class NoApiIdException extends Exception {
 
     public static final String DEFAULT_MESSAGE =
-            "Error: No Weather API id specified.\n " +
+            "No Weather API id specified.\n " +
             "Make Sure you've generated one and saved it in a java properties file.\n";
 
     public NoApiIdException() { super(); }

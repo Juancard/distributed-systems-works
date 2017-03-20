@@ -1,5 +1,6 @@
 package Tp1.Ex03.Client;
 
+import Common.CommonMain;
 import Tp1.Ex03.Message;
 
 import java.util.List;
@@ -12,15 +13,18 @@ import java.util.Scanner;
  */
 public class ClientConsole {
 
-    private static final String DEFAULT_IP = "localhost";
+    private static final String DEFAULT_HOST = "localhost";
     private static final int DEFAULT_PORT = 5003;
+    private static final int TP_NUMBER = 1;
+    private static final int EXERCISE_NUMBER = 3;
+
     private static Scanner sc = new Scanner(System.in);
     private static String username;
     private static MessageClient myMessageClient;
 
     public static void main(String[] args) {
+        CommonMain.showWelcomeMessage(TP_NUMBER, EXERCISE_NUMBER, "Message ServerWithSocket using Sockets");
         newClient();
-        showWelcomeMessage();
         handleAuthentication();
         handleMainOptions();
         myMessageClient.close();
@@ -28,34 +32,9 @@ public class ClientConsole {
 
 
     private static void newClient() {
-        String host = askForIp();
-        int port = askForPort();
+        String host = CommonMain.askForHost(DEFAULT_HOST);
+        int port = CommonMain.askForPort(DEFAULT_PORT);
         myMessageClient = new MessageClient(host, port);
-    }
-    
-    private static String askForIp(){
-    	System.out.printf("Enter server Ip [%s]: ", DEFAULT_IP);
-    	String ip = sc.nextLine();
-    	if (ip.length() == 0)
-    		ip = DEFAULT_IP;
-    	return ip;
-    }
-    
-    private static int askForPort(){
-    	System.out.printf("Enter server Port [%s]: ", DEFAULT_PORT);
-    	String givenPort = sc.nextLine();
-    	int port;
-    	if (givenPort.length() == 0)
-    		port = DEFAULT_PORT;
-    	else
-	    	try {
-	    		port = Integer.parseInt(givenPort);
-	    	} catch(NumberFormatException e){
-	    		System.out.println("Not a valid port number. Default port has been set.");
-	    		port = DEFAULT_PORT;
-	    	}
-    	
-    	return port;
     }
 
     private static void handleMainOptions() {
@@ -68,19 +47,19 @@ public class ClientConsole {
             if (opcion.equals("0")) {
                 salir = true;
             } else if (opcion.equals("1")){
-                createSection("Read Messages");
+                CommonMain.createSection("Read Messages");
                 handleReadMessages();
-                pause();
+                CommonMain.pause();
             } else if (opcion.equals("2")){
-                createSection("Send New Message");
+                CommonMain.createSection("Send New Message");
                 handleNewMessage();
-                pause();
+                CommonMain.pause();
             }
         }
     }
 
     private static void showMain(){
-        createSection("Message Server - Main");
+        CommonMain.createSection("Message ServerWithSocket - Main");
         System.out.println("1 - Read Messages");
         System.out.println("2 - Send New Message");
         System.out.println("0 - Salir");
@@ -110,7 +89,7 @@ public class ClientConsole {
         showNumberOfMessagesReceived(totalMessages);
         for (int i=0; i < totalMessages; i++){
             showReceivedMessage(messagesReceived.get(i));
-            if (i < totalMessages - 1) pause();
+            if (i < totalMessages - 1) CommonMain.pause();
         }
     }
 
@@ -124,7 +103,7 @@ public class ClientConsole {
 
     private static void showReceivedMessage(Message m) {
         int minSeparatorSize = 10;
-        String separator = repeat(minSeparatorSize + m.getBody().length(), "=");
+        String separator = CommonMain.repeat(minSeparatorSize + m.getBody().length(), "=");
         System.out.println(separator);
         System.out.println("From: " + m.getFrom());
         System.out.println("To: " + m.getTo());
@@ -163,38 +142,4 @@ public class ClientConsole {
         }
     }
 
-    private static void showWelcomeMessage() {
-        String title = "Sistemas Distribuidos y Programación Paralela";
-        String subtitle = "TP N°1 - Ej3 - Message Server";
-        createSection(title + "\n" + subtitle);
-    }
-
-    private static void createSection(String section){
-        String separatorChar = "*";
-        int separatorMinLength = 6;
-        int longestString = -1;
-
-        for (String s : section.split("\n"))
-            if (s.length() > longestString) longestString = s.length();
-
-        String separator = repeat(separatorMinLength + longestString, separatorChar);
-        showSection(separator, section);
-    }
-
-    private static void showSection(String separator, String section) {
-        System.out.println("");
-        System.out.println(separator);
-        System.out.println(section);
-        System.out.println(separator);
-        System.out.println("");
-    }
-
-    public static String repeat(int count, String with) {
-        return new String(new char[count]).replace("\0", with);
-    }
-
-    private static void pause() {
-        System.out.println("\nPresione cualquier tecla para continuar");
-        sc.nextLine();
-    }
 }

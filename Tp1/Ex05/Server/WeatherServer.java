@@ -37,7 +37,7 @@ public class WeatherServer {
 
     private void createRmiServer() throws RemoteException {
         this.rmiServer = LocateRegistry.createRegistry(WeatherServer.PORT);
-        display("RMI Server listening on port " + PORT + "...");
+        display("RMI ServerWithSocket listening on port " + PORT + "...");
     }
 
     private void supplyWeatherService() throws RemoteException, AlreadyBoundException {

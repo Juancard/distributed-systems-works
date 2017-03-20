@@ -1,4 +1,4 @@
-package Tp1.Ex02;
+package Tp1.Ex02.Client;
 
 import java.io.*;
 import java.net.Socket;
@@ -10,7 +10,7 @@ import java.util.Scanner;
  * Time: 14:45
  * To change this template use File | Settings | File Templates.
  */
-public class MyClient {
+public class ClientWithSocket {
 
     private String host;
     private int port;
@@ -18,46 +18,7 @@ public class MyClient {
     private OutputStreamWriter outputStreamWriter;
     private InputStreamReader inputStreamReader;
 
-    public static void main(String[] args) {
-        String host = "localhost";
-        int port = 5001;
-        MyClient myClient = new MyClient(host, port);
-
-        Scanner sc = new Scanner(System.in);
-        String toSend;
-        String exitWith = "-1";
-        System.out.printf("\nSend a Message to the Server (%s to exit): \n", exitWith);
-        while (true){
-            System.out.print("Me: ");
-            toSend = sc.nextLine();
-            if (toSend.equals(exitWith)) break;
-            try {
-                myClient.sendMessage(toSend);
-                String received = myClient.readMessage();
-
-                if (received == null) {
-                    System.out.println("Server has shutted down");
-                    break;
-                }
-
-                System.out.println("Server: " + received);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        myClient.close();
-
-    }
-
-    private void close() {
-        try {
-            this.clientSocket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public MyClient(String host, int port){
+    public ClientWithSocket(String host, int port){
         this.host = host;
         this.port = port;
         try {
@@ -83,6 +44,16 @@ public class MyClient {
 
         String received = bufferedReader.readLine();
         return received;
+    }
+
+    public void close() {
+        try {
+            this.outputStreamWriter.close();
+            this.inputStreamReader.close();
+            this.clientSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public int getPort() {

@@ -1,4 +1,4 @@
-package Tp1.Ex02;
+package Tp1.Ex02.Server;
 
 import java.io.*;
 import java.net.Socket;
@@ -9,14 +9,14 @@ import java.net.Socket;
  * Time: 14:59
  * To change this template use File | Settings | File Templates.
  */
-public class MyServerThread implements Runnable{
+public class ServerThread implements Runnable{
 
     private long threadId;
     private Socket clientSocket;
     private OutputStreamWriter outputStreamWriter;
     private InputStreamReader inputStreamReader;
 
-    public MyServerThread(Socket clientSocket) {
+    public ServerThread(Socket clientSocket) {
         this.clientSocket = clientSocket;
         try {
             this.outputStreamWriter = new OutputStreamWriter(this.clientSocket.getOutputStream());

@@ -15,16 +15,17 @@ import java.util.Scanner;
 public class ConsoleClient {
     private static final String DEFAULT_HOST = "localhost";
     private static final int DEFAULT_PORT = 5005;
-    private static final int exerciseNumber = 3;
-    private static final int tpNumber = 1;
+    private static final int EXERCISE_NUMBER = 3;
+    private static final int TP_NUMBER = 1;
+
     private static Scanner sc = new Scanner(System.in);
     private static WeatherClient weatherClient;
 
     public static void main(String[] args) {
-        CommonMain.showWelcomeMessage(tpNumber, exerciseNumber);
+        CommonMain.showWelcomeMessage(TP_NUMBER, EXERCISE_NUMBER, "RMI Weather ServerWithSocket");
         try {
             weatherClient = newClient();
-            CommonMain.createSection("Weather in Server");
+            CommonMain.createSection("Weather in ServerWithSocket");
             showWeather(weatherClient.getWeatherInServer());
         } catch (RemoteException e) {
             CommonMain.display(e.toString());

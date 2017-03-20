@@ -1,4 +1,4 @@
-package Tp1.Ex02;
+package Tp1.Ex02.Server;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -10,16 +10,16 @@ import java.net.Socket;
  * Time: 14:14
  * To change this template use File | Settings | File Templates.
  */
-public class MyServer {
+public class ServerWithSocket {
 
     private int port;
 
     public static void main(String[] args) {
-        int port = 5001;
-        MyServer myServer = new MyServer(port);
+        int port = 5002;
+        ServerWithSocket myServer = new ServerWithSocket(port);
     }
 
-    public MyServer(int port) {
+    public ServerWithSocket(int port) {
         try {
             ServerSocket serverSocket = new ServerSocket(port);
             System.out.printf("Listening on port: %d...\n", port);
@@ -34,7 +34,7 @@ public class MyServer {
     }
 
     public Thread newServerThread(Socket clientSocket){
-        MyServerThread myServerThread = new MyServerThread(clientSocket);
+        ServerThread myServerThread = new ServerThread(clientSocket);
         Thread thread = new Thread(myServerThread);
         myServerThread.setThreadId(thread.getId());
 

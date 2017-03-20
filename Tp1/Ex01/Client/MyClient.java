@@ -1,4 +1,4 @@
-package Tp1.Ex01;
+package Tp1.Ex01.Client;
 
 import java.io.*;
 import java.net.Socket;
@@ -8,7 +8,6 @@ import java.util.Scanner;
  * User: juan
  * Date: 11/03/17
  * Time: 14:45
- * To change this template use File | Settings | File Templates.
  */
 public class MyClient {
 
@@ -17,25 +16,6 @@ public class MyClient {
     private Socket clientSocket;
     private OutputStreamWriter outputStreamWriter;
     private InputStreamReader inputStreamReader;
-
-    public static void main(String[] args) {
-        String host = "localhost";
-        int port = 5001;
-        MyClient myClient = new MyClient(host, port);
-
-        Scanner sc = new Scanner(System.in);
-        System.out.printf("\nSend a Message to the Server\n");
-        System.out.print("Me: ");
-        String toSend = sc.nextLine();
-        try {
-            myClient.sendMessage(toSend);
-            String received = myClient.readMessage();
-            System.out.println("Server: " + received);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
 
     public MyClient(String host, int port){
         this.host = host;
@@ -64,6 +44,16 @@ public class MyClient {
         String received = bufferedReader.readLine();
 
         return received;
+    }
+
+    public void close() {
+        try {
+            this.outputStreamWriter.close();
+            this.inputStreamReader.close();
+            this.clientSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public int getPort() {

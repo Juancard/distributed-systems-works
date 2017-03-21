@@ -12,6 +12,8 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Random;
 
+import org.json.JSONException;
+
 /**
  * User: juan
  * Date: 20/03/17
@@ -35,9 +37,12 @@ public class WeatherService implements IWeatherService {
             try {
                 return this.weatherApi.getByCityAndCountry(serverLocation.getCity(), serverLocation.getCountryCode());
             } catch (IOException e) {
-                System.out.println("Error in calling Weather API. Randomizing data");
+                System.out.println("Error in Weather API: while calling the API. Randomizing data");
                 return this.getRandomWeather(serverLocation.getCity());
-            }
+            } catch (JSONException e) {
+                System.out.println("Error in Weather API while handling Json. Randomizing data");
+                return this.getRandomWeather(serverLocation.getCity());
+			}
         } catch (IOException e) {
             System.out.println("Error in Getting Server Location. Randomizing data.");
             return this.getRandomWeather("Buenos Aires");

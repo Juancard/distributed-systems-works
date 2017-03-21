@@ -2,6 +2,8 @@ package Tp1.Ex05.Server.WeatherApi;
 
 import Common.JSONReader;
 import Tp1.Ex05.Common.Weather;
+
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.FileInputStream;
@@ -16,6 +18,7 @@ import java.util.Properties;
  * Time: 18:57
  */
 public class WeatherApi {
+	private static final String PROPERTIES_FILE_PATH = "src/config.properties";
     private static final String API_PROTOCOL = "http";
     private static final String API_HOST = "api.openweathermap.org";
     private static final String API_PATH = "/data/2.5/weather";
@@ -39,30 +42,29 @@ public class WeatherApi {
             );
         }
     }
-
     private Properties loadProperties() throws IOException {
         Properties prop = new Properties();
-        FileInputStream input = new FileInputStream("src/config.properties");
+        FileInputStream input = new FileInputStream(PROPERTIES_FILE_PATH);
         prop.load(input);
         return prop;
     }
 
-    public Weather getByCityAndCountry(String city, String countryCode) throws IOException {
+    public Weather getByCityAndCountry(String city, String countryCode) throws IOException, JSONException {
         final String QUERY = String.format("q=%s,%s", city, countryCode);
         return weatherFromApi(QUERY);
     }
 
-    public Weather getByLatLong(String latitude, String longitude) throws IOException {
+    public Weather getByLatLong(String latitude, String longitude) throws IOException, JSONException {
         final String QUERY = String.format("lat=%s&lon=%s", latitude, longitude);
         return weatherFromApi(QUERY);
     }
 
-    private Weather weatherFromApi(String query) throws IOException {
+    private Weather weatherFromApi(String query) throws IOException, JSONException {
         JSONObject weatherJson = callApi(query);
         return jsonWeatherToWeather(weatherJson);
     }
 
-    private JSONObject callApi(String query) throws IOException {
+    private JSONObject callApi(String query) throws IOException, JSONException {
         String completeQuery = query + IN_CELSIUS + "&appid=" + this.apiId;
         URI uri = generateURI(completeQuery);
         return JSONReader.readJsonFromUrl(uri.toString());
@@ -83,7 +85,7 @@ public class WeatherApi {
         return uri;
     }
 
-    private Weather jsonWeatherToWeather(JSONObject weatherJson) {
+    private Weather jsonWeatherToWeather(JSONObject weatherJson) throws JSONException {
         Weather weather = new Weather();
 
         String description = weatherJson.getJSONArray("weather").getJSONObject(0).getString("description");

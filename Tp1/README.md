@@ -42,6 +42,14 @@
 
 - [Code](tp1.Ex05)
 
+- #### Jars needed:
+  - [GeoIp](https://drive.google.com/file/d/0B13cNeaiufwVdm1lNWN0TXFtX3M/view?usp=sharing)
+  - [Org.Json](https://drive.google.com/file/d/0B13cNeaiufwVQlg3MF9xek01VkE/view?usp=sharing)
+- #### Weather Api
+This app makes use of the `Open Weather Map API`.Get a free API id from [this page](https://openweathermap.org/appid).
+
+
+
 ### 6. Parameters Passing
 
 - "Escribir un servidor utilizando RMI, que ofrezca la posibilidad de sumar y restar vectores de enteros. Introduzca un error en su código que modifique los vectores  recibidos por parámetro. Qué impacto se genera? Que conclusión saca sobre la forma de pasaje de parámetros en RMI?".

@@ -4,7 +4,7 @@
 
 Projects coded during the classes of Distributed Systems and Parallel Programming in National University of Lujan.
 
-# Quick Start Guide
+## Quick Start Guide
 
 ### Prerequisites
 

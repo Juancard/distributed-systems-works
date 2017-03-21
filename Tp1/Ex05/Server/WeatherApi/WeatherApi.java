@@ -18,7 +18,7 @@ import java.util.Properties;
  * Time: 18:57
  */
 public class WeatherApi {
-	private static final String PROPERTIES_FILE_PATH = "src/config.properties";
+	private static final String PROPERTIES_FILE_PATH = "distributed-systems-works/Tp1/Ex05/Server/WeatherApi/config.properties";
     private static final String API_PROTOCOL = "http";
     private static final String API_HOST = "api.openweathermap.org";
     private static final String API_PATH = "/data/2.5/weather";
@@ -38,7 +38,7 @@ public class WeatherApi {
         } catch (IOException e) {
             throw new NoApiIdException(NoApiIdException.DEFAULT_MESSAGE +
                     "To generate an api key, visit this page: https://openweathermap.org/appid.\n" +
-                    "The java properties file is a file called \"config.properties\" that is saved in the root directory of this app."
+                    "The java properties file is a file called \"config.properties\" that is saved in " + WeatherApi.PROPERTIES_FILE_PATH + "."
             );
         }
     }

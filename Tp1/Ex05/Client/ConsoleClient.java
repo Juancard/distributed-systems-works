@@ -1,7 +1,6 @@
 package Tp1.Ex05.Client;
 
 import Common.CommonMain;
-import Tp1.Ex05.Common.NoApiIdException;
 import Tp1.Ex05.Common.Weather;
 
 import java.rmi.NotBoundException;
@@ -23,7 +22,7 @@ public class ConsoleClient {
     private static WeatherClient weatherClient;
 
     public static void main(String[] args) {
-        CommonMain.showWelcomeMessage(TP_NUMBER, EXERCISE_NUMBER, "RMI Weather ServerWithSocket");
+        CommonMain.showWelcomeMessage(TP_NUMBER, EXERCISE_NUMBER, "RMI Weather Server");
         try {
             weatherClient = newClient();
             CommonMain.createSection("Weather in Server");
@@ -32,10 +31,7 @@ public class ConsoleClient {
             CommonMain.display(e.toString());
         } catch (NotBoundException e) {
             CommonMain.display(e.toString());
-        } catch (NoApiIdException e) {
-            CommonMain.display(e.toString());
         }
-
     }
 
     private static WeatherClient newClient() throws RemoteException, NotBoundException {

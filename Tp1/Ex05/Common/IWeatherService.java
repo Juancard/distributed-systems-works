@@ -9,5 +9,5 @@ import java.rmi.RemoteException;
  * Time: 14:23
  */
 public interface IWeatherService extends Remote {
-    public Weather getWeatherInServer() throws RemoteException, NoApiIdException;
+    public Weather getWeatherInServer() throws RemoteException;
 }

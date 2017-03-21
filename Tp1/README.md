@@ -14,25 +14,25 @@
 ### 1. Simple connection
 - "Escriba un servidor que usando sockets, reciba un mensaje de texto y lo repita a su cliente. Programe también el cliente para verificar y probar el comportamiento del servidor. Realice la implementación en TCP y comente los resultados".
 
-- [Code](tp1.Ex01)
+- [Code](tp1/Ex01)
 
 ### 2. Using Threads
 
 - "Modifique el programa anterior para que pueda atender varios clientes a la vez".
 
-- [Code](tp1.Ex02)
+- [Code](tp1/Ex02)
 
 ### 3. Message Server
 
 - "Escriba un servidor de mensajes en colas, que permita a los clientes dejar un mensaje (identificando de alguna forma a quién se lo dejan), y bajar los mensajes que le están dirigidos. La comunicación entre cliente y servidor debe ser mediante sockets, y el servidor debe poder atender varios clientes a la vez".
 
-- [Code](tp1.Ex03)
+- [Code](tp1/Ex03)
 
 ### 4. Message Server with Ack
 
 - "Modifique el programa anterior para que el mensaje de la cola sea borrado por el servidor una vez que el cliente confirma, mediante un mensaje de tipo ack, que efectivamente recibió el mensaje que estaba en la cola.".
 
-- [Code](tp1.Ex04)
+- [Code](tp1/Ex04)
 
 ## RMI
 
@@ -40,7 +40,7 @@
 
 - "Escribir un servicio que devuelva información de clima del lugar donde reside el servidor. Esta información podrá generarse de forma aleatoria. Deberá ser realizado con RMI. Para ello considere la interface remota, la clase (lado servidor) que implementa esa interface, el servidor, y un cliente que permita probar este funcionamiento".
 
-- [Code](tp1.Ex05)
+- [Code](tp1/Ex05)
 
 - #### Jars needed:
   - [GeoIp](https://drive.google.com/file/d/0B13cNeaiufwVdm1lNWN0TXFtX3M/view?usp=sharing)
@@ -54,17 +54,17 @@ This app makes use of the `Open Weather Map API`.Get a free API id from [this pa
 
 - "Escribir un servidor utilizando RMI, que ofrezca la posibilidad de sumar y restar vectores de enteros. Introduzca un error en su código que modifique los vectores  recibidos por parámetro. Qué impacto se genera? Que conclusión saca sobre la forma de pasaje de parámetros en RMI?".
 
-- [Code](tp1.Ex06)
+- [Code](tp1/Ex06)
 
 
 ### 7. Message Server
 
 - "Implemente el servidor del ejercicio 3, utilizando ahora RMI".
 
-- [Code](tp1.Ex07)
+- [Code](tp1/Ex07)
 
 ### 8. Generic Tasks Solver
 
 - "Implemente un servidor RMI que resuelva tareas genéricas. Para ello tener en cuenta la interface Tarea, 	que tendra un método ejecutar(). El objetivo es que desde el cliente se puedan escribir objetos (que implementen la interface Tarea) que hagan un cálculo concreto (calcular un número aleatorio, un primo, el valor de Pi con cierta precisión, etc), y que esa tarea se pase al servidor RMI, quien hará el cálculo y devolverá el valor al cliente".
 
-- [Code](tp1.Ex08)
+- [Code](tp1/Ex08)

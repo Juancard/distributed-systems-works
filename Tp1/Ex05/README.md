@@ -6,6 +6,7 @@
 ### Weather Api Installation
 This app makes use of the `Open Weather Map API`. To install it, follow this steps:
 1. Create an empty file called `config.properties`.
+2. Save it inside `distributed-systems-works/Tp1/Ex05/Server/WeatherApi`
 2. Add the following line:
 ```bash
 WEATHER_API_ID=YOUR-API-ID-HERE

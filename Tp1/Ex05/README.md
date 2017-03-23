@@ -11,4 +11,4 @@ This app makes use of the `Open Weather Map API`. To install it, follow this ste
 WEATHER_API_ID=YOUR-API-ID-HERE
 ```
 3. To create an API id visit [this page](https://openweathermap.org/appid).
-###Enjoy!
+### Enjoy!

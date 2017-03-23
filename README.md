@@ -19,7 +19,7 @@ Also, some exercises have external JARs dependencies. Check README.md of the exe
 To install this app, simply enter the below in the terminal window:
 
 ```bash
-$ git clone https://github.com/Juancard/distributed-systems-works your-project
+$ git clone https://github.com/Juancard/distributed-systems-works
 ```
 
-Make sure a folder called `distributed-systems-works` is set as the source folder in the Java build path.
+Make sure a folder called `distributed-systems-works` is set as the source folder in the Java build path of your preferred IDE.

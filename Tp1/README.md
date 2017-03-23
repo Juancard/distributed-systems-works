@@ -1,7 +1,7 @@
 # TP: N° 1
 
 ## Table of Contents
-1. [Sockets](#1-simple-connection)
+1. [Sockets: simple connection](#1-simple-connection)
 2. [Sockets: with threads](#2-using-threads)
 3. [Sockets: Message Server](#3-message-server)
 4. [Sockets: Message Server with Ack](#3-message-server-with-ack)
@@ -42,11 +42,7 @@
 
 - [Code](Ex05)
 
-- #### Jars needed:
-  - [GeoIp](https://drive.google.com/file/d/0B13cNeaiufwVdm1lNWN0TXFtX3M/view?usp=sharing)
-  - [Org.Json](https://drive.google.com/file/d/0B13cNeaiufwVQlg3MF9xek01VkE/view?usp=sharing)
-- #### Weather Api
-This app makes use of the `Open Weather Map API`.Get a free API id from [this page](https://openweathermap.org/appid).
+- [Installation](Ex05/README.md)
 
 
 

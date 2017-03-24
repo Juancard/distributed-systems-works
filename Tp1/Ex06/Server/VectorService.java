@@ -27,6 +27,9 @@ public class VectorService implements IVectorService {
 
     @Override
     public int[] substract(int[] vector1, int[] vector2) throws RemoteException {
-        return new int[]{2, 1};
+        int[] out = new int[vector1.length];
+        for (int i=0; i<vector1.length; i++)
+            out[i] = vector1[i] - vector2[i];
+        return out;
     }
 }

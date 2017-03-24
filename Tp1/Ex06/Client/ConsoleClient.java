@@ -50,11 +50,7 @@ public class ConsoleClient {
                 salir = true;
             } else if (opcion.equals("1")){
                 CommonMain.createSection("Vector Addition");
-                try {
-                    handleVectorAdd();
-                } catch (RemoteException e) {
-                    CommonMain.display("Error in adding vectors: " + e.toString());
-                }
+                handleVectorAdd();
                 CommonMain.pause();
             } else if (opcion.equals("2")){
                 CommonMain.createSection("Vector Substraction");
@@ -73,7 +69,7 @@ public class ConsoleClient {
         System.out.print("Select option: ");
     }
 
-    private static void handleVectorAdd() throws RemoteException {
+    private static void handleVectorAdd() {
         int vectorSize = askVectorSize();
 
         CommonMain.display("Enter vector 'A': ");
@@ -86,7 +82,7 @@ public class ConsoleClient {
             int[] additionResult = vectorClient.add(vectorA, vectorB);
             showVector(additionResult);
         } catch (RemoteException e) {
-            throw new RemoteException("Could not add vectors: " + e.toString());
+            CommonMain.display("Error in server: could not add vectors: " + e.toString());
         }
     }
 
@@ -120,17 +116,25 @@ public class ConsoleClient {
 
     private static void showVector(int[] vector) {
         CommonMain.display("Result is: ");
-        String out = "";
-        for (int i=0; i<vector.length; i++) {
-            out += vector[i];
-            if (i != vector.length - 1)
-                out += " - ";
-        }
-        CommonMain.display(out);
+        for (int i=0; i<vector.length; i++)
+            CommonMain.display("Value " + (i+1) + ": " + vector[i]);
     }
 
     private static void handleVectorSubstract() {
+        int vectorSize = askVectorSize();
 
+        CommonMain.display("Enter vector 'A': ");
+        int[] vectorA = askForVector(vectorSize);
+
+        CommonMain.display("Enter vector 'B': ");
+        int[] vectorB = askForVector(vectorSize);
+
+        try {
+            int[] substractionResult = vectorClient.substract(vectorA, vectorB);
+            showVector(substractionResult);
+        } catch (RemoteException e) {
+            CommonMain.display("Error in server: could not substract vectors: " + e.toString());
+        }
     }
 
 }

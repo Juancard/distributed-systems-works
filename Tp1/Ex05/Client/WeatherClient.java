@@ -19,7 +19,7 @@ public class WeatherClient {
 
     public WeatherClient(String host, int port) throws RemoteException, NotBoundException {
         Registry registry = LocateRegistry.getRegistry(host, port);
-        this.weatherService = (IWeatherService) registry.lookup("WEATHER_SERVICE");
+        this.weatherService = (IWeatherService) registry.lookup("VECTOR_SERVICE");
     }
 
     public Weather getWeatherInServer() throws RemoteException {

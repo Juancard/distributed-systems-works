@@ -1,5 +1,6 @@
 package Tp1.Ex05.Server;
 
+import Tp1.Ex05.Common.IWeatherService;
 import Tp1.Ex05.Server.WeatherApi.*;
 
 import java.rmi.AlreadyBoundException;
@@ -15,8 +16,10 @@ import java.rmi.server.UnicastRemoteObject;
  */
 public class RMIServer {
 
-    public static final int PORT = 5005;
-    public static final String WEATHER_SERVICE = "WEATHER_SERVICE";
+    public static final int SERVER_PORT = 5005;
+    public static final int WEATHER_SERVICE_PORT = 6005;
+
+    public static final String WEATHER_SERVICE = "VECTOR_SERVICE";
 
     private Registry registry;
 
@@ -39,16 +42,16 @@ public class RMIServer {
     }
 
     private void createRmiServer() throws RemoteException {
-        this.registry = LocateRegistry.createRegistry(RMIServer.PORT);
-        display("RMI Server listening on port " + PORT + "...");
+        this.registry = LocateRegistry.createRegistry(RMIServer.SERVER_PORT);
+        display("RMI Server listening on port " + SERVER_PORT + "...");
     }
 
     private void supplyWeatherService() throws RemoteException, AlreadyBoundException, NoApiIdException {
         WeatherService weatherService = new WeatherService();
-        this.registry.rebind(WEATHER_SERVICE, weatherService);
-        UnicastRemoteObject.exportObject(weatherService, RMIServer.PORT);
+        IWeatherService iWeatherService = (IWeatherService) UnicastRemoteObject.exportObject(weatherService, RMIServer.WEATHER_SERVICE_PORT);
+        this.registry.rebind(WEATHER_SERVICE, iWeatherService);
 
-        display(String.format("Weather service is up as \"%s\" on port %d", WEATHER_SERVICE, PORT));
+        display(String.format("Weather service is up as \"%s\" on port %d", WEATHER_SERVICE, WEATHER_SERVICE_PORT));
     }
 
 

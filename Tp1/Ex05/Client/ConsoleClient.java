@@ -15,7 +15,7 @@ import java.util.Scanner;
 public class ConsoleClient {
     private static final String DEFAULT_HOST = "localhost";
     private static final int DEFAULT_PORT = 5005;
-    private static final int EXERCISE_NUMBER = 3;
+    private static final int EXERCISE_NUMBER = 5;
     private static final int TP_NUMBER = 1;
 
     private static Scanner sc = new Scanner(System.in);
@@ -42,7 +42,7 @@ public class ConsoleClient {
 
     private static void showWeather(Weather w) {
         String weatherString = String.format(
-                "The weather in %s is %s, with a temperature of %.2f°",
+                "Weather in %s: \n- %s \n- temperature of %.2f°",
                 w.getPlace(),
                 w.getDescription(),
                 w.getTemperature()

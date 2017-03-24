@@ -44,7 +44,8 @@ public class WeatherService implements IWeatherService {
                 return this.getRandomWeather(serverLocation.getCity());
 			}
         } catch (IOException e) {
-            System.out.println("Error in Getting Server Location. Randomizing data.");
+            System.out.println("Error in Getting Server Location: " + e.toString());
+            System.out.println("Randomizing data.");
             return this.getRandomWeather("Buenos Aires");
         }
 

@@ -23,7 +23,7 @@ public class ClientConsole {
     private static MessageClient myMessageClient;
 
     public static void main(String[] args) {
-        CommonMain.showWelcomeMessage(TP_NUMBER, EXERCISE_NUMBER, "Message ServerWithSocket using Sockets");
+        CommonMain.showWelcomeMessage(TP_NUMBER, EXERCISE_NUMBER, "Message Server using Sockets");
         newClient();
         handleAuthentication();
         handleMainOptions();
@@ -58,8 +58,8 @@ public class ClientConsole {
         }
     }
 
-    private static void showMain(){
-        CommonMain.createSection("Message ServerWithSocket - Main");
+    public static void showMain(){
+        CommonMain.createSection("Message Server - Main");
         System.out.println("1 - Read Messages");
         System.out.println("2 - Send New Message");
         System.out.println("0 - Salir");
@@ -78,17 +78,21 @@ public class ClientConsole {
         System.out.println("User has authenticated successfully");
     }
 
-    private static String askForAuthentication() {
+    public static String askForAuthentication() {
         System.out.print("Enter your username: ");
         return sc.nextLine();
     }
 
     private static void handleReadMessages() {
         List<Message> messagesReceived = myMessageClient.sendReadMessagesRequest();
-        int totalMessages = messagesReceived.size();
+        handleMessagesDisplay(messagesReceived);
+    }
+
+    public static void handleMessagesDisplay(List<Message> messages) {
+        int totalMessages = messages.size();
         showNumberOfMessagesReceived(totalMessages);
         for (int i=0; i < totalMessages; i++){
-            showReceivedMessage(messagesReceived.get(i));
+            showReceivedMessage(messages.get(i));
             if (i < totalMessages - 1) CommonMain.pause();
         }
     }
@@ -118,18 +122,18 @@ public class ClientConsole {
         showMessageSentState(isMessageSent);
     }
 
-    private static Message askForMessage() {
+    public static Message askForMessage() {
         String destination = getMessageDestination();
         String messageBody = getMessageBody();
         return new Message(messageBody, username, destination);
     }
 
-    private static String getMessageDestination() {
+    public static String getMessageDestination() {
         System.out.print("Who are you writing to?: ");
         return sc.nextLine();
     }
 
-    private static String getMessageBody() {
+    public static String getMessageBody() {
         System.out.println("Write your message (Enter to send): ");
         return sc.nextLine();
      }

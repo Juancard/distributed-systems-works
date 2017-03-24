@@ -57,7 +57,7 @@ public class ClientConsole {
     }
 
     private static void showMain(){
-        CommonMain.createSection("Message ServerWithSocket - Main");
+        CommonMain.createSection("Message Server - Main");
         System.out.println("1 - Read Messages");
         System.out.println("2 - Send New Message");
         System.out.println("0 - Salir");

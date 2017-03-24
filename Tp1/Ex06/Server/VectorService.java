@@ -19,16 +19,18 @@ public class VectorService implements IVectorService {
 
     @Override
     public int[] add(int[] vector1, int[] vector2) throws RemoteException {
-        int[] out = new int[vector1.length];
-        for (int i=0; i<vector1.length; i++)
+        int size = Math.min(vector1.length, vector2.length);
+        int[] out = new int[size];
+        for (int i=0; i<size; i++)
             out[i] = vector1[i] + vector2[i];
         return out;
     }
 
     @Override
     public int[] substract(int[] vector1, int[] vector2) throws RemoteException {
-        int[] out = new int[vector1.length];
-        for (int i=0; i<vector1.length; i++)
+        int size = Math.min(vector1.length, vector2.length);
+        int[] out = new int[size];
+        for (int i=0; i<size; i++)
             out[i] = vector1[i] - vector2[i];
         return out;
     }

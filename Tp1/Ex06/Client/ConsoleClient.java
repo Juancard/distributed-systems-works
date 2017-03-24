@@ -116,8 +116,12 @@ public class ConsoleClient {
 
     private static void showVector(int[] vector) {
         CommonMain.display("Result is: ");
-        for (int i=0; i<vector.length; i++)
-            CommonMain.display("Value " + (i+1) + ": " + vector[i]);
+        String out = "[";
+        for (int i=0; i<vector.length; i++) {
+            out += vector[i];
+            out += (i != vector.length - 1)? ", " : "]";
+        }
+        CommonMain.display(out);
     }
 
     private static void handleVectorSubstract() {

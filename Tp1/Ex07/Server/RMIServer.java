@@ -33,7 +33,7 @@ public class RMIServer {
 
     public RMIServer() throws RemoteException, AlreadyBoundException {
         this.createRmiServer();
-        this.supplyWeatherService();
+        this.supplyMessagerService();
     }
 
     private void createRmiServer() throws RemoteException {
@@ -41,7 +41,7 @@ public class RMIServer {
         display("RMI Server listening on port " + SERVER_PORT + "...");
     }
 
-    private void supplyWeatherService() throws RemoteException, AlreadyBoundException {
+    private void supplyMessagerService() throws RemoteException, AlreadyBoundException {
         MessageService vectorService = new MessageService();
         IMessageService iMessageService = (IMessageService) UnicastRemoteObject.exportObject(vectorService, RMIServer.MESSAGE_SERVICE_PORT);
         this.registry.rebind(IMessageService.DNS_NAME, iMessageService);

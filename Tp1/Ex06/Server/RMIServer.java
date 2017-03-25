@@ -33,7 +33,7 @@ public class RMIServer {
 
     public RMIServer() throws RemoteException, AlreadyBoundException {
         this.createRmiServer();
-        this.supplyWeatherService();
+        this.supplyVectorService();
     }
 
     private void createRmiServer() throws RemoteException {
@@ -41,7 +41,7 @@ public class RMIServer {
         display("RMI Server listening on port " + SERVER_PORT + "...");
     }
 
-    private void supplyWeatherService() throws RemoteException, AlreadyBoundException {
+    private void supplyVectorService() throws RemoteException, AlreadyBoundException {
         VectorService vectorService = new VectorService();
         IVectorService iVectorService = (IVectorService) UnicastRemoteObject.exportObject(vectorService, RMIServer.VECTOR_SERVICE_PORT);
         this.registry.rebind(IVectorService.DNS_NAME, iVectorService);

@@ -4,11 +4,11 @@
 1. [Sockets: simple connection](#1-simple-connection)
 2. [Sockets: with threads](#2-using-threads)
 3. [Sockets: Message Server](#3-message-server)
-4. [Sockets: Message Server with Ack](#3-message-server-with-ack)
-5. [RMI: Weather Service](#3-weather-service)
-6. [RMI: Parameters passing](#3-parameters-passing)
-7. [RMI: Message Server](#3-message-server)
-8. [RMI: Generic Tasks Solver](#3-generic-tasks-solver)
+4. [Sockets: Message Server with Ack](#4-message-server-with-ack)
+5. [RMI: Weather Service](#5-weather-service)
+6. [RMI: Parameters passing](#6-parameters-passing)
+7. [RMI: Message Server](#7-message-server)
+8. [RMI: Generic Tasks Solver](#8-generic-tasks-solver)
 
 ## Sockets
 ### 1. Simple connection
@@ -64,3 +64,5 @@
 - "Implemente un servidor RMI que resuelva tareas genéricas. Para ello tener en cuenta la interface Tarea, 	que tendra un método ejecutar(). El objetivo es que desde el cliente se puedan escribir objetos (que implementen la interface Tarea) que hagan un cálculo concreto (calcular un número aleatorio, un primo, el valor de Pi con cierta precisión, etc), y que esa tarea se pase al servidor RMI, quien hará el cálculo y devolverá el valor al cliente".
 
 - [Code](Ex08)
+
+### lala

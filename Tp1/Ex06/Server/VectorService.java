@@ -23,6 +23,11 @@ public class VectorService implements IVectorService {
         int[] out = new int[size];
         for (int i=0; i<size; i++)
             out[i] = vector1[i] + vector2[i];
+        
+        // To test that RMI parameters are passed by value
+        vector1 = this.modifyingBug(vector1);
+        vector2 = this.modifyingBug(vector2);
+        
         return out;
     }
 
@@ -32,6 +37,20 @@ public class VectorService implements IVectorService {
         int[] out = new int[size];
         for (int i=0; i<size; i++)
             out[i] = vector1[i] - vector2[i];
+        
+        // To test that RMI parameters are passed by value
+        vector1 = this.modifyingBug(vector1);
+        vector2 = this.modifyingBug(vector2);        
+        
         return out;
+    }
+    
+    // To test that RMI parameters are passed by value
+    private int[] modifyingBug(int[] toBeModified){
+    	int[] out = new int[toBeModified.length];
+    	for (int i=0; i<toBeModified.length; i++){
+    		out[i] = -1;
+    	}
+    	return out;
     }
 }

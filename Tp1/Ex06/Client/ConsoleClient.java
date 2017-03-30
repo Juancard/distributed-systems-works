@@ -80,13 +80,22 @@ public class ConsoleClient {
 
         try {
             int[] additionResult = vectorClient.add(vectorA, vectorB);
-            showVector(additionResult);
+            showVectorCalc(vectorA, vectorB, additionResult, "+");
         } catch (RemoteException e) {
             CommonMain.display("Error in server: could not add vectors: " + e.toString());
         }
     }
 
-    private static int askVectorSize() {
+    private static void showVectorCalc(int[] vectorA, int[] vectorB, int[] result, String calcSymbol) {
+        int spaceSize = vectorToString(vectorA).length() / 2;
+    	CommonMain.display(vectorToString(vectorA));
+        CommonMain.display(CommonMain.repeat(spaceSize, " ") + calcSymbol);
+        CommonMain.display(vectorToString(vectorB));
+        CommonMain.display(CommonMain.repeat(spaceSize, " ") + "=");
+        CommonMain.display(vectorToString(result));		
+	}
+
+	private static int askVectorSize() {
         CommonMain.display("Enter vector size [3]: ");
 
         int size;
@@ -114,14 +123,13 @@ public class ConsoleClient {
         return vector;
     }
 
-    private static void showVector(int[] vector) {
-        CommonMain.display("Result is: ");
+    private static String vectorToString(int[] vector) {
         String out = "[";
         for (int i=0; i<vector.length; i++) {
             out += vector[i];
             out += (i != vector.length - 1)? ", " : "]";
         }
-        CommonMain.display(out);
+        return out;
     }
 
     private static void handleVectorSubstract() {
@@ -135,7 +143,7 @@ public class ConsoleClient {
 
         try {
             int[] substractionResult = vectorClient.substract(vectorA, vectorB);
-            showVector(substractionResult);
+            showVectorCalc(vectorA, vectorB, substractionResult, "-");
         } catch (RemoteException e) {
             CommonMain.display("Error in server: could not substract vectors: " + e.toString());
         }

@@ -2,9 +2,12 @@ package Tp1.Ex05.Server.Location;
 
 import com.maxmind.geoip.LookupService;
 import com.maxmind.geoip.regionName;
+import org.apache.commons.io.IOUtils;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * User: juan
@@ -13,11 +16,23 @@ import java.io.IOException;
  */
 public class GeoLocator {
 
-    private static final String DATABASE_PATH = "distributed-systems-works/Tp1/Ex05/Server/Resources/GeoLiteCity.dat";
+    private static final String DATABASE_PATH = "/Tp1/Ex05/Server/Resources/GeoLiteCity.dat";
     private File database;
 
-    public GeoLocator() {
-        this.database = new File(DATABASE_PATH);
+    public GeoLocator() throws IOException {
+        this.database = loadDatabase();
+    }
+
+    private File loadDatabase() throws IOException {
+        InputStream in = this.getClass().getResourceAsStream(DATABASE_PATH);
+        try {
+            File tempFile = File.createTempFile("geodatabase", ".tmp");
+            tempFile.deleteOnExit();
+            IOUtils.copy(in, new FileOutputStream(tempFile));
+            return tempFile;
+        } catch (IOException e) {
+            throw new IOException("Error loading geo database: " + e.getMessage());
+        }
     }
 
     public Location getLocation(String ipAddress) throws IOException{

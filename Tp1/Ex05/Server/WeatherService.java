@@ -37,10 +37,12 @@ public class WeatherService implements IWeatherService {
             try {
                 return this.weatherApi.getByCityAndCountry(serverLocation.getCity(), serverLocation.getCountryCode());
             } catch (IOException e) {
-                System.out.println("Error in Weather API: while calling the API. Randomizing data");
+                System.out.println("Error in Weather Api while calling the API: " + e.getMessage());
+                System.out.println("Randomizing data");
                 return this.getRandomWeather(serverLocation.getCity());
             } catch (JSONException e) {
-                System.out.println("Error in Weather API while handling Json. Randomizing data");
+                System.out.println("Error in Weather Api while handling Json: " + e.getMessage());
+                System.out.println("Randomizing data");
                 return this.getRandomWeather(serverLocation.getCity());
 			}
         } catch (IOException e) {

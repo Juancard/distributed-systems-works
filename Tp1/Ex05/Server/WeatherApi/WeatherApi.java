@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Properties;
@@ -18,7 +19,7 @@ import java.util.Properties;
  * Time: 18:57
  */
 public class WeatherApi {
-	private static final String PROPERTIES_FILE_PATH = "distributed-systems-works/Tp1/Ex05/Server/WeatherApi/config.properties";
+	private static final String PROPERTIES_FILE_PATH = "/Tp1/Ex05/Server/WeatherApi/config.properties";
     private static final String API_PROTOCOL = "http";
     private static final String API_HOST = "api.openweathermap.org";
     private static final String API_PATH = "/data/2.5/weather";
@@ -44,7 +45,7 @@ public class WeatherApi {
     }
     private Properties loadProperties() throws IOException {
         Properties prop = new Properties();
-        FileInputStream input = new FileInputStream(PROPERTIES_FILE_PATH);
+        InputStream input = this.getClass().getResourceAsStream(PROPERTIES_FILE_PATH);
         prop.load(input);
         return prop;
     }

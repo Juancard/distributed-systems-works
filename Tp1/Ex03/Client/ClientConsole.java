@@ -68,6 +68,7 @@ public class ClientConsole {
     }
 
     private static void handleAuthentication() {
+        CommonMain.createSection("Authentication");
         String authenticationState;
         while (true) {
             username = askForAuthentication();

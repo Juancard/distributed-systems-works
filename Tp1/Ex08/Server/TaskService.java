@@ -13,7 +13,7 @@ import java.rmi.RemoteException;
 
 public class TaskService implements ITaskService {
     @Override
-    public Object execute(ITask object) throws RemoteException {
-        return object.execute();
+    public Object execute(ITask task) throws RemoteException {
+        return task.execute();
     }
 }

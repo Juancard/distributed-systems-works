@@ -35,7 +35,7 @@ public class ConsoleClient {
     private static void handleCommunication() {
         String toSend;
         String exitWith = "-1";
-        System.out.printf("\nSend a Message to the ServerWithSocket (%s to exit): \n", exitWith);
+        System.out.printf("\nSend a Message to the server (%s to exit): \n", exitWith);
         while (true){
             System.out.print("Me: ");
             toSend = scanner.nextLine();

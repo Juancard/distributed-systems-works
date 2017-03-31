@@ -66,7 +66,7 @@ public class CommonMain {
     }
 
     public static void pause() {
-        System.out.println("\nPresione cualquier tecla para continuar");
+        System.out.println("\nPresione ENTER para continuar");
         scanner.nextLine();
     }
 

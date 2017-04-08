@@ -1,10 +1,7 @@
 package Tp1.Ex08.Common;
 
-import Tp1.Ex03.Common.Message;
-
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.util.List;
 
 /**
  * User: juan

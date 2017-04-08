@@ -1,7 +1,6 @@
 package Tp1.Ex08.Client;
 
 import Common.CommonMain;
-import Tp1.Ex08.Common.ITask;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;

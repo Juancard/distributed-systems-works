@@ -20,15 +20,15 @@ public class ServerThread implements Runnable{
     private ObjectInputStream socketInput;
 
     private FileProtocol fileProtocol;
-    private String userAuthenticated;
+    private FileManager fileManager;
 
-
-    public ServerThread(Socket clientSocket) {
+    public ServerThread(Socket clientSocket, FileManager fileManager) {
         try {
             this.clientSocket = clientSocket;
             this.fileProtocol = new FileProtocol();
             this.socketInput = new ObjectInputStream(clientSocket.getInputStream());
             this.socketOutput = new ObjectOutputStream(clientSocket.getOutputStream());
+            this.fileManager = fileManager;
         } catch (IOException e) {
             this.out("Error in instantiating new server thread");
             this.close();
@@ -79,13 +79,13 @@ public class ServerThread implements Runnable{
         Object out = new Object();
 
         if (request.equals(FileProtocol.POST)) {
-            out = "In method: POST";
+            out = fileManager.post();
         } else if (request.equals(FileProtocol.DEL)){
-            out = "In method: del";
+            out = fileManager.del();
         } else if (request.equals(FileProtocol.GET)){
-            out = "In method: get";
+            out = fileManager.get();
         } else if (request.equals(FileProtocol.DIR)){
-            out = "In method: dir";
+            out = fileManager.dir();
         }
 
         return out;

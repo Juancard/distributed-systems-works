@@ -13,24 +13,27 @@ public class FileClient extends SocketClient {
         super(host, port);
     }
 
-    public String post(){
+    public String post() {
         this.sendToSocket(FileProtocol.POST);
         String result = this.readFromSocket().toString();
         return result;
     }
-    public String del(){
+
+    public String del() {
         this.sendToSocket(FileProtocol.DEL);
         String result = this.readFromSocket().toString();
         return result;
     }
-    public String get(){
+
+    public String get() {
         this.sendToSocket(FileProtocol.GET);
         String result = this.readFromSocket().toString();
         return result;
     }
-    public String dir(){
+
+    public String[] dir() {
         this.sendToSocket(FileProtocol.DIR);
-        String result = this.readFromSocket().toString();
+        String[] result = (String[]) this.readFromSocket();
         return result;
     }
 

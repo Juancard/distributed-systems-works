@@ -13,24 +13,34 @@ import java.util.List;
  * Time: 13:53
  */
 public class FileServer {
+
+    private static final String LOCAL_FILES_PATH = "distributed-systems-works/Tp2/Ex01/Server/Resources/Files/";
+
     private int port;
     private ServerSocket serverSocket;
     private List<ServerThread> threadsPool;
+    private FileManager fileManager;
 
     public static void main(String[] args) {
         int port = 5021;
-        FileServer fileServer = new FileServer(port);
+
+        try {
+            FileServer fileServer = new FileServer(port);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
-    public FileServer(int port) {
+    public FileServer(int port) throws IOException {
         this.prepareServer(port);
         this.startServer();
     }
 
-    private void prepareServer(int port) {
+    private void prepareServer(int port) throws IOException {
         this.port = port;
         this.threadsPool = new ArrayList<ServerThread>();
+        this.fileManager = new FileManager(LOCAL_FILES_PATH);
     }
 
     private void startServer() {
@@ -62,7 +72,7 @@ public class FileServer {
     }
 
     private void newConnection(Socket clientSocket) {
-        ServerThread serverThread = new ServerThread(clientSocket);
+        ServerThread serverThread = new ServerThread(clientSocket, fileManager);
         this.threadsPool.add(serverThread);
         this.newThread(serverThread).start();
         String toPrint = "New connection with client: " + clientSocket.getRemoteSocketAddress();

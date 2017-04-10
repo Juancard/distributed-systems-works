@@ -41,7 +41,7 @@ public class ClientConsole {
             if (opcion.equals("0")) {
                 salir = true;
             } else if (opcion.equals("1")){
-                CommonMain.createSection("Files available");
+                CommonMain.createSection("List files");
                 handleFilesAvailable();
                 CommonMain.pause();
             } else if (opcion.equals("2")){
@@ -62,10 +62,14 @@ public class ClientConsole {
     }
 
     private static void handleFilesAvailable() {
-        CommonMain.display(myFileClient.dir());
+        String[] filesAvailable = myFileClient.dir();
+        for (String fileName : filesAvailable)
+            CommonMain.display(fileName);
     }
 
     private static void handleGetFile() {
+        System.out.print("Enter File Name: ");
+        String fileName = sc.nextLine();
         CommonMain.display(myFileClient.get());
     }
 
@@ -79,7 +83,7 @@ public class ClientConsole {
 
     public static void showMain(){
         CommonMain.createSection("File Server - Main");
-        System.out.println("1 - Files available");
+        System.out.println("1 - List files");
         System.out.println("2 - Get a file");
         System.out.println("3 - Post a file");
         System.out.println("4 - Delete a file");

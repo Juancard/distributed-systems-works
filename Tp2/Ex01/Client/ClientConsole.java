@@ -1,6 +1,8 @@
 package Tp2.Ex01.Client;
 
 import Common.CommonMain;
+
+import java.io.File;
 import java.util.Scanner;
 
 /**
@@ -70,7 +72,10 @@ public class ClientConsole {
     private static void handleGetFile() {
         System.out.print("Enter File Name: ");
         String fileName = sc.nextLine();
-        CommonMain.display(myFileClient.get());
+        String fileContent = myFileClient.get(fileName);
+
+        CommonMain.display("File name: " + fileName);
+        CommonMain.display("Content: " + fileContent);
     }
 
     private static void handlePostFile() {

@@ -1,13 +1,13 @@
 package Tp2.Ex01.Server;
 
 import Tp2.Ex01.Common.FileProtocol;
+import Tp2.Ex01.Common.TextFile;
 
-import java.io.EOFException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
  * User: juan
@@ -63,7 +63,7 @@ public class ServerThread implements Runnable{
     }
 
 
-    private void handleClientInput(Object objectFromClient) {
+    private void handleClientInput(Object objectFromClient) throws Exception {
         Object objectToClient = null;
         int protocolState = this.fileProtocol.getState();
 
@@ -75,7 +75,7 @@ public class ServerThread implements Runnable{
             this.sendToSocket(objectToClient);
     }
 
-    private Object onClientRequest(String request) {
+    private Object onClientRequest(String request) throws Exception {
         Object out = new Object();
 
         if (request.equals(FileProtocol.POST)) {
@@ -83,7 +83,16 @@ public class ServerThread implements Runnable{
         } else if (request.equals(FileProtocol.DEL)){
             out = fileManager.del();
         } else if (request.equals(FileProtocol.GET)){
-            out = fileManager.get();
+            String fileName = this.readFromSocket().toString();
+            String content;
+            try {
+                File file = fileManager.get(fileName);
+                BufferedReader br = new BufferedReader(new FileReader(file.getPath()));
+                content = br.readLine();
+            } catch (FileNotFoundException e) {
+                content = "";
+            }
+            out = new TextFile(fileName, content);
         } else if (request.equals(FileProtocol.DIR)){
             out = fileManager.dir();
         }

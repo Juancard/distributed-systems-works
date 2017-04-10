@@ -1,7 +1,6 @@
 package Tp2.Ex01.Server;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * User: juan
@@ -31,8 +30,21 @@ public class FileManager {
         return "in File Manager: Del";
     }
 
-    public String get() {
-        return "in File Manager: Get";
+    public File get(String fileName) throws FileNotFoundException {
+        System.out.println("in File Manager: Get");
+        System.out.println("With parameter: fileName=" + fileName);
+
+        final String TO_SEARCH = fileName;
+        File[] filesFoundWithName = this.filesPath.listFiles(new FileFilter() {
+            @Override
+            public boolean accept(File pathname) {
+                return pathname.getName().equals(TO_SEARCH);
+            }
+        });
+
+        if (filesFoundWithName.length <= 0)
+            throw new FileNotFoundException("No file matches given file name");
+        return filesFoundWithName[0];
     }
 
     public String[] dir() {

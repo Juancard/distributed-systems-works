@@ -1,6 +1,9 @@
 package Tp2.Ex01.Client;
 
 import Tp2.Ex01.Common.FileProtocol;
+import Tp2.Ex01.Common.TextFile;
+
+import java.io.File;
 
 /**
  * User: juan
@@ -25,10 +28,11 @@ public class FileClient extends SocketClient {
         return result;
     }
 
-    public String get() {
+    public String get(String fileName) {
         this.sendToSocket(FileProtocol.GET);
-        String result = this.readFromSocket().toString();
-        return result;
+        this.sendToSocket(fileName);
+        TextFile textFile = (TextFile) this.readFromSocket();
+        return textFile.getContent();
     }
 
     public String[] dir() {

@@ -90,7 +90,13 @@ public class ClientConsole {
     }
 
     private static void handleDelFile() {
-        CommonMain.display(myFileClient.del());
+        System.out.print("Enter File Name: ");
+        String fileName = sc.nextLine();
+
+        if (myFileClient.del(fileName))
+            CommonMain.display("File successfully deleted");
+        else
+            CommonMain.display("File could not be deleted. Try again later.");
     }
 
     public static void showMain(){

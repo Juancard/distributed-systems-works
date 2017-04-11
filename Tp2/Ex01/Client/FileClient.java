@@ -19,14 +19,13 @@ public class FileClient extends SocketClient {
     public boolean post(String fileName, String fileContent) {
         this.sendToSocket(FileProtocol.POST);
         this.sendToSocket(new TextFile(fileName, fileContent));
-        Boolean result = (Boolean) this.readFromSocket();
-        return result;
+        return (Boolean) this.readFromSocket();
     }
 
-    public String del() {
+    public boolean del(String fileName) {
         this.sendToSocket(FileProtocol.DEL);
-        String result = this.readFromSocket().toString();
-        return result;
+        this.sendToSocket(fileName);
+        return (Boolean) this.readFromSocket();
     }
 
     public String get(String fileName) {
@@ -38,8 +37,7 @@ public class FileClient extends SocketClient {
 
     public String[] dir() {
         this.sendToSocket(FileProtocol.DIR);
-        String[] result = (String[]) this.readFromSocket();
-        return result;
+        return (String[]) this.readFromSocket();
     }
 
 }

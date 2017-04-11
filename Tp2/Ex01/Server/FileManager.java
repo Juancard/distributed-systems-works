@@ -1,5 +1,7 @@
 package Tp2.Ex01.Server;
 
+import Tp2.Ex01.Common.TextFile;
+
 import java.io.*;
 
 /**
@@ -22,15 +24,26 @@ public class FileManager {
         this.filesPath = f;
     }
 
-    public String post() {
-        return "In File manager: Post";
+    public boolean post(TextFile fileToPost) {
+        System.out.println("In File manager: Post");
+        String toSaveIn = filesPath.getPath() + "/" + fileToPost.getName();
+        try{
+            PrintWriter writer = new PrintWriter(toSaveIn, "UTF-8");
+            writer.println(fileToPost.getContent());
+            writer.close();
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+
     }
 
     public String del() {
         return "in File Manager: Del";
     }
 
-    public File get(String fileName) throws FileNotFoundException {
+    public TextFile get(String fileName) throws IOException {
         System.out.println("in File Manager: Get");
         System.out.println("With parameter: fileName=" + fileName);
 
@@ -43,8 +56,11 @@ public class FileManager {
         });
 
         if (filesFoundWithName.length <= 0)
-            throw new FileNotFoundException("No file matches given file name");
-        return filesFoundWithName[0];
+            return new TextFile(fileName, "");
+
+        File fileFound = filesFoundWithName[0];
+        BufferedReader br = new BufferedReader(new FileReader(fileFound.getPath()));
+        return new TextFile(fileName, br.readLine());
     }
 
     public String[] dir() {

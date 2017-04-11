@@ -79,7 +79,14 @@ public class ClientConsole {
     }
 
     private static void handlePostFile() {
-        CommonMain.display(myFileClient.post());
+        System.out.print("Enter File Name: ");
+        String fileName = sc.nextLine();
+        System.out.print("Enter File content: ");
+        String fileContent = sc.nextLine();
+        if (myFileClient.post(fileName, fileContent))
+            CommonMain.display("File successfully created");
+        else
+            CommonMain.display("File could not be added. Try again later.");
     }
 
     private static void handleDelFile() {

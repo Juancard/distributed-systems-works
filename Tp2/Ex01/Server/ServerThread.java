@@ -79,20 +79,13 @@ public class ServerThread implements Runnable{
         Object out = new Object();
 
         if (request.equals(FileProtocol.POST)) {
-            out = fileManager.post();
+            TextFile textFile = (TextFile) this.readFromSocket();
+            out = fileManager.post(textFile);
         } else if (request.equals(FileProtocol.DEL)){
             out = fileManager.del();
         } else if (request.equals(FileProtocol.GET)){
             String fileName = this.readFromSocket().toString();
-            String content;
-            try {
-                File file = fileManager.get(fileName);
-                BufferedReader br = new BufferedReader(new FileReader(file.getPath()));
-                content = br.readLine();
-            } catch (FileNotFoundException e) {
-                content = "";
-            }
-            out = new TextFile(fileName, content);
+            out = fileManager.get(fileName);
         } else if (request.equals(FileProtocol.DIR)){
             out = fileManager.dir();
         }

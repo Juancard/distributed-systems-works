@@ -16,9 +16,10 @@ public class FileClient extends SocketClient {
         super(host, port);
     }
 
-    public String post() {
+    public boolean post(String fileName, String fileContent) {
         this.sendToSocket(FileProtocol.POST);
-        String result = this.readFromSocket().toString();
+        this.sendToSocket(new TextFile(fileName, fileContent));
+        Boolean result = (Boolean) this.readFromSocket();
         return result;
     }
 

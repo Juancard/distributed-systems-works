@@ -1,0 +1,20 @@
+2017-04-13 21:20:44.757: Client: /127.0.0.1:34802 - Message: Server reads from Client: DIR
+2017-04-13 21:20:44.758: Client: /127.0.0.1:34802 - Message: Server sends to client: [Ljava.lang.String;@47048cca
+2017-04-13 21:20:47.968: Client: /127.0.0.1:34801 - Message: Server reads from Client: DIR
+2017-04-13 21:20:47.969: Client: /127.0.0.1:34801 - Message: Server sends to client: [Ljava.lang.String;@3e120dcc
+2017-04-13 21:21:01.016: Client: /127.0.0.1:34801 - Message: Server reads from Client: GET
+2017-04-13 21:21:01.054: Client: /127.0.0.1:34801 - Message: Server reads from Client: example2.txt
+2017-04-13 21:21:01.075: Client: /127.0.0.1:34801 - Message: Server sends to client: Tp2.Ex01.Common.TextFile@71e8ee45
+2017-04-13 21:21:23.567: Client: /127.0.0.1:34802 - Message: Server reads from Client: POST
+2017-04-13 21:21:23.606: Client: /127.0.0.1:34802 - Message: Server reads from Client: Tp2.Ex01.Common.TextFile@6c9f9346
+2017-04-13 21:21:23.607: Client: /127.0.0.1:34802 - Message: Server sends to client: true
+2017-04-13 21:21:27.973: Client: /127.0.0.1:34801 - Message: Server reads from Client: DIR
+2017-04-13 21:21:27.975: Client: /127.0.0.1:34801 - Message: Server sends to client: [Ljava.lang.String;@3c6ff5ba
+2017-04-13 21:21:37.806: Client: /127.0.0.1:34801 - Message: Server reads from Client: GET
+2017-04-13 21:21:37.846: Client: /127.0.0.1:34801 - Message: Server reads from Client: example3.txt
+2017-04-13 21:21:37.847: Client: /127.0.0.1:34801 - Message: Server sends to client: Tp2.Ex01.Common.TextFile@4782baab
+2017-04-13 21:21:46.937: Client: /127.0.0.1:34801 - Message: Server reads from Client: DEL
+2017-04-13 21:21:46.974: Client: /127.0.0.1:34801 - Message: Server reads from Client: example3.txt
+2017-04-13 21:21:46.975: Client: /127.0.0.1:34801 - Message: Server sends to client: true
+2017-04-13 21:21:51.794: Client: /127.0.0.1:34801 - Message: Client disconnected
+2017-04-13 21:22:01.402: Client: /127.0.0.1:34802 - Message: Client disconnected

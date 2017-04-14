@@ -1,6 +1,9 @@
 package Tp2.Ex01.Server;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -15,11 +18,13 @@ import java.util.List;
 public class FileServer {
 
     private static final String LOCAL_FILES_PATH = "distributed-systems-works/Tp2/Ex01/Server/Resources/Files/";
+    private static final String LOG_FILE_PATH = "distributed-systems-works/Tp2/Ex01/Server/Resources/Log/log.txt";
 
     private int port;
     private ServerSocket serverSocket;
     private List<ServerThread> threadsPool;
     private FileManager fileManager;
+    private LogManager logManager;
 
     public static void main(String[] args) {
         int port = 5021;
@@ -41,6 +46,7 @@ public class FileServer {
         this.port = port;
         this.threadsPool = new ArrayList<ServerThread>();
         this.fileManager = new FileManager(LOCAL_FILES_PATH);
+        this.logManager = new LogManager(new PrintStream(new FileOutputStream(LOG_FILE_PATH, true)));
     }
 
     private void startServer() {
@@ -72,7 +78,7 @@ public class FileServer {
     }
 
     private void newConnection(Socket clientSocket) {
-        ServerThread serverThread = new ServerThread(clientSocket, fileManager);
+        ServerThread serverThread = new ServerThread(clientSocket, this.fileManager, this.logManager);
         this.threadsPool.add(serverThread);
         this.newThread(serverThread).start();
         String toPrint = "New connection with client: " + clientSocket.getRemoteSocketAddress();
@@ -101,6 +107,6 @@ public class FileServer {
     }
 
     private void out(String toPrint){
-        System.out.println(toPrint);
+        this.logManager.log(toPrint);
     }
 }

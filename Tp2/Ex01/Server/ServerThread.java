@@ -19,16 +19,22 @@ public class ServerThread implements Runnable{
     private ObjectOutputStream socketOutput;
     private ObjectInputStream socketInput;
 
+    private String clientIdentity;
     private FileProtocol fileProtocol;
     private FileManager fileManager;
+    private LogManager logManager;
 
-    public ServerThread(Socket clientSocket, FileManager fileManager) {
+
+    public ServerThread(Socket clientSocket, FileManager fileManager, LogManager logManager) {
         try {
             this.clientSocket = clientSocket;
-            this.fileProtocol = new FileProtocol();
             this.socketInput = new ObjectInputStream(clientSocket.getInputStream());
             this.socketOutput = new ObjectOutputStream(clientSocket.getOutputStream());
+
+            this.fileProtocol = new FileProtocol();
             this.fileManager = fileManager;
+            this.logManager = logManager;
+            this.clientIdentity = clientSocket.getRemoteSocketAddress().toString();
         } catch (IOException e) {
             this.out("Error in instantiating new server thread");
             this.close();
@@ -50,15 +56,15 @@ public class ServerThread implements Runnable{
             this.close();
 
         } catch (SocketException e) {
-            System.out.println("Connection lost with client: " + this.clientSocket.getRemoteSocketAddress());
+            this.out("Connection lost with client");
             this.close ();
         } catch (EOFException e) {
-            System.out.println("A client has disconnected: " + this.clientSocket.getRemoteSocketAddress());
+            this.out("Client disconnected");
             this.close ();
         } catch (IOException e) {
-            e.printStackTrace();
+            this.out(e.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
+            this.out(e.getMessage());
         }
     }
 
@@ -96,13 +102,13 @@ public class ServerThread implements Runnable{
 
     public Object readFromSocket() throws IOException, ClassNotFoundException {
         Object read = this.socketInput.readObject();
-        out("Read from Client: " + read);
+        out("Server reads from Client: " + read);
         return read;
     }
 
     public void sendToSocket(Object toSend) {
         try {
-            out("Sending to Client: " + toSend);
+            out("Server sends to client: " + toSend);
             socketOutput.writeObject(toSend);
         } catch (IOException e) {
             out("IOException: Error in sending object to socket");
@@ -135,7 +141,7 @@ public class ServerThread implements Runnable{
     }
 
     private void out(String toPrint){
-        System.out.println(toPrint);
+        this.logManager.log("Client: " + this.clientIdentity + " - Message: " + toPrint);
     }
 
 }

@@ -14,7 +14,6 @@ public class FileManager {
     private File filesPath;
 
     public FileManager(String filesPathString) throws IOException {
-        System.out.println("Path to save files in: " + filesPathString);
         this.filesPath = this.loadFilesPath(filesPathString);
     }
 

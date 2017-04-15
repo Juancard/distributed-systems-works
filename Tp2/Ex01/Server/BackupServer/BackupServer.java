@@ -21,7 +21,7 @@ public class BackupServer extends FileServer{
         super(port, FILES_PATH, LOG_FILE_PATH);
     }
 
-    protected FileServerThread newFileServerThread(Socket connection){
+    protected Runnable newRunnableThread(Socket connection){
         this.out("Backup Server: Creating Backup Connection");
         return new BackupConnection(new SocketConnection(connection), this.fileManager, this.logManager);
     }

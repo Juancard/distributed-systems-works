@@ -39,18 +39,17 @@ public class FileServerThread implements Runnable {
 
                 clientClosed = this.clientConnection.isClosed();
             }
-            this.clientConnection.close();
 
         } catch (SocketException e) {
             this.logManager.log(clientConnection.getIdentity(), "Connection lost with client");
-            this.clientConnection.close();
         } catch (EOFException e) {
             this.logManager.log(clientConnection.getIdentity(), "Client disconnected");
-            this.clientConnection.close();
         } catch (IOException e) {
             this.logManager.log(clientConnection.getIdentity(), e.getMessage());
         } catch (Exception e) {
             this.logManager.log(clientConnection.getIdentity(), e.getMessage());
+        } finally {
+            this.close();
         }
     }
 

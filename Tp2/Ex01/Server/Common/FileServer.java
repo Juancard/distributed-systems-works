@@ -1,7 +1,6 @@
 package Tp2.Ex01.Server.Common;
 
 import Tp2.Ex01.Common.SocketConnection;
-import Tp2.Ex01.Server.FileServer.ServerThread;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -21,7 +20,7 @@ import java.util.List;
 public class FileServer {
     private int port;
     private ServerSocket serverSocket;
-    private List<FileServerThread> threadsPool;
+    private List<Runnable> threadsPool;
     protected FileManager fileManager;
     protected LogManager logManager;
 
@@ -38,7 +37,7 @@ public class FileServer {
 
     private void prepareServer(int port, String filesPath) throws IOException {
         this.port = port;
-        this.threadsPool = new ArrayList<FileServerThread>();
+        this.threadsPool = new ArrayList<Runnable>();
         this.fileManager = new FileManager(filesPath);
         PrintStream logPrinter = System.out;
         this.logManager = new LogManager(logPrinter);
@@ -73,21 +72,21 @@ public class FileServer {
     }
 
     private void newConnection(Socket connection) {
-        FileServerThread serverThread = this.newFileServerThread(connection);
+        Runnable serverThread = this.newRunnableThread(connection);
         this.threadsPool.add(serverThread);
         new Thread(serverThread).start();
         String toPrint = "New connection with client: " + connection.getRemoteSocketAddress();
         this.out(toPrint);
     }
 
-    protected FileServerThread newFileServerThread(Socket connection){
+    protected Runnable newRunnableThread(Socket connection){
         return new FileServerThread(new SocketConnection(connection), this.fileManager, this.logManager);
     }
 
     private void closeServer() {
         Iterator i = this.threadsPool.iterator();
         while (i.hasNext()){
-            ((ServerThread) i.next()).close();
+            ((FileServerThread) i.next()).close();
         }
         this.threadsPool.clear();
     }

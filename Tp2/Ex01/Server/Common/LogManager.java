@@ -13,7 +13,7 @@ import java.util.Date;
 public class LogManager {
 
     private PrintStream logPrinter;
-    private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss");
+    private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS ");
 
     public LogManager(PrintStream logPrinter) {
         this.logPrinter = logPrinter;

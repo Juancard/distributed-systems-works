@@ -1,4 +1,4 @@
-package Tp2.Ex01.Server;
+package Tp2.Ex01.Server.Common;
 
 import Tp2.Ex01.Common.TextFile;
 

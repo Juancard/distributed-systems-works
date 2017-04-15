@@ -52,7 +52,7 @@ public class ServerThread implements Runnable{
             this.close();
 
         } catch (SocketException e) {
-            System.out.println("Connection lost with client: " + this.clientSocket.getRemoteSocketAddress());
+            System.out.println("SocketConnection lost with client: " + this.clientSocket.getRemoteSocketAddress());
             this.close ();
         } catch (EOFException e) {
             System.out.println("A client has disconnected: " + this.clientSocket.getRemoteSocketAddress());

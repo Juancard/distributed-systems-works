@@ -1,8 +1,8 @@
 package Tp2.Ex01.Client;
 
 import Common.CommonMain;
+import Tp2.Ex01.Common.FileClient;
 
-import java.io.File;
 import java.util.Scanner;
 
 /**
@@ -21,7 +21,7 @@ public class ClientConsole {
     private static FileClient myFileClient;
 
     public static void main(String[] args) {
-        CommonMain.showWelcomeMessage(TP_NUMBER, EXERCISE_NUMBER, "File Server");
+        CommonMain.showWelcomeMessage(TP_NUMBER, EXERCISE_NUMBER, "File Server with Backup - Client");
         newClient();
         handleMainOptions();
     }

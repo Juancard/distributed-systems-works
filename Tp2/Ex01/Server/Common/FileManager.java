@@ -17,7 +17,7 @@ public class FileManager {
         this.filesPath = this.loadFilesPath(filesPathString);
     }
 
-    public String[] dir() {
+    public synchronized String[] dir() {
         System.out.println("in File Manager: Dir");
         File[] filesInPath = filesPath.listFiles();
         String[] filesAvailable = new String[filesInPath.length];
@@ -28,7 +28,7 @@ public class FileManager {
     }
 
 
-    public TextFile get(String fileName) throws IOException {
+    public synchronized TextFile get(String fileName) throws IOException {
         System.out.println("in File Manager: Get");
         System.out.println("With parameter: fileName=" + fileName);
 
@@ -38,14 +38,14 @@ public class FileManager {
         return new TextFile(fileName, this.getFileContent(filesFoundWithName[0]));
     }
 
-    public boolean post(TextFile fileToPost) {
+    public synchronized boolean post(TextFile fileToPost) {
         System.out.println("In File manager: Post");
         String toSaveIn = filesPath.getPath() + "/" + fileToPost.getName();
         return this.createFile(toSaveIn, fileToPost);
     }
 
 
-    public boolean del(String fileName) {
+    public synchronized boolean del(String fileName) {
         System.out.println("in File Manager: Del");
         File[] filesFound = this.getFilesByName(fileName);
         if (filesFound.length > 0)

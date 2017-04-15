@@ -2,7 +2,6 @@ package Tp2.Ex01.Server.BackupServer;
 
 import Tp2.Ex01.Common.SocketConnection;
 import Tp2.Ex01.Server.Common.FileServer;
-import Tp2.Ex01.Server.Common.FileServerThread;
 
 import java.io.IOException;
 import java.net.Socket;

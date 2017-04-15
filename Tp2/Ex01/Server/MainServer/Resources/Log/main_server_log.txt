@@ -5,3 +5,15 @@
 2017-04-15 02:03:33.771 : Main Server: Creating Server Thread
 2017-04-15 02:03:33.775 : New connection with client: /127.0.0.1:54750
 2017-04-15 02:03:35.120  - Client: /127.0.0.1:54750 - Message: Client disconnected
+2017-04-15 14:16:53.772 : Listening on port: 5021...
+2017-04-15 14:17:09.242 : Main Server: Creating Server Thread
+2017-04-15 14:17:09.315 : New connection with client: /127.0.0.1:46570
+2017-04-15 14:19:30.606 : Main Server: Creating Server Thread
+2017-04-15 14:19:30.610 : New connection with client: /127.0.0.1:46579
+2017-04-15 14:20:26.987  - Client: /127.0.0.1:46579 - Message: POST
+2017-04-15 14:20:27.892  - Client: /127.0.0.1:46570 - Message: POST
+2017-04-15 14:22:31.583  - Client: /127.0.0.1:46570 - Message: POST
+2017-04-15 14:22:32.308  - Client: /127.0.0.1:46579 - Message: POST
+2017-04-15 14:23:56.161  - Client: /127.0.0.1:46579 - Message: DEL
+2017-04-15 14:24:52.520  - Client: /127.0.0.1:46579 - Message: DEL
+2017-04-15 14:24:56.953  - Client: /127.0.0.1:46579 - Message: DIR

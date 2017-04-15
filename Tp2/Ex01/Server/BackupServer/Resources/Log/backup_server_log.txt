@@ -5,3 +5,14 @@
 2017-04-15 02:03:33.774 : Backup Server: Creating Backup Connection
 2017-04-15 02:03:33.775 : New connection with client: /127.0.0.1:60127
 2017-04-15 02:03:35.121  - Client: /127.0.0.1:60127 - Message: Client disconnected
+2017-04-15 14:16:40.756 : Listening on port: 5121...
+2017-04-15 14:17:09.309 : Backup Server: Creating Backup Connection
+2017-04-15 14:17:09.319 : New connection with client: /127.0.0.1:47934
+2017-04-15 14:19:30.609 : Backup Server: Creating Backup Connection
+2017-04-15 14:19:30.610 : New connection with client: /127.0.0.1:47943
+2017-04-15 14:20:32.043  - Client: /127.0.0.1:47943 - Message: POST
+2017-04-15 14:20:37.058  - Client: /127.0.0.1:47934 - Message: POST
+2017-04-15 14:22:36.586  - Client: /127.0.0.1:47934 - Message: POST
+2017-04-15 14:22:41.587  - Client: /127.0.0.1:47943 - Message: POST
+2017-04-15 14:23:56.164  - Client: /127.0.0.1:47943 - Message: DEL
+2017-04-15 14:24:52.559  - Client: /127.0.0.1:47943 - Message: DEL

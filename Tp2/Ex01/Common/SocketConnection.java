@@ -45,15 +45,9 @@ public class SocketConnection {
         }
     }
 
-    public Object read(){
-        try {
-            Object read = this.socketInput.readObject();
-            return read;
-        } catch (Exception e) {
-            this.out("Error in reading object from socket. Closing socket: " + this.getIdentity());
-            this.close();
-            return null;
-        }
+    public Object read() throws IOException, ClassNotFoundException {
+        Object read = this.socketInput.readObject();
+        return read;
     }
 
     public void send(Object toSend) {
@@ -97,7 +91,7 @@ public class SocketConnection {
         } catch (Exception e) {}
     }
 
-    private void out(String message){
+    public void out(String message){
         System.out.println(message);
     }
 

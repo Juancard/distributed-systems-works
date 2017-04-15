@@ -35,4 +35,15 @@ public class FileClient extends SocketConnection {
         return (String[]) this.read();
     }
 
+    public Object read(){
+        try {
+            return super.read();
+        } catch (Exception e) {
+            e.printStackTrace();
+            this.out("Error in reading object from socket. Closing socket: " + this.getIdentity());
+            this.close();
+            return null;
+        }
+    }
+
 }

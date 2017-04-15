@@ -1,0 +1,7 @@
+2017-04-15 02:02:50.174 : Listening on port: 5021...
+2017-04-15 02:03:00.681 : Main Server: Creating Server Thread
+2017-04-15 02:03:00.711 : New connection with client: /127.0.0.1:54746
+2017-04-15 02:03:10.133  - Client: /127.0.0.1:54746 - Message: Client disconnected
+2017-04-15 02:03:33.771 : Main Server: Creating Server Thread
+2017-04-15 02:03:33.775 : New connection with client: /127.0.0.1:54750
+2017-04-15 02:03:35.120  - Client: /127.0.0.1:54750 - Message: Client disconnected

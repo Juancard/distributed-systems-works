@@ -16,3 +16,25 @@
 2017-04-15 14:22:41.587  - Client: /127.0.0.1:47943 - Message: POST
 2017-04-15 14:23:56.164  - Client: /127.0.0.1:47943 - Message: DEL
 2017-04-15 14:24:52.559  - Client: /127.0.0.1:47943 - Message: DEL
+2017-04-15 15:29:11.018  - Client: /127.0.0.1:47943 - Message: Client disconnected
+2017-04-15 15:29:14.142  - Client: /127.0.0.1:47934 - Message: Client disconnected
+2017-04-15 15:30:53.316 : Backup Server: Creating Backup Connection
+2017-04-15 15:30:53.317 : New connection with client: /127.0.0.1:48076
+2017-04-15 15:31:11.419  - Client: /127.0.0.1:48076 - Message: Client disconnected
+2017-04-15 15:31:31.734 : Listening on port: 5121...
+2017-04-15 15:31:40.976 : Backup Server: Creating Backup Connection
+2017-04-15 15:31:40.983 : New connection with client: /127.0.0.1:48081
+2017-04-15 15:32:16.855  - Client: /127.0.0.1:48081 - Message: POST
+2017-04-15 15:39:33.631  - Client: /127.0.0.1:48081 - Message: POST
+2017-04-15 15:40:38.847  - Client: /127.0.0.1:48081 - Message: POST
+2017-04-15 15:48:30.311  - Client: /127.0.0.1:48081 - Message: DEL
+2017-04-15 15:49:14.071  - Client: /127.0.0.1:48081 - Message: POST
+2017-04-15 15:52:37.643  - Client: /127.0.0.1:48081 - Message: DEL
+2017-04-15 15:53:50.765  - Client: /127.0.0.1:48081 - Message: DEL
+2017-04-15 15:54:08.235  - Client: /127.0.0.1:48081 - Message: DEL
+2017-04-15 16:00:14.371  - Client: /127.0.0.1:48081 - Message: POST
+2017-04-15 16:02:34.803  - Client: /127.0.0.1:48081 - Message: DEL
+2017-04-15 16:04:57.611  - Client: /127.0.0.1:48081 - Message: POST
+2017-04-15 16:05:35.479  - Client: /127.0.0.1:48081 - Message: DEL
+2017-04-15 16:06:22.259  - Client: /127.0.0.1:48081 - Message: POST
+2017-04-15 16:11:01.203  - Client: /127.0.0.1:48081 - Message: DEL

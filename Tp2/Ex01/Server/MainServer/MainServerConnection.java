@@ -24,6 +24,7 @@ public class MainServerConnection extends FileServerThread implements Runnable {
     public MainServerConnection(SocketConnection clientConnection, FileManager fileManager, LogManager logManager) {
         super(clientConnection, fileManager, logManager);
         this.backupClient = new FileClient(BACKUP_SERVER_HOST, BACKUP_SERVER_PORT);
+
     }
 
     protected boolean del() throws IOException, ClassNotFoundException {

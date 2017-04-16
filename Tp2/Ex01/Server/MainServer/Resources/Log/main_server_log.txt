@@ -17,3 +17,36 @@
 2017-04-15 14:23:56.161  - Client: /127.0.0.1:46579 - Message: DEL
 2017-04-15 14:24:52.520  - Client: /127.0.0.1:46579 - Message: DEL
 2017-04-15 14:24:56.953  - Client: /127.0.0.1:46579 - Message: DIR
+2017-04-15 15:29:11.016  - Client: /127.0.0.1:46579 - Message: Client disconnected
+2017-04-15 15:29:14.141  - Client: /127.0.0.1:46570 - Message: Client disconnected
+2017-04-15 15:30:53.313 : Main Server: Creating Server Thread
+2017-04-15 15:30:53.317 : New connection with client: /127.0.0.1:46712
+2017-04-15 15:30:59.457  - Client: /127.0.0.1:46712 - Message: DIR
+2017-04-15 15:31:37.436 : Listening on port: 5021...
+2017-04-15 15:31:40.954 : Main Server: Creating Server Thread
+2017-04-15 15:31:40.981 : New connection with client: /127.0.0.1:46717
+2017-04-15 15:31:43.395  - Client: /127.0.0.1:46717 - Message: DIR
+2017-04-15 15:32:16.806  - Client: /127.0.0.1:46717 - Message: POST
+2017-04-15 15:39:01.284  - Client: /127.0.0.1:46717 - Message: DIR
+2017-04-15 15:39:33.591  - Client: /127.0.0.1:46717 - Message: POST
+2017-04-15 15:40:38.809  - Client: /127.0.0.1:46717 - Message: POST
+2017-04-15 15:48:30.308  - Client: /127.0.0.1:46717 - Message: DEL
+2017-04-15 15:48:59.632  - Client: /127.0.0.1:46717 - Message: DIR
+2017-04-15 15:49:14.031  - Client: /127.0.0.1:46717 - Message: POST
+2017-04-15 15:52:26.369  - Client: /127.0.0.1:46717 - Message: DIR
+2017-04-15 15:52:37.603  - Client: /127.0.0.1:46717 - Message: DEL
+2017-04-15 15:53:50.763  - Client: /127.0.0.1:46717 - Message: DEL
+2017-04-15 15:53:54.059  - Client: /127.0.0.1:46717 - Message: DIR
+2017-04-15 15:54:08.195  - Client: /127.0.0.1:46717 - Message: DEL
+2017-04-15 15:59:42.574  - Client: /127.0.0.1:46717 - Message: DIR
+2017-04-15 16:00:14.330  - Client: /127.0.0.1:46717 - Message: POST
+2017-04-15 16:00:18.318  - Client: /127.0.0.1:46717 - Message: DIR
+2017-04-15 16:02:34.763  - Client: /127.0.0.1:46717 - Message: DEL
+2017-04-15 16:04:34.877  - Client: /127.0.0.1:46717 - Message: POST
+2017-04-15 16:04:57.573  - Client: /127.0.0.1:46717 - Message: POST
+2017-04-15 16:05:23.344  - Client: /127.0.0.1:46717 - Message: DIR
+2017-04-15 16:05:35.442  - Client: /127.0.0.1:46717 - Message: DEL
+2017-04-15 16:05:40.792  - Client: /127.0.0.1:46717 - Message: DIR
+2017-04-15 16:06:22.221  - Client: /127.0.0.1:46717 - Message: POST
+2017-04-15 16:10:42.643  - Client: /127.0.0.1:46717 - Message: DIR
+2017-04-15 16:11:01.164  - Client: /127.0.0.1:46717 - Message: DEL

@@ -19,7 +19,6 @@ public class MyCustomServer {
 
     public MyCustomServer(int port) {
         this.prepareServer(port);
-        this.startServer();
     }
 
     private void prepareServer(int port) {
@@ -27,7 +26,7 @@ public class MyCustomServer {
         this.threadsPool = new HashMap<Thread, Runnable>();
     }
 
-    private void startServer() {
+    public void startServer() {
         this.instantiateServer();
         this.handleConnections();
     }

@@ -16,6 +16,10 @@ public class BankAccount {
         this.balance = balance;
     }
 
+    public static BankAccount openNew(String username) {
+        return new BankAccount(username, 0);
+    }
+
     public double deposit(double amount) throws BankException {
         if (amount < 0) throw new BankException("Amount can not be a negative value");
         if (amount > 0) this.balance += amount;

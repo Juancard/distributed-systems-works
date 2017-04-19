@@ -1,8 +1,9 @@
 package Tp2.Ex01.Server.Common;
 
+import Common.FileManager;
 import Tp2.Ex01.Common.FileProtocol;
 import Tp2.Ex01.Common.SocketConnection;
-import Tp2.Ex01.Common.TextFile;
+import Common.TextFile;
 
 import java.io.EOFException;
 import java.io.IOException;

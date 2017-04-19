@@ -1,8 +1,8 @@
 package Tp2.Ex01.Server.MainServer;
 
 import Tp2.Ex01.Common.FileClient;
-import Tp2.Ex01.Common.TextFile;
-import Tp2.Ex01.Server.Common.FileManager;
+import Common.TextFile;
+import Common.FileManager;
 import Tp2.Ex01.Server.Common.FileServerThread;
 import Tp2.Ex01.Server.Common.LogManager;
 import Tp2.Ex01.Common.SocketConnection;

@@ -1,5 +1,6 @@
 package Tp2.Ex01.Server.Common;
 
+import Common.FileManager;
 import Tp2.Ex01.Common.SocketConnection;
 
 import java.io.FileNotFoundException;

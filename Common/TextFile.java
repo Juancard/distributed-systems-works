@@ -1,4 +1,4 @@
-package Tp2.Ex01.Common;
+package Common;
 
 import java.io.Serializable;
 
@@ -30,5 +30,13 @@ public class TextFile implements Serializable{
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    @Override
+    public String toString() {
+        return "TextFile{" +
+                "name='" + name + '\'' +
+                ", content='" + content + '\'' +
+                '}';
     }
 }

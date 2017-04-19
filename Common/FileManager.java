@@ -1,6 +1,4 @@
-package Tp2.Ex01.Server.Common;
-
-import Tp2.Ex01.Common.TextFile;
+package Common;
 
 import java.io.*;
 
@@ -51,6 +49,10 @@ public class FileManager {
         if (filesFound.length > 0)
             return filesFound[0].delete();
         return true;
+    }
+
+    public synchronized boolean exists(String fileName){
+        return this.getFilesByName(fileName).length > 0;
     }
 
     private File loadFilesPath(String filesPathString) throws IOException {

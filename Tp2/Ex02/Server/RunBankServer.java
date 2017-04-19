@@ -2,6 +2,8 @@ package Tp2.Ex02.Server;
 
 import Common.CommonMain;
 
+import java.io.IOException;
+
 /**
  * User: juan
  * Date: 19/04/17
@@ -16,7 +18,11 @@ public class RunBankServer {
     public static void main(String[] args) {
 
         CommonMain.showWelcomeMessage(TP_NUMBER, EXERCISE_NUMBER, TP_TITLE);
-        BankServer bankServer = new BankServer(CommonMain.askForPort(DEFAULT_PORT));
+        try {
+            BankServer bankServer = new BankServer(CommonMain.askForPort(DEFAULT_PORT));
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
 
     }
 }

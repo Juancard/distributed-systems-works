@@ -1,5 +1,7 @@
 package Tp2.Ex01.Common;
 
+import Common.TextFile;
+
 /**
  * User: juan
  * Date: 14/03/17

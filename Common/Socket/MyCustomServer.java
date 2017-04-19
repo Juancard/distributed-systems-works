@@ -1,38 +1,30 @@
-package Tp1.Ex03.Server;
+package Common.Socket;
 
 import java.io.IOException;
-import java.util.Iterator;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * User: juan
  * Date: 11/03/17
  * Time: 14:14
  */
-public class MessageServer {
+public class MyCustomServer {
 
     private int port;
     private ServerSocket serverSocket;
-    private List<ServerThread> threadsPool;
-    private MessagesHandler messagesHandler;
+    private Map<Thread, Runnable> threadsPool;
 
-    public static void main(String[] args) {
-        int port = 5003;
-        MessageServer messageServer = new MessageServer(port);
-    }
 
-    public MessageServer(int port) {
+    public MyCustomServer(int port) {
         this.prepareServer(port);
         this.startServer();
     }
 
     private void prepareServer(int port) {
         this.port = port;
-        this.threadsPool = new ArrayList<ServerThread>();
-        this.messagesHandler = new MessagesHandler();
+        this.threadsPool = new HashMap<Thread, Runnable>();
     }
 
     private void startServer() {
@@ -64,23 +56,29 @@ public class MessageServer {
     }
 
     private void newConnection(Socket clientSocket) {
-        ServerThread serverThread = new ServerThread(clientSocket, this.messagesHandler);
-        this.threadsPool.add(serverThread);
-        this.newThread(serverThread).start();
+        Runnable runnable = this.newRunnable(clientSocket);
+        Thread t = this.newThread(runnable);
+        this.threadsPool.put(t, runnable);
+        t.start();
         String toPrint = "New connection with client: " + clientSocket.getRemoteSocketAddress();
         this.out(toPrint);
     }
 
-    public Thread newThread(ServerThread serverThread){
-        Thread thread = new Thread(serverThread);
+    private Thread newThread(Runnable runnable){
+        Thread thread = new Thread(runnable);
         return thread;
     }
 
+    protected Runnable newRunnable(Socket clientSocket){
+        return new Runnable() {
+            @Override
+            public void run() {
+                // Does nothing //must be overriden
+            }
+        };
+    }
+
     private void closeServer() {
-        Iterator i = this.threadsPool.iterator();
-        while (i.hasNext()){
-            ((ServerThread) i.next()).close();
-        }
         this.threadsPool.clear();
     }
 
@@ -92,7 +90,7 @@ public class MessageServer {
         this.port = port;
     }
 
-    private void out(String toPrint){
+    public void out(String toPrint){
         System.out.println(toPrint);
     }
 }

@@ -20,8 +20,9 @@ public class RunBankServer {
         CommonMain.showWelcomeMessage(TP_NUMBER, EXERCISE_NUMBER, TP_TITLE);
         try {
             BankServer bankServer = new BankServer(CommonMain.askForPort(DEFAULT_PORT));
+            bankServer.startServer();
         } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
 
     }

@@ -4,6 +4,7 @@ import Common.Socket.MyCustomWorker;
 import Tp2.Ex02.Common.AccountProtocol;
 import Tp2.Ex02.Common.BankException;
 
+import java.io.IOException;
 import java.net.Socket;
 
 /**
@@ -14,7 +15,6 @@ import java.net.Socket;
 public class BankWorker extends MyCustomWorker{
 
     private AccountProtocol accountProtocol;
-    private BankAccount userBankAccount;
     private AccountsManager accountsManager;
 
     public BankWorker(Socket clientSocket, AccountsManager accountsManager) {
@@ -26,21 +26,9 @@ public class BankWorker extends MyCustomWorker{
 
     // This is what gets called from parent class on RUN.
     protected void handleClientInput(Object clientInput){
-        Object objectToClient = this.handleProtocolStates(clientInput);
+        Object objectToClient = this.onClientRequest(clientInput.toString());
         if (objectToClient != null)
             this.sendToClient(objectToClient);
-    }
-
-    private Object handleProtocolStates(Object clientInput) {
-        int protocolState = this.accountProtocol.getState();
-        Object out = null;
-        if (protocolState == AccountProtocol.AUTHENTICATING){
-            out = this.handleAuthentication(clientInput.toString());
-        } else if (protocolState == AccountProtocol.READY) {
-            out = this.onClientRequest(clientInput.toString());
-        }
-
-        return out;
     }
 
     private Object onClientRequest(String request) {
@@ -57,62 +45,55 @@ public class BankWorker extends MyCustomWorker{
 
     private Object deposit() {
         try {
+            // Reads deposit parameters
+            String accountOwner = this.readFromClient().toString();
             double amountToDeposit = (Double) this.readFromClient();
-            // Exercise says:
-            // "deposito: proceso tarda 40 mseg entre que consulta el saldo actual y lo actualiza con nuevo valor"
+
+            // Retrieves account for user in parameter
+            BankAccount bankAccount;
+            if (this.accountsManager.hasAccount(accountOwner)) {
+                bankAccount = this.accountsManager.getByOwner(accountOwner);
+            } else {
+                bankAccount = this.createNewAccount(accountOwner);
+            }
+
+            // Performs deposit
+                // Exercise says:
+                // "deposito: proceso tarda 40 mseg entre que consulta el saldo actual y lo actualiza con nuevo valor"
             Thread.sleep(40);
-            double resultingBalance = this.userBankAccount.deposit(amountToDeposit);
-            accountsManager.add(this.userBankAccount);
+            double resultingBalance = bankAccount.deposit(amountToDeposit);
+            accountsManager.add(bankAccount);
+
             return resultingBalance;
-        } catch (BankException e){
+        } catch (Exception e){
             return new BankException("On deposit: " + e.getMessage());
-        } catch (Exception e) {
-            return new BankException("On deposit: No amount specified");
         }
     }
 
     private Object extract() {
         try {
+            // read parameters
+            String accountOwner = this.readFromClient().toString();
             double amountToExtract = (Double) this.readFromClient();
-            // Exercise says:
-            // "extraccion: proceso tarda 80 mseg entre que consulta el saldo (verifica que haya disponible)
+
+            // Retrieves account for user in parameter
+            if (! this.accountsManager.hasAccount(accountOwner))
+                throw new BankException("No account for specified owner");
+            BankAccount bankAccount = this.accountsManager.getByOwner(accountOwner);
+
+            // Performs extraction
+                // Exercise says:
+                // "extraccion: proceso tarda 80 mseg entre que consulta el saldo (verifica que haya disponible)
             // y lo actualiza con nuevo valor"
             Thread.sleep(80);
-            double resultingBalance = this.userBankAccount.extract(amountToExtract);
-            accountsManager.add(this.userBankAccount);
+            double resultingBalance = bankAccount.extract(amountToExtract);
+            accountsManager.add(bankAccount);
+
             return resultingBalance;
         } catch (BankException e){
             return new BankException("On extraction: " + e.getMessage());
         } catch(Exception e) {
             return new BankException("On extraction: No amount specified");
-        }
-    }
-
-    private String handleAuthentication(String givenUser) {
-        if (givenUser.length() <= 0)
-            return "Error: Username is empty";
-        if (givenUser.contains("#"))
-            return "Error: character '#' is not valid for username";
-
-        try {
-            return authenticate(givenUser);
-        } catch (BankException e) {
-            return e.getMessage();
-        }
-    }
-
-    private String authenticate(String givenUser) throws BankException {
-        this.userBankAccount = this.setUserBankAccount(givenUser);
-        accountProtocol.setState(AccountProtocol.READY);
-        return  AccountProtocol.AUTHENTICATION_OK;
-    }
-
-    private BankAccount setUserBankAccount(String givenUser) throws BankException {
-        try {
-            BankAccount userAccount = accountsManager.getByUsername(givenUser);
-            return userAccount;
-        } catch (BankException e) {
-            return this.createNewAccount(givenUser);
         }
     }
 

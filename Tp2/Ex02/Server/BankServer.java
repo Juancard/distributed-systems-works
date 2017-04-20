@@ -19,7 +19,6 @@ public class BankServer extends MyCustomServer {
     public BankServer(int port) throws IOException {
         super(port);
         this.accountsManager = new AccountsManager(ACCOUNTS_PATH);
-        this.startServer();
     }
 
     @Override

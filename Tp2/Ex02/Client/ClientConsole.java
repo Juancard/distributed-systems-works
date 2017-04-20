@@ -23,26 +23,8 @@ public class ClientConsole {
     public static void main(String[] args) {
         CommonMain.showWelcomeMessage(TP_NUMBER, EXERCISE_NUMBER, EXERCISE_TITLE + " - Client side");
         newClient();
-        handleAuthentication();
         handleMainOptions();
     }
-
-    private static void handleAuthentication() {
-        CommonMain.createSection("Authentication");
-        String authenticationState;
-        while (true) {
-            authenticationState = myAccountClient.authenticate(askForAuthentication());
-            if (authenticationState == "") break;
-            else System.out.println(authenticationState);
-        }
-        System.out.println("User has authenticated successfully");
-    }
-
-    public static String askForAuthentication() {
-        System.out.print("Enter your username: ");
-        return sc.nextLine();
-    }
-
 
     private static void newClient() {
         String host = CommonMain.askForHost(DEFAULT_HOST);
@@ -74,10 +56,11 @@ public class ClientConsole {
 
     private static void handleDeposit() {
        try {
+            String owner = askForOwner();
             double amount = Double.parseDouble(askForAmount());
-            double resultingAccountBalance = myAccountClient.deposit(amount);
+            double resultingAccountBalance = myAccountClient.deposit(owner, amount);
             CommonMain.display("\nDeposit was successful");
-            CommonMain.display("Your current account balance is: " + resultingAccountBalance);
+            CommonMain.display("New account balance is: " + resultingAccountBalance);
         } catch(NumberFormatException e){
             CommonMain.display("\nError: Not a valid amount to deposit");
         } catch (Exception e) {
@@ -87,15 +70,21 @@ public class ClientConsole {
 
     private static void handleExtraction() {
         try {
+            String owner = askForOwner();
             double amount = Double.parseDouble(askForAmount());
-            double resultingAccountBalance = myAccountClient.extract(amount);
+            double resultingAccountBalance = myAccountClient.extract(owner, amount);
             CommonMain.display("\nExtraction was successful");
-            CommonMain.display("Your current account balance is: " + resultingAccountBalance);
+            CommonMain.display("New account balance is: " + resultingAccountBalance);
         } catch(NumberFormatException e){
             CommonMain.display("\nError: Not a valid amount to extract");
         } catch (Exception e) {
             CommonMain.display("\nExtract failed. " + e.getMessage());
         }
+    }
+
+    private static String askForOwner() {
+        System.out.print("Enter Account owner: ");
+        return sc.nextLine();
     }
 
     private static String askForAmount() {

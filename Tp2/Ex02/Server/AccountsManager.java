@@ -21,10 +21,10 @@ public class AccountsManager extends FileManager{
         return this.post(this.accountToTextFile(account));
     }
 
-    public BankAccount getByUsername(String username) throws BankException {
+    public BankAccount getByOwner(String owner) throws BankException {
         System.out.println("In get by username");
         try {
-            TextFile userFile = this.get(username);
+            TextFile userFile = this.get(owner);
             System.out.println(userFile);
             return this.textFileToAccount(userFile);
         } catch (IOException e) {
@@ -32,6 +32,10 @@ public class AccountsManager extends FileManager{
             throw new BankException("Could not get username account: " + e.getMessage());
         }
 
+    }
+
+    public boolean hasAccount(String owner){
+        return this.exists(owner);
     }
 
     private TextFile accountToTextFile(BankAccount account) {

@@ -3,9 +3,9 @@ package Tp2.Ex01.Server.MainServer;
 import Tp2.Ex01.Common.FileClient;
 import Common.TextFile;
 import Common.FileManager;
-import Tp2.Ex01.Server.Common.FileServerThread;
+import Common.Socket.SocketConnection;
+import Tp2.Ex01.Server.Common.FileWorker;
 import Tp2.Ex01.Server.Common.LogManager;
-import Tp2.Ex01.Common.SocketConnection;
 
 import java.io.*;
 
@@ -14,7 +14,7 @@ import java.io.*;
  * Date: 08/04/17
  * Time: 13:56
  */
-public class MainServerConnection extends FileServerThread implements Runnable {
+public class MainServerConnection extends FileWorker implements Runnable {
 
     private static final int BACKUP_SERVER_PORT = 5121;
     private static final String BACKUP_SERVER_HOST = "localhost";
@@ -28,7 +28,7 @@ public class MainServerConnection extends FileServerThread implements Runnable {
     }
 
     protected boolean del() throws IOException, ClassNotFoundException {
-        String fileName = this.clientConnection.read().toString();
+        String fileName = this.readFromClient().toString();
         boolean delResult = fileManager.del(fileName);
         if (delResult) backupClient.del(fileName);
         return delResult;
@@ -36,7 +36,7 @@ public class MainServerConnection extends FileServerThread implements Runnable {
     }
 
     protected boolean post() throws IOException, ClassNotFoundException {
-        TextFile textFile = (TextFile) this.clientConnection.read();
+        TextFile textFile = (TextFile) this.readFromClient();
         boolean postResult = fileManager.post(textFile);
         if (postResult) backupClient.post(textFile.getName(), textFile.getContent());
         return postResult;
@@ -44,6 +44,6 @@ public class MainServerConnection extends FileServerThread implements Runnable {
 
     public void close(){
         this.backupClient.close();
-        this.clientConnection.close();
+        super.close();
     }
 }

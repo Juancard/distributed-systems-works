@@ -1,6 +1,6 @@
 package Tp2.Ex01.Server.BackupServer;
 
-import Tp2.Ex01.Common.SocketConnection;
+import Common.Socket.SocketConnection;
 import Tp2.Ex01.Server.Common.FileServer;
 
 import java.io.IOException;
@@ -13,14 +13,11 @@ import java.net.Socket;
  */
 public class BackupServer extends FileServer{
 
-    private static final String FILES_PATH = "distributed-systems-works/Tp2/Ex01/Server/BackupServer/Resources/Files/";
-    private static final String LOG_FILE_PATH = "distributed-systems-works/Tp2/Ex01/Server/BackupServer/Resources/Log/backup_server_log.txt";
-
-    public BackupServer(int port) throws IOException {
-        super(port, FILES_PATH, LOG_FILE_PATH);
+    public BackupServer(int port, String filesPath, String logFilesPath) throws IOException {
+        super(port, filesPath, logFilesPath);
     }
 
-    protected Runnable newRunnableThread(Socket connection){
+    protected Runnable newRunnable(Socket connection){
         this.out("Backup Server: Creating Backup Connection");
         return new BackupConnection(new SocketConnection(connection), this.fileManager, this.logManager);
     }

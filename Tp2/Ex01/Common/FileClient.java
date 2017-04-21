@@ -1,6 +1,7 @@
 package Tp2.Ex01.Common;
 
 import Common.TextFile;
+import Common.Socket.SocketConnection;
 
 /**
  * User: juan

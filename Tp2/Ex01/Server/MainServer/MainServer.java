@@ -1,8 +1,7 @@
 package Tp2.Ex01.Server.MainServer;
 
 import Tp2.Ex01.Server.Common.FileServer;
-import Tp2.Ex01.Server.Common.FileServerThread;
-import Tp2.Ex01.Common.SocketConnection;
+import Common.Socket.SocketConnection;
 
 import java.io.*;
 import java.net.Socket;
@@ -14,14 +13,11 @@ import java.net.Socket;
  */
 public class MainServer extends FileServer {
 
-    private static final String FILES_PATH = "distributed-systems-works/Tp2/Ex01/Server/MainServer/Resources/Files/";
-    private static final String LOG_FILE_PATH = "distributed-systems-works/Tp2/Ex01/Server/MainServer/Resources/Log/main_server_log.txt";
-
-    public MainServer(int port) throws IOException {
-        super(port, FILES_PATH, LOG_FILE_PATH);
+    public MainServer(int port, String filesPath, String logPath) throws IOException {
+        super(port, filesPath, logPath);
     }
 
-    protected Runnable newRunnableThread(Socket connection){
+    protected Runnable newRunnable(Socket connection){
         this.out("Main Server: Creating Server Thread");
         return new MainServerConnection(new SocketConnection(connection), this.fileManager, this.logManager);
     }

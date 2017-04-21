@@ -18,14 +18,13 @@ public class AccountsManager extends FileManager{
     }
 
     public boolean add(BankAccount account){
+        System.out.println("Persisting: " + account);
         return this.post(this.accountToTextFile(account));
     }
 
     public BankAccount getByOwner(String owner) throws BankException {
-        System.out.println("In get by username");
         try {
             TextFile userFile = this.get(owner);
-            System.out.println(userFile);
             return this.textFileToAccount(userFile);
         } catch (IOException e) {
             e.printStackTrace();

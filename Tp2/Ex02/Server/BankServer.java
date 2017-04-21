@@ -10,19 +10,22 @@ import java.net.Socket;
  * Date: 19/04/17
  * Time: 14:02
  */
-public class BankServer extends MyCustomServer {
-
-    private static final String ACCOUNTS_PATH = "distributed-systems-works/Tp2/Ex02/Server/Resources/Accounts";
+public class BankServer extends MyCustomServer  implements Runnable{
 
     private AccountsManager accountsManager;
 
-    public BankServer(int port) throws IOException {
+    public BankServer(int port, AccountsManager accountsManager) throws IOException {
         super(port);
-        this.accountsManager = new AccountsManager(ACCOUNTS_PATH);
+        this.accountsManager = accountsManager;
     }
 
     @Override
     protected Runnable newRunnable(Socket clientSocket) {
         return new BankWorker(clientSocket, this.accountsManager);
+    }
+
+    @Override
+    public void run() {
+        this.startServer();
     }
 }

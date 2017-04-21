@@ -21,12 +21,14 @@ public class BankAccount {
     }
 
     public double deposit(double amount) throws BankException {
+        System.out.println("Depositing: " + amount + " in: " + this.owner);
         if (amount < 0) throw new BankException("Amount can not be a negative value");
         if (amount > 0) this.balance += amount;
         return this.balance;
     }
 
     public double extract(double amount) throws BankException {
+        System.out.println("Extracting amount of " + amount + " in account belonging to " + this.owner);
         if (amount < 0) throw new BankException("Amount can not be a negative value");
         if (amount > this.balance) throw new BankException("Not enough money in account");
         this.balance -= amount;
@@ -43,5 +45,13 @@ public class BankAccount {
 
     public double getBalance() {
         return balance;
+    }
+
+    @Override
+    public String toString() {
+        return "BankAccount{" +
+                "owner='" + owner + '\'' +
+                ", balance=" + balance +
+                '}';
     }
 }

@@ -12,7 +12,8 @@ import java.util.Scanner;
 public class ClientConsole {
 
     private static final String DEFAULT_HOST = "localhost";
-    private static final int DEFAULT_PORT = 5022;
+    private static final int DEFAULT_PORT_DEPOSIT = 5122;
+    private static final int DEFAULT_PORT_EXTRACT = 5222;
     private static final int TP_NUMBER = 2;
     private static final int EXERCISE_NUMBER = 2;
     private static final String EXERCISE_TITLE = "Bank Server";
@@ -28,8 +29,9 @@ public class ClientConsole {
 
     private static void newClient() {
         String host = CommonMain.askForHost(DEFAULT_HOST);
-        int port = CommonMain.askForPort(DEFAULT_PORT);
-        myAccountClient = new AccountClient(host, port);
+        int portToDeposit = CommonMain.askForPort("Enter deposit port", DEFAULT_PORT_DEPOSIT);
+        int portToExtract = CommonMain.askForPort("Enter extraction port", DEFAULT_PORT_EXTRACT);
+        myAccountClient = new AccountClient(host, portToDeposit, portToExtract);
     }
 
     private static void handleMainOptions() {
@@ -51,7 +53,6 @@ public class ClientConsole {
                 CommonMain.pause();
             }
         }
-        myAccountClient.close();
     }
 
     private static void handleDeposit() {
@@ -64,7 +65,8 @@ public class ClientConsole {
         } catch(NumberFormatException e){
             CommonMain.display("\nError: Not a valid amount to deposit");
         } catch (Exception e) {
-            CommonMain.display("\nDeposit failed. " + e.getMessage());
+            CommonMain.display("\nDeposit failed. ");
+            if (e.getMessage() != null) CommonMain.display("Reason: " + e.getMessage());
         }
     }
 
@@ -78,7 +80,8 @@ public class ClientConsole {
         } catch(NumberFormatException e){
             CommonMain.display("\nError: Not a valid amount to extract");
         } catch (Exception e) {
-            CommonMain.display("\nExtract failed. " + e.getMessage());
+            CommonMain.display("\nDeposit failed. ");
+            if (e.getMessage() != null) CommonMain.display("Reason: " + e.getMessage());
         }
     }
 

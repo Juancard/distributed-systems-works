@@ -44,27 +44,37 @@ public class BankWorker extends MyCustomWorker{
     }
 
     private Object deposit() {
+        this.display(this.clientIdentity() + " - Calls deposit");
         try {
+
             // Reads deposit parameters
             String accountOwner = this.readFromClient().toString();
             double amountToDeposit = (Double) this.readFromClient();
+            this.display(this.clientIdentity() + " - Parameters: " + accountOwner + " - " + amountToDeposit);
 
-            // Retrieves account for user in parameter
-            BankAccount bankAccount;
-            if (this.accountsManager.hasAccount(accountOwner)) {
-                bankAccount = this.accountsManager.getByOwner(accountOwner);
-            } else {
-                bankAccount = this.createNewAccount(accountOwner);
-            }
-
-            // Performs deposit
+            synchronized (this.accountsManager) {
                 // Exercise says:
                 // "deposito: proceso tarda 40 mseg entre que consulta el saldo actual y lo actualiza con nuevo valor"
-            Thread.sleep(40);
-            double resultingBalance = bankAccount.deposit(amountToDeposit);
-            accountsManager.add(bankAccount);
+                Thread.sleep(40);
 
-            return resultingBalance;
+                // Retrieves account for user in parameter
+                BankAccount bankAccount;
+                if (this.accountsManager.hasAccount(accountOwner)) {
+                    bankAccount = this.accountsManager.getByOwner(accountOwner);
+                } else {
+                    bankAccount = this.createNewAccount(accountOwner);
+                }
+                this.display(this.clientIdentity() + " - Current balance of " + bankAccount.getOwner() + " is: " + bankAccount.getBalance());
+
+                // Performs deposit
+                double resultingBalance = bankAccount.deposit(amountToDeposit);
+                this.display(this.clientIdentity() + " - Deposit finished, new balance of " + bankAccount.getOwner() + " is: " + bankAccount.getBalance());
+
+                // Persists updated balance
+                accountsManager.add(bankAccount);
+
+                return resultingBalance;
+            }
         } catch (Exception e){
             return new BankException("On deposit: " + e.getMessage());
         }
@@ -76,20 +86,25 @@ public class BankWorker extends MyCustomWorker{
             String accountOwner = this.readFromClient().toString();
             double amountToExtract = (Double) this.readFromClient();
 
-            // Retrieves account for user in parameter
-            if (! this.accountsManager.hasAccount(accountOwner))
-                throw new BankException("No account for specified owner");
-            BankAccount bankAccount = this.accountsManager.getByOwner(accountOwner);
-
-            // Performs extraction
+            synchronized (this.accountsManager) {
                 // Exercise says:
                 // "extraccion: proceso tarda 80 mseg entre que consulta el saldo (verifica que haya disponible)
-            // y lo actualiza con nuevo valor"
-            Thread.sleep(80);
-            double resultingBalance = bankAccount.extract(amountToExtract);
-            accountsManager.add(bankAccount);
+                // y lo actualiza con nuevo valor"
+                Thread.sleep(80);
 
-            return resultingBalance;
+                // Retrieves account for user in parameter
+                if (! this.accountsManager.hasAccount(accountOwner))
+                    throw new BankException("No account for specified owner");
+                BankAccount bankAccount = this.accountsManager.getByOwner(accountOwner);
+
+                // Performs extraction
+                double resultingBalance = bankAccount.extract(amountToExtract);
+
+                // Persists updated balance
+                accountsManager.add(bankAccount);
+
+                return resultingBalance;
+            }
         } catch (BankException e){
             return new BankException("On extraction: " + e.getMessage());
         } catch(Exception e) {

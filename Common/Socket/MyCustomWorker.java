@@ -68,6 +68,10 @@ public class MyCustomWorker implements Runnable{
         return this.clientConnection.read();
     }
 
+    public String clientIdentity() {
+        return this.clientConnection.getIdentity();
+    }
+
     public void display (String message){
         System.out.println(this.clientConnection.getIdentity() + ": " + message);
     }

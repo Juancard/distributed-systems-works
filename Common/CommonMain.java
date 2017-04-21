@@ -21,18 +21,24 @@ public class CommonMain {
     public static int askForPort(int defaultPort){
         System.out.printf("Enter server Port [%s]: ", defaultPort);
         String givenPort = scanner.nextLine();
-        int port;
-        if (givenPort.length() == 0)
-            port = defaultPort;
+        return processGivenPort(givenPort, defaultPort);
+    }
+
+    public static int askForPort(String toDisplay, int defaultPort){
+        System.out.printf("%s [%s]: ", toDisplay, defaultPort);
+        String givenPort = scanner.nextLine();
+        return processGivenPort(givenPort, defaultPort);
+    }
+
+    public static int processGivenPort(String givenPort, int defaultPort){
+        if (givenPort.length() == 0) return defaultPort;
         else
             try {
-                port = Integer.parseInt(givenPort);
+               return Integer.parseInt(givenPort);
             } catch(NumberFormatException e){
-                System.out.println("Not a valid port number. Default port has been set.");
-                port = defaultPort;
+                display("Not a valid port number. Default port has been set.");
+                return defaultPort;
             }
-
-        return port;
     }
 
     public static void showWelcomeMessage(int tpNumber, int exerciseNumber, String title) {

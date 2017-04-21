@@ -29,7 +29,7 @@ public class SocketConnection {
         } catch (UnknownHostException e){
             System.out.println("UnknownHostException: Not a valid Ip and Port combination.");
         } catch (IOException e) {
-            this.out("Error in instantiating new server thread");
+            this.out("Error in instantiating new server thread: " + e.getMessage() + ".");
             this.close();
         }
     }

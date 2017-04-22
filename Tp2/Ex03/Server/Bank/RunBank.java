@@ -12,7 +12,7 @@ import java.io.IOException;
  * Time: 14:05
  */
 public class RunBank {
-    private static final String LOCAL_ACCOUNTS_PATH = "distributed-systems-works/Tp2/Ex03/Server/Resources/Accounts";
+    private static final String LOCAL_ACCOUNTS_PATH = "distributed-systems-works/Tp2/Ex03/Server/Bank/Resources/Accounts";
 
     private static final int DEFAULT_PORT_DEPOSIT = 5123;
     private static final int DEFAULT_PORT_EXTRACT = 5223;

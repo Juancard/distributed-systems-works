@@ -17,6 +17,10 @@ public class BackupServer extends FileServer{
         super(port, filesPath, logFilesPath);
     }
 
+    public BackupServer(int port, String filesPath) throws IOException {
+        super(port, filesPath);
+    }
+
     protected Runnable newRunnable(Socket connection){
         this.out("Backup Server: Creating Backup Connection");
         return new BackupConnection(new SocketConnection(connection), this.fileManager, this.logManager);

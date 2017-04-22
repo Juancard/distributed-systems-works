@@ -18,23 +18,27 @@ public class ClientConsole {
     private static final int EXERCISE_NUMBER = 2;
     private static final String EXERCISE_TITLE = "Bank Server";
 
-    private static Scanner sc = new Scanner(System.in);
-    private static AccountClient myAccountClient;
+    private Scanner sc = new Scanner(System.in);
+    private AccountClient myAccountClient;
 
     public static void main(String[] args) {
         CommonMain.showWelcomeMessage(TP_NUMBER, EXERCISE_NUMBER, EXERCISE_TITLE + " - Client side");
-        newClient();
+        ClientConsole clientConsole = new ClientConsole(DEFAULT_HOST, DEFAULT_PORT_DEPOSIT, DEFAULT_PORT_EXTRACT);
+    }
+
+    public ClientConsole(String defaultHost, int defaultPortDeposit, int defaultPortExtract){
+        newClient(defaultHost, defaultPortDeposit, defaultPortExtract);
         handleMainOptions();
     }
 
-    private static void newClient() {
-        String host = CommonMain.askForHost(DEFAULT_HOST);
-        int portToDeposit = CommonMain.askForPort("Enter deposit port", DEFAULT_PORT_DEPOSIT);
-        int portToExtract = CommonMain.askForPort("Enter extraction port", DEFAULT_PORT_EXTRACT);
+    private void newClient(String defaultHost, int defaultPortDeposit, int defaultPortExtract) {
+        String host = CommonMain.askForHost(defaultHost);
+        int portToDeposit = CommonMain.askForPort("Enter deposit port", defaultPortDeposit);
+        int portToExtract = CommonMain.askForPort("Enter extraction port", defaultPortExtract);
         myAccountClient = new AccountClient(host, portToDeposit, portToExtract);
     }
 
-    private static void handleMainOptions() {
+    private void handleMainOptions() {
         String opcion;
         boolean salir = false;
 
@@ -55,7 +59,7 @@ public class ClientConsole {
         }
     }
 
-    private static void handleDeposit() {
+    private void handleDeposit() {
        try {
             String owner = askForOwner();
             double amount = Double.parseDouble(askForAmount());
@@ -70,7 +74,7 @@ public class ClientConsole {
         }
     }
 
-    private static void handleExtraction() {
+    private void handleExtraction() {
         try {
             String owner = askForOwner();
             double amount = Double.parseDouble(askForAmount());
@@ -85,17 +89,17 @@ public class ClientConsole {
         }
     }
 
-    private static String askForOwner() {
+    private String askForOwner() {
         System.out.print("Enter Account owner: ");
         return sc.nextLine();
     }
 
-    private static String askForAmount() {
+    private String askForAmount() {
         System.out.print("Enter Amount: ");
         return sc.nextLine();
     }
 
-    public static void showMain(){
+    public void showMain(){
         CommonMain.createSection(EXERCISE_TITLE + " - Main");
         System.out.println("1 - Deposit");
         System.out.println("2 - Extract");

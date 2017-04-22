@@ -18,12 +18,15 @@ public class RunBankServer {
     private static final String TP_TITLE = "Bank Server";
 
     public static void main(String[] args) {
-
         CommonMain.showWelcomeMessage(TP_NUMBER, EXERCISE_NUMBER, TP_TITLE);
+        RunBankServer runBankServer = new RunBankServer(DEFAULT_PORT_DEPOSIT, DEFAULT_PORT_EXTRACT, ACCOUNTS_PATH);
+    }
+
+    public RunBankServer(int defaultDepositPort, int defaultExtractPort, String accountsPath) {
         try {
-            AccountsManager accountsManager = new AccountsManager(ACCOUNTS_PATH);
-            int portToDeposit = CommonMain.askForPort("Enter deposit port", DEFAULT_PORT_DEPOSIT);
-            int portToExtract = CommonMain.askForPort("Enter extract port", DEFAULT_PORT_EXTRACT);
+            AccountsManager accountsManager = new AccountsManager(accountsPath);
+            int portToDeposit = CommonMain.askForPort("Enter deposit port", defaultDepositPort);
+            int portToExtract = CommonMain.askForPort("Enter extract port", defaultExtractPort);
 
             BankServer bankDepositServer = new BankServer(portToDeposit, accountsManager);
             BankServer bankExtractServer = new BankServer(portToExtract, accountsManager);
@@ -34,6 +37,5 @@ public class RunBankServer {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 }

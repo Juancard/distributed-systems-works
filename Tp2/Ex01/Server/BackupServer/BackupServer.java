@@ -11,7 +11,7 @@ import java.net.Socket;
  * Date: 08/04/17
  * Time: 13:53
  */
-public class BackupServer extends FileServer{
+public class BackupServer extends FileServer implements Runnable{
 
     public BackupServer(int port, String filesPath, String logFilesPath) throws IOException {
         super(port, filesPath, logFilesPath);
@@ -26,4 +26,8 @@ public class BackupServer extends FileServer{
         return new BackupConnection(new SocketConnection(connection), this.fileManager, this.logManager);
     }
 
+    @Override
+    public void run() {
+        this.startServer();
+    }
 }

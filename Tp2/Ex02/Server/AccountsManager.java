@@ -37,13 +37,13 @@ public class AccountsManager extends FileManager{
         return this.exists(owner);
     }
 
-    private TextFile accountToTextFile(BankAccount account) {
+    protected TextFile accountToTextFile(BankAccount account) {
         String filename = account.getOwner();
         String content = Double.toString(account.getBalance());
         return new TextFile(filename, content);
     }
 
-    private BankAccount textFileToAccount(TextFile textFile) throws BankException{
+    protected BankAccount textFileToAccount(TextFile textFile) throws BankException{
         String owner = textFile.getName();
         String content = textFile.getContent();
 

@@ -10,12 +10,21 @@ import java.util.Scanner;
 public class CommonMain {
     private static Scanner scanner = new Scanner(System.in);
 
-    public static String askForHost(String defaultIp){
-        System.out.printf("Enter server Ip or host [%s]: ", defaultIp);
-        String ip = scanner.nextLine();
-        if (ip.length() == 0)
-            ip = defaultIp;
-        return ip;
+    public static String askForHost(String defaultHost){
+        System.out.printf("Enter server Ip or host [%s]: ", defaultHost);
+        String host = scanner.nextLine();
+        if (host.length() == 0)
+            host = defaultHost;
+        return host;
+    }
+
+
+    public static String askForHost(String askingMessage, String defaultHost) {
+        System.out.printf("%s [%s]: ", askingMessage, defaultHost);
+        String host = scanner.nextLine();
+        if (host.length() == 0)
+            host = defaultHost;
+        return host;
     }
 
     public static int askForPort(int defaultPort){
@@ -79,4 +88,5 @@ public class CommonMain {
     public static void display(String toDisplay){
         System.out.println(toDisplay);
     }
+
 }

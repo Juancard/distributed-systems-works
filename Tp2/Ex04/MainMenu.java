@@ -56,14 +56,61 @@ public class MainMenu {
         BufferedImage image = ImageIO.read(url);
 
         SobelEdgeDetector sobelEdgeDetector = new SobelEdgeDetector();
-        //image = sobelEdgeDetector.processImage(image);
+
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        final int REDUNDANT_PIXELS = 1;
+        final int CHUNK_WIDTH = (width / 2) + REDUNDANT_PIXELS;
+        final int CHUNK_HEIGHT = height;
+
+        BufferedImage image1 = new BufferedImage(CHUNK_WIDTH, CHUNK_HEIGHT, image.getType());
+        image1.createGraphics().drawImage(image, 0, 0, CHUNK_WIDTH, CHUNK_HEIGHT, 0, 0, CHUNK_WIDTH, CHUNK_HEIGHT, null);
+
+        BufferedImage image2 = new BufferedImage(CHUNK_WIDTH, CHUNK_HEIGHT, image.getType());
+        image2.createGraphics().drawImage(image, 0, 0, CHUNK_WIDTH, CHUNK_HEIGHT, width / 2 - REDUNDANT_PIXELS, 0, width, height, null);
+
+        System.out.println("Original image: " + width + "x" + height);
+        System.out.println("Image 1: " + image1.getWidth() + "x" + image1.getHeight());
+        System.out.println("Image 2: " + image2.getWidth() + "x" + image2.getHeight());
 
         int[][] pixels = sobelEdgeDetector.getPixelValuesEdged(image);
-        pixels = sobelEdgeDetector.normalize(pixels, sobelEdgeDetector.getMaxPixelValue());
-        image = sobelEdgeDetector.fillWithPixels(image, pixels);
+        int[][] pixels1 = sobelEdgeDetector.getPixelValuesEdged(image1);
+        int[][] pixels2 = sobelEdgeDetector.getPixelValuesEdged(image2);
 
-        File f = new File(IMAGES_PATH + this.filenameFromPath(imageUrl) + "_edged" + "." + this.getFilenameExtension(imageUrl));
-        ImageIO.write(image, this.getFilenameExtension(imageUrl), f);
+        int maxValue = sobelEdgeDetector.getMaxPixelValue(pixels);
+        int maxValue1 = sobelEdgeDetector.getMaxPixelValue(pixels1);
+        int maxValue2 = sobelEdgeDetector.getMaxPixelValue(pixels2);
+        int maxPixelValue = (maxValue1 > maxValue2)? maxValue1 : maxValue2;
+
+        pixels = sobelEdgeDetector.normalize(pixels, maxPixelValue);
+        pixels1 = sobelEdgeDetector.normalize(pixels1, maxPixelValue);
+        pixels2 = sobelEdgeDetector.normalize(pixels2, maxPixelValue);
+
+        image = sobelEdgeDetector.toBufferedImage(pixels);
+        image1 = sobelEdgeDetector.toBufferedImage(pixels1);
+        image2 = sobelEdgeDetector.toBufferedImage(pixels2);
+
+        // Remove redundant pixel
+        BufferedImage finalImage1 = new BufferedImage(CHUNK_WIDTH - REDUNDANT_PIXELS, height, image1.getType());
+        finalImage1.createGraphics().drawImage(image1, 0, 0, CHUNK_WIDTH - REDUNDANT_PIXELS, height, 0, 0, CHUNK_WIDTH - REDUNDANT_PIXELS, height, null);
+
+        // Remove redundant pixel
+        BufferedImage finalImage2 = new BufferedImage(CHUNK_WIDTH - REDUNDANT_PIXELS, height, image2.getType());
+        finalImage2.createGraphics().drawImage(image2, 0, 0, CHUNK_WIDTH - REDUNDANT_PIXELS, height, REDUNDANT_PIXELS, 0, CHUNK_WIDTH, height, null);
+
+        // Construct image with chunk images
+        BufferedImage finalImg = new BufferedImage(width, height, image1.getType());
+        finalImg.createGraphics().drawImage(finalImage1, 0, 0, null);
+        finalImg.createGraphics().drawImage(finalImage2, width / 2, 0, null);
+
+        System.out.println("Final image: " + finalImg.getWidth() + "x" + finalImg.getHeight());
+
+        File ff = new File(IMAGES_PATH + this.filenameFromPath(imageUrl) + "_edged" + "." + this.getFilenameExtension(imageUrl));
+        ImageIO.write(image, this.getFilenameExtension(imageUrl), ff);
+
+        File f = new File(IMAGES_PATH + this.filenameFromPath(imageUrl) + "_cutted" + "." + this.getFilenameExtension(imageUrl));
+        ImageIO.write(finalImg, this.getFilenameExtension(imageUrl), f);
     }
 
     private String filenameFromPath(String filename) {

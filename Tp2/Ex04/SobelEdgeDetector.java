@@ -24,16 +24,9 @@ public class SobelEdgeDetector {
 
     public static final int KERNEL_SIZE = 3;
 
-    private int maxPixelValue;
-    public int getMaxPixelValue(){return maxPixelValue;}
-
-    public SobelEdgeDetector(){
-        this.maxPixelValue = 0;
-    }
-
     public BufferedImage getImageEdged(BufferedImage imageInput){
         int[][] pixels = this.getPixelValuesEdged(imageInput);
-        pixels = this.normalize(pixels, this.maxPixelValue);
+        pixels = this.normalize(pixels, this.getMaxPixelValue(pixels));
         return this.fillWithPixels(imageInput, pixels);
     }
 
@@ -61,7 +54,7 @@ public class SobelEdgeDetector {
             for (int imageY = 0; imageY < height; imageY++) {
                 //System.out.println(String.format("Pixel: (%d, %d) = %d", imageY, imageX, input[imageX][imageY]));
                 if (imageX == 0 || imageY == 0 || imageX == width - 1 || imageY == height - 1){
-                    sobelValue = 0;
+                    sobelValue = 255;
                 } else {
                     accumulatorGX = 0;
                     accumulatorGY = 0;
@@ -81,7 +74,6 @@ public class SobelEdgeDetector {
                         }
                     }
                     sobelValue = this.combineGxWithGy(accumulatorGX, accumulatorGY);
-                    if (sobelValue > this.maxPixelValue) this.maxPixelValue = sobelValue;
                 }
                 output[imageX][imageY] = sobelValue;
             }
@@ -102,11 +94,10 @@ public class SobelEdgeDetector {
 
     public int[][] normalize(int[][] pixels, int maxPixelValue) {
         float ratio = (float) maxPixelValue / 255;
-        System.out.println(this.getMaxPixelValue(pixels) + " " + ratio);
         return this.normalize(pixels, ratio);
     }
 
-    private int getMaxPixelValue(int[][] pixels) {
+    public int getMaxPixelValue(int[][] pixels) {
         int max = 0;
 
         for (int i=0; i < pixels.length; i++)
@@ -180,4 +171,10 @@ public class SobelEdgeDetector {
         }
     }
 
+    public BufferedImage toBufferedImage(int[][] pixels) {
+        int width = pixels.length;
+        int height = pixels[0].length;
+        BufferedImage newBufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        return this.fillWithPixels(newBufferedImage, pixels);
+    }
 }

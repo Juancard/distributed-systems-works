@@ -3,19 +3,11 @@ package Tp2.Ex04;
 import Common.CommonMain;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.PixelGrabber;
 import java.io.*;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Scanner;
-
-import org.opencv.core.Core;
-import org.opencv.core.CvType;
-import org.opencv.core.Mat;
-
-import org.opencv.imgcodecs.Imgcodecs;
-import org.opencv.imgproc.Imgproc;
 
 /**
  * User: juan
@@ -53,28 +45,58 @@ public class MainMenu {
     public void start() throws IOException {
         String imageUrl = askForImage();
         URL url = new URL(imageUrl);
-        BufferedImage image = ImageIO.read(url);
+        BufferedImage originalImage = ImageIO.read(url);
 
         SobelEdgeDetector sobelEdgeDetector = new SobelEdgeDetector();
 
-        int width = image.getWidth();
-        int height = image.getHeight();
+        // Will split originalImage in 4 parts: 2 rows and 2 cols
+        final int IMAGE_ROWS = 2;
+        final int IMAGE_COLS = 2;
+        final int REDUNDANT_PIXELS = 0;
+        ImageChunkHandler imageChunkHandler = new ImageChunkHandler(IMAGE_ROWS, IMAGE_COLS, REDUNDANT_PIXELS);
 
-        final int REDUNDANT_PIXELS = 1;
+        int width = originalImage.getWidth();
+        int height = originalImage.getHeight();
+        System.out.println("Original Image: " + width + "x" + height);
+
         final int CHUNK_WIDTH = (width / 2) + REDUNDANT_PIXELS;
         final int CHUNK_HEIGHT = height;
+        BufferedImage[] imageChuncks = imageChunkHandler.split(originalImage);
+        ArrayList<int[][]> pixels = new ArrayList<int[][]>();
+        int maxPixelValue = 0;
+        for (int i = 0; i < imageChuncks.length; i++) {
+            BufferedImage thisChunk = imageChuncks[i];
+            System.out.println(String.format("Image %s: %dx%d", (i+1), thisChunk.getWidth(), thisChunk.getHeight()));
 
-        BufferedImage image1 = new BufferedImage(CHUNK_WIDTH, CHUNK_HEIGHT, image.getType());
-        image1.createGraphics().drawImage(image, 0, 0, CHUNK_WIDTH, CHUNK_HEIGHT, 0, 0, CHUNK_WIDTH, CHUNK_HEIGHT, null);
+            pixels.add(i, sobelEdgeDetector.getPixelValuesEdged(thisChunk));
+            int maxValue = sobelEdgeDetector.getMaxPixelValue(pixels.get(i));
+            maxPixelValue = (maxValue > maxPixelValue)? maxValue : maxPixelValue;
+        }
 
-        BufferedImage image2 = new BufferedImage(CHUNK_WIDTH, CHUNK_HEIGHT, image.getType());
-        image2.createGraphics().drawImage(image, 0, 0, CHUNK_WIDTH, CHUNK_HEIGHT, width / 2 - REDUNDANT_PIXELS, 0, width, height, null);
+        for (int i = 0; i < imageChuncks.length; i++) {
+            int[][] pixelsNormalized = sobelEdgeDetector.normalize(pixels.get(i), maxPixelValue);
+            imageChuncks[i] = sobelEdgeDetector.toBufferedImage(pixelsNormalized);
+        }
 
-        System.out.println("Original image: " + width + "x" + height);
+        BufferedImage finalImage = imageChunkHandler.join(imageChuncks);
+        System.out.println("Final Image: " + finalImage.getWidth() + "x" + finalImage.getHeight());
+
+        File f = new File(IMAGES_PATH + this.filenameFromPath(imageUrl) + "_super_cutted" + "." + this.getFilenameExtension(imageUrl));
+        ImageIO.write(finalImage, this.getFilenameExtension(imageUrl), f);
+
+
+        /*
+        BufferedImage image1 = new BufferedImage(CHUNK_WIDTH, CHUNK_HEIGHT, originalImage.getType());
+        image1.createGraphics().drawImage(originalImage, 0, 0, CHUNK_WIDTH, CHUNK_HEIGHT, 0, 0, CHUNK_WIDTH, CHUNK_HEIGHT, null);
+
+        BufferedImage image2 = new BufferedImage(CHUNK_WIDTH, CHUNK_HEIGHT, originalImage.getType());
+        image2.createGraphics().drawImage(originalImage, 0, 0, CHUNK_WIDTH, CHUNK_HEIGHT, width / 2 - REDUNDANT_PIXELS, 0, width, height, null);
+
+        System.out.println("Original originalImage: " + width + "x" + height);
         System.out.println("Image 1: " + image1.getWidth() + "x" + image1.getHeight());
         System.out.println("Image 2: " + image2.getWidth() + "x" + image2.getHeight());
 
-        int[][] pixels = sobelEdgeDetector.getPixelValuesEdged(image);
+        int[][] pixels = sobelEdgeDetector.getPixelValuesEdged(originalImage);
         int[][] pixels1 = sobelEdgeDetector.getPixelValuesEdged(image1);
         int[][] pixels2 = sobelEdgeDetector.getPixelValuesEdged(image2);
 
@@ -87,7 +109,7 @@ public class MainMenu {
         pixels1 = sobelEdgeDetector.normalize(pixels1, maxPixelValue);
         pixels2 = sobelEdgeDetector.normalize(pixels2, maxPixelValue);
 
-        image = sobelEdgeDetector.toBufferedImage(pixels);
+        originalImage = sobelEdgeDetector.toBufferedImage(pixels);
         image1 = sobelEdgeDetector.toBufferedImage(pixels1);
         image2 = sobelEdgeDetector.toBufferedImage(pixels2);
 
@@ -99,18 +121,19 @@ public class MainMenu {
         BufferedImage finalImage2 = new BufferedImage(CHUNK_WIDTH - REDUNDANT_PIXELS, height, image2.getType());
         finalImage2.createGraphics().drawImage(image2, 0, 0, CHUNK_WIDTH - REDUNDANT_PIXELS, height, REDUNDANT_PIXELS, 0, CHUNK_WIDTH, height, null);
 
-        // Construct image with chunk images
+        // Construct originalImage with chunk images
         BufferedImage finalImg = new BufferedImage(width, height, image1.getType());
         finalImg.createGraphics().drawImage(finalImage1, 0, 0, null);
         finalImg.createGraphics().drawImage(finalImage2, width / 2, 0, null);
 
-        System.out.println("Final image: " + finalImg.getWidth() + "x" + finalImg.getHeight());
+        System.out.println("Final originalImage: " + finalImg.getWidth() + "x" + finalImg.getHeight());
 
         File ff = new File(IMAGES_PATH + this.filenameFromPath(imageUrl) + "_edged" + "." + this.getFilenameExtension(imageUrl));
-        ImageIO.write(image, this.getFilenameExtension(imageUrl), ff);
+        ImageIO.write(originalImage, this.getFilenameExtension(imageUrl), ff);
 
         File f = new File(IMAGES_PATH + this.filenameFromPath(imageUrl) + "_cutted" + "." + this.getFilenameExtension(imageUrl));
         ImageIO.write(finalImg, this.getFilenameExtension(imageUrl), f);
+         */
     }
 
     private String filenameFromPath(String filename) {

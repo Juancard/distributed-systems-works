@@ -25,25 +25,51 @@ public class ImageChunkHandler {
 
     public BufferedImage[] split(BufferedImage toSplit){
         BufferedImage[] chunks = new BufferedImage[cells];
-        int originalWidth = toSplit.getWidth();
-        int originalHeight = toSplit.getHeight();
-        int chunkWidth = originalWidth / this.cols + redundantPixel;
-        int chunkHeight = originalHeight / this.rows + redundantPixel;
 
-        int chunkCounter = 0;
+        int chunkWidth = toSplit.getWidth() / this.cols;
+        int chunkHeight = toSplit.getHeight() / this.rows;
+        int cell = 0;
+
+        int dstx1 = 0, dsty1 = 0;
+        int dstx2, dsty2, srcx1, srcy1, srcx2, srcy2;
         for (int x=0; x < this.rows; x++){
             for (int y = 0; y < this.cols; y++){
-                BufferedImage newChunk = new BufferedImage(chunkWidth, chunkHeight, toSplit.getType());
+
+                dstx2 = chunkWidth;
+                dsty2 = chunkHeight;
+                srcx1 = chunkWidth * y;
+                srcx2 = srcx1 + chunkWidth;
+                srcy1 = chunkHeight * x;
+                srcy2 = srcy1 + chunkHeight;
+
+                if (y != 0) {
+                    dstx2 += this.redundantPixel; // adds redundant pixels
+                    srcx1 -= this.redundantPixel; //add redundant pixels from left side of image
+                }
+                if (y != this.cols - 1) {
+                    dstx2 += this.redundantPixel; // adds redundant pixels
+                    srcx2 += this.redundantPixel; //add redundant pixels from right side of image
+                }
+                if (x != 0) {
+                    dsty2 += this.redundantPixel; // adds redundant pixels
+                    srcy1 -= this.redundantPixel; //add redundant pixels from up side of image
+                }
+                if (x != this.rows - 1) {
+                    dsty2 += this.redundantPixel; // adds redundant pixels
+                    srcy2 += this.redundantPixel; //add redundant pixels from bottom side of image
+                }
+
+                BufferedImage newChunk = new BufferedImage(dstx2, dsty2, toSplit.getType());
                 newChunk.createGraphics().drawImage(
                         toSplit,
-                        0, 0,
-                        chunkWidth, chunkHeight,
-                        chunkWidth * y, chunkHeight * x,
-                        chunkWidth * y + chunkWidth, chunkHeight * x + chunkHeight,
+                        dstx1, dsty1,
+                        dstx2, dsty2,
+                        srcx1, srcy1,
+                        srcx2, srcy2,
                         null
                 );
-                chunks[chunkCounter] = newChunk;
-                chunkCounter++;
+                chunks[cell] = newChunk;
+                cell++;
             }
         }
         /*

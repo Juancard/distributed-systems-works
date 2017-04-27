@@ -1,8 +1,6 @@
 package Tp2.Ex04;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 /**
@@ -11,16 +9,33 @@ import java.io.IOException;
  * Time: 19:38
  */
 public class ImageChunkHandler {
-    private final int cells;
-    private final int rows;
-    private final int cols;
-    private final int redundantPixel;
+    private int cells;
+    private int rows;
+    private int cols;
+    private int redundantPixel;
+    private BufferedImage originalImage;
 
     public ImageChunkHandler(int rows, int cols, int redundantPixel) {
+        this.init(rows, cols, redundantPixel, null);
+    }
+
+    public ImageChunkHandler(int rows, int cols, int redundantPixel, BufferedImage originalImage) {
+        this.init(rows, cols, redundantPixel, originalImage);
+    }
+
+    private void init(int rows, int cols, int redundantPixel, BufferedImage originalImage) {
         this.rows = rows;
         this.cols = cols;
         this.redundantPixel = redundantPixel;
         this.cells = rows * cols;
+        this.originalImage = originalImage;
+    }
+
+    public BufferedImage[] split() throws IOException {
+        if (this.originalImage == null)
+            throw new IOException("No Image specified");
+
+        return this.split(this.originalImage);
     }
 
     public BufferedImage[] split(BufferedImage toSplit){
@@ -72,54 +87,128 @@ public class ImageChunkHandler {
                 cell++;
             }
         }
-        /*
-        BufferedImage image1 = new BufferedImage(CHUNK_WIDTH, CHUNK_HEIGHT, originalImage.getType());
-        image1.createGraphics().drawImage(originalImage, 0, 0, CHUNK_WIDTH, CHUNK_HEIGHT, 0, 0, CHUNK_WIDTH, CHUNK_HEIGHT, null);
 
-        BufferedImage image2 = new BufferedImage(CHUNK_WIDTH, CHUNK_HEIGHT, originalImage.getType());
-        image2.createGraphics().drawImage(originalImage, 0, 0, CHUNK_WIDTH, CHUNK_HEIGHT, width / 2 - REDUNDANT_PIXELS, 0, width, height, null);
-                           */
         return chunks;
     }
 
     public BufferedImage join(BufferedImage[] toJoin){
-        int chunkWidth = toJoin[0].getWidth() - this.redundantPixel;
-        int chunkHeight = toJoin[0].getHeight() - this.redundantPixel;
-        int type = toJoin[0].getType();
+        int originalWidth;
+        int originalHeight;
 
-        BufferedImage joined = new BufferedImage(chunkWidth * this.cols, chunkHeight * this.rows, type);
+        if (this.originalImage == null){
+            originalWidth = this.getImageWidthFromChunks(toJoin);
+            originalHeight = this.getImageHeightFromChunks(toJoin);
+        } else {
+            originalHeight = this.originalImage.getHeight();
+            originalWidth = this.originalImage.getWidth();
+        }
+
+        int type = toJoin[0].getType();
+        BufferedImage joined = new BufferedImage(originalWidth, originalHeight, type);
+
+        int chunkWidth = originalWidth / this.cols;
+        int chunkHeight = originalHeight / this.rows;
 
         int cell = 0;
+        int dstx1, dsty1;
+        int dstx2, dsty2, srcx1, srcy1, srcx2, srcy2;
         for (int x = 0; x < this.rows; x++) {
             for (int y = 0; y < this.cols; y++) {
                 BufferedImage thisChunk = toJoin[cell];
+
+                dstx1 = chunkWidth * y;
+                dstx2 = dstx1 + chunkWidth;
+
+                dsty1 = chunkHeight * x;
+                dsty2 = dsty1 + chunkHeight;
+
+                srcx1 = 0;
+                srcx2 = chunkWidth;
+
+                srcy1 = 0;
+                srcy2 = chunkHeight;
+
+                if (y != 0) {
+                    srcx2 += this.redundantPixel;
+                    srcx1 += this.redundantPixel;
+                }
+                if (x != 0) {
+                    srcy2 += this.redundantPixel;
+                    srcy1 += this.redundantPixel;
+                }
                 joined.createGraphics().drawImage(
                         thisChunk,
-                        chunkWidth * y, chunkHeight * x,
-                        chunkWidth * y + chunkWidth, chunkHeight * x + chunkHeight,
-                        0, 0,
-                        chunkWidth,  chunkHeight,
+                        dstx1, dsty1,
+                        dstx2, dsty2,
+                        srcx1, srcy1,
+                        srcx2,  srcy2,
                         null
                 );
+
                 cell++;
             }
         }
 
         return joined;
-        /*
-        // Remove redundant pixel
-        BufferedImage finalImage1 = new BufferedImage(CHUNK_WIDTH - REDUNDANT_PIXELS, height, image1.getType());
-        finalImage1.createGraphics().drawImage(image1, 0, 0, CHUNK_WIDTH - REDUNDANT_PIXELS, height, 0, 0, CHUNK_WIDTH - REDUNDANT_PIXELS, height, null);
-
-        // Remove redundant pixel
-        BufferedImage finalImage2 = new BufferedImage(CHUNK_WIDTH - REDUNDANT_PIXELS, height, image2.getType());
-        finalImage2.createGraphics().drawImage(image2, 0, 0, CHUNK_WIDTH - REDUNDANT_PIXELS, height, REDUNDANT_PIXELS, 0, CHUNK_WIDTH, height, null);
-
-        // Construct originalImage with chunk images
-        BufferedImage finalImg = new BufferedImage(width, height, image1.getType());
-        finalImg.createGraphics().drawImage(finalImage1, 0, 0, null);
-        finalImg.createGraphics().drawImage(finalImage2, width / 2, 0, null);
-        */
     }
 
+    private int getImageWidthFromChunks(BufferedImage[] chunks) {
+        int redundantPixelsOnWidth = 2 * this.redundantPixel * (this.cols - 1);
+        int allWidthPixels = 0;
+        for (int col=0; col < this.cols; col++) {
+            allWidthPixels += chunks[col].getWidth();
+        }
+        return allWidthPixels - redundantPixelsOnWidth;
+    }
+
+    private int getImageHeightFromChunks(BufferedImage[] chunks) {
+        int redundantPixelsOnHeight = 2 * this.redundantPixel * (this.rows - 1);
+        int allHeightPixels = 0;
+        for (int row=0; row < this.rows; row++) {
+            allHeightPixels += chunks[row].getHeight();
+        }
+        return allHeightPixels - redundantPixelsOnHeight;
+    }
+
+
+    public int getCells() {
+        return cells;
+    }
+
+    public void setCells(int cells) {
+        this.cells = cells;
+    }
+
+    public int getRows() {
+        return rows;
+    }
+
+    public void setRows(int rows) {
+        this.rows = rows;
+    }
+
+    public int getCols() {
+        return cols;
+    }
+
+    public void setCols(int cols) {
+        this.cols = cols;
+    }
+
+    public int getRedundantPixel() {
+        return redundantPixel;
+    }
+
+    public void setRedundantPixel(int redundantPixel) {
+        this.redundantPixel = redundantPixel;
+    }
+
+
+    public BufferedImage getOriginalImage() {
+        return originalImage;
+    }
+
+    public void setOriginalImage(BufferedImage originalImage) {
+        this.originalImage = originalImage;
+    }
 }

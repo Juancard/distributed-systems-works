@@ -50,7 +50,7 @@ public class MainMenu {
         SobelEdgeDetector sobelEdgeDetector = new SobelEdgeDetector();
 
         // Will split originalImage in 4 parts: 2 rows and 2 cols
-        final int IMAGE_ROWS = 2;
+        final int IMAGE_ROWS = 1;
         final int IMAGE_COLS = 2;
         final int REDUNDANT_PIXELS = 0;
         ImageChunkHandler imageChunkHandler = new ImageChunkHandler(IMAGE_ROWS, IMAGE_COLS, REDUNDANT_PIXELS);
@@ -59,31 +59,36 @@ public class MainMenu {
         int height = originalImage.getHeight();
         System.out.println("Original Image: " + width + "x" + height);
 
-        final int CHUNK_WIDTH = (width / 2) + REDUNDANT_PIXELS;
-        final int CHUNK_HEIGHT = height;
-        BufferedImage[] imageChuncks = imageChunkHandler.split(originalImage);
+        BufferedImage[] imageChunks = imageChunkHandler.split(originalImage);
         ArrayList<int[][]> pixels = new ArrayList<int[][]>();
         int maxPixelValue = 0;
-        for (int i = 0; i < imageChuncks.length; i++) {
-            BufferedImage thisChunk = imageChuncks[i];
+        for (int i = 0; i < imageChunks.length; i++) {
+            BufferedImage thisChunk = imageChunks[i];
             System.out.println(String.format("Image %s: %dx%d", (i+1), thisChunk.getWidth(), thisChunk.getHeight()));
 
-            pixels.add(i, sobelEdgeDetector.getPixelValuesEdged(thisChunk));
-            int maxValue = sobelEdgeDetector.getMaxPixelValue(pixels.get(i));
+            //File f = new File(IMAGES_PATH + this.filenameFromPath(imageUrl) + (i+1) + "." + this.getFilenameExtension(imageUrl));
+            //ImageIO.write(imageChunks[i], this.getFilenameExtension(imageUrl), f);
+
+            int[][] thisPixels = sobelEdgeDetector.getPixelValuesEdged(thisChunk);
+            pixels.add(i, thisPixels);
+
+            int maxValue = sobelEdgeDetector.getMaxPixelValue(thisPixels);
             maxPixelValue = (maxValue > maxPixelValue)? maxValue : maxPixelValue;
         }
 
-        for (int i = 0; i < imageChuncks.length; i++) {
+        for (int i = 0; i < imageChunks.length; i++) {
             int[][] pixelsNormalized = sobelEdgeDetector.normalize(pixels.get(i), maxPixelValue);
-            imageChuncks[i] = sobelEdgeDetector.toBufferedImage(pixelsNormalized);
+            imageChunks[i] = sobelEdgeDetector.toBufferedImage(pixelsNormalized);
         }
 
-        BufferedImage finalImage = imageChunkHandler.join(imageChuncks);
+
+        BufferedImage finalImage = imageChunkHandler.join(imageChunks);
         System.out.println("Final Image: " + finalImage.getWidth() + "x" + finalImage.getHeight());
 
         File f = new File(IMAGES_PATH + this.filenameFromPath(imageUrl) + "_super_cutted" + "." + this.getFilenameExtension(imageUrl));
         ImageIO.write(finalImage, this.getFilenameExtension(imageUrl), f);
 
+        System.exit(1);
 
         /*
         BufferedImage image1 = new BufferedImage(CHUNK_WIDTH, CHUNK_HEIGHT, originalImage.getType());

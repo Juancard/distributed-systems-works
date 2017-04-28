@@ -42,6 +42,11 @@ public class SobelEdgeDetector {
         return this.processPixelValues(pixels);
     }
 
+    public int[][] getPixelValuesEdged(int[][] pixelsValues){
+        BufferedImage image = this.toBufferedImage(pixelsValues);
+        return this.getPixelValuesEdged(image);
+    }
+
     private int[][] processPixelValues(int[][] input) {
         int width = input.length;
         int height = input[0].length;

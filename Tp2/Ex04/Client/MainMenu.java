@@ -12,6 +12,8 @@ import java.net.ConnectException;
 import java.net.URL;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -63,10 +65,13 @@ public class MainMenu {
         URL url = new URL(imageUrl);
         BufferedImage image = ImageIO.read(url);
 
-        image = this.edgeDetectorClient.detectEdges(image);
+        long startTime = System.currentTimeMillis();
+        BufferedImage finalImage = this.edgeDetectorClient.detectEdges(image);
+        long endTime = System.currentTimeMillis();
+        CommonMain.display("Execution time: " + (endTime - startTime) + " miliseconds");
 
-        File f = new File(IMAGES_PATH + this.filenameFromPath(imageUrl) + "_from_rmi_single_process" + "." + this.getFilenameExtension(imageUrl));
-        ImageIO.write(image, this.getFilenameExtension(imageUrl), f);
+        File f = new File(IMAGES_PATH + this.filenameFromPath(imageUrl) + "_from_rmi_multiple_process" + "." + this.getFilenameExtension(imageUrl));
+        ImageIO.write(finalImage, this.getFilenameExtension(imageUrl), f);
 
         System.out.println("Image saved in: " + f.getAbsolutePath());
 
@@ -88,7 +93,7 @@ public class MainMenu {
         //DEFAULT = "https://s29.postimg.org/kjex7dx6f/300px-_Valve_original_1.png";
         DEFAULT = "http://4.bp.blogspot.com/_6ZIqLRChuQg/TF0-bhL6zoI/AAAAAAAAAoE/56OJXkRAFz4/s1600/lenaOriginal.png";
 
-        System.out.print("Enter image url: ");
+        System.out.print("Enter image url (default image if no input): ");
         String imageUrl = sc.nextLine();
 
         return (imageUrl.isEmpty())? DEFAULT : imageUrl;

@@ -16,7 +16,12 @@ import java.rmi.server.UnicastRemoteObject;
 public class RMIServer {
 
     public static final int SERVER_PORT = 5024;
-    public static final int EDGE_DETECTOR_SERVICE_PORT = 5124;
+    public static final int EDGE_DETECTOR_SERVICE_PORT_1 = 5124;
+    public static final int EDGE_DETECTOR_SERVICE_PORT_2 = 5224;
+    public static final int EDGE_DETECTOR_SERVICE_PORT_3 = 5324;
+    public static final int EDGE_DETECTOR_SERVICE_PORT_4 = 5424;
+    public static final int EDGE_DETECTOR_OPEN_PORTS = 4;
+
 
     private Registry registry;
 
@@ -42,11 +47,24 @@ public class RMIServer {
     }
 
     private void supplyEdgeDetectorService() throws RemoteException, AlreadyBoundException {
-        EdgeDetectorService edgeDetectorService = new EdgeDetectorService();
-        IEdgeDetectorService iEdgeDetectorService = (IEdgeDetectorService) UnicastRemoteObject.exportObject(edgeDetectorService, RMIServer.EDGE_DETECTOR_SERVICE_PORT);
-        this.registry.rebind(IEdgeDetectorService.DNS_NAME, iEdgeDetectorService);
+        int currentPort;
+        String currentDns;
+        for (int i=1; i <= EDGE_DETECTOR_OPEN_PORTS; i++){
+            EdgeDetectorService edgeDetectorService = new EdgeDetectorService();
+            try {
+                currentPort = RMIServer.class.getField("EDGE_DETECTOR_SERVICE_PORT_" + i).getInt(null);
+                currentDns = (String) IEdgeDetectorService.class.getField("DNS_NAME_" + i).get(null);
+                edgeDetectorService.setId(currentDns);
+                IEdgeDetectorService iEdgeDetectorService = (IEdgeDetectorService) UnicastRemoteObject.exportObject(edgeDetectorService, currentPort);
+                this.registry.rebind(currentDns, iEdgeDetectorService);
+                display(String.format("Edge detector service is up as \"%s\" on port %d", currentDns, currentPort));
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (NoSuchFieldException e) {
+                e.printStackTrace();
+            }
+         }
 
-        display(String.format("Edge detector service is up as \"%s\" on port %d", IEdgeDetectorService.DNS_NAME, RMIServer.EDGE_DETECTOR_SERVICE_PORT));
     }
 
 

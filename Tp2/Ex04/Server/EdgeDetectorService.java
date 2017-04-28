@@ -24,26 +24,32 @@ public class EdgeDetectorService implements IEdgeDetectorService{
     public static final int IMAGE_COLS = 2;
     public static final int REDUNDANT_PIXELS = 1;
 
+    private SobelEdgeDetector sobelEdgeDetector;
+    private String id;
+
+    public String getId() {return id;}
+    public void setId(String id) {this.id = id;}
+
+
+    public EdgeDetectorService(){
+        this.sobelEdgeDetector = new SobelEdgeDetector();
+    }
+
+    @Override
+    public int[][] detectEdges(int[][] pixelsValues) throws RemoteException {
+        this.log("In detect edges to image: " + pixelsValues.length + "x" + pixelsValues[0].length);
+        return sobelEdgeDetector.getPixelValuesEdged(pixelsValues);
+    }
+
     @Override
     public ImageSerializable detectEdges(ImageSerializable image) throws RemoteException {
         BufferedImage originalImage = image.getBufferedImage();
-
-        File f = new File("lala.jpg");
-        try {
-            ImageIO.write(originalImage, "jpg", f);
-        } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-
-
-        SobelEdgeDetector sobelEdgeDetector = new SobelEdgeDetector();
-
 
         ImageChunkHandler imageChunkHandler = new ImageChunkHandler(IMAGE_ROWS, IMAGE_COLS, REDUNDANT_PIXELS, originalImage);
 
         int width = originalImage.getWidth();
         int height = originalImage.getHeight();
-        System.out.println("Original Image: " + width + "x" + height);
+        this.log("Original Image: " + width + "x" + height);
 
         BufferedImage[] imageChunks = new BufferedImage[0];
         try {
@@ -55,7 +61,7 @@ public class EdgeDetectorService implements IEdgeDetectorService{
         int maxPixelValue = 0;
         for (int i = 0; i < imageChunks.length; i++) {
             BufferedImage thisChunk = imageChunks[i];
-            System.out.println(String.format("Image %s: %dx%d", (i+1), thisChunk.getWidth(), thisChunk.getHeight()));
+            this.log(String.format("Image %s: %dx%d", (i+1), thisChunk.getWidth(), thisChunk.getHeight()));
 
             int[][] thisPixels = sobelEdgeDetector.getPixelValuesEdged(thisChunk);
             pixels.add(i, thisPixels);
@@ -71,8 +77,13 @@ public class EdgeDetectorService implements IEdgeDetectorService{
 
 
         BufferedImage finalImage = imageChunkHandler.join(imageChunks);
-        System.out.println("Final Image: " + finalImage.getWidth() + "x" + finalImage.getHeight());
+        this.log("Final Image: " + finalImage.getWidth() + "x" + finalImage.getHeight());
 
         return new ImageSerializable(finalImage);
+    }
+
+
+    public void log(String message){
+        System.out.println(this.id + ": " + message);
     }
 }

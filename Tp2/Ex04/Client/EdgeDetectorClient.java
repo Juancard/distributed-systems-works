@@ -26,8 +26,8 @@ public class EdgeDetectorClient {
     private Registry registry;
 
     // Will split image in 4 parts: 2 rows and 2 cols
-    public static final int IMAGE_ROWS = 2;
-    public static final int IMAGE_COLS = 2;
+    public static final int IMAGE_ROWS = 4;
+    public static final int IMAGE_COLS = 1;
     public static final int REDUNDANT_PIXELS = 1;
 
     // Wil call four processes

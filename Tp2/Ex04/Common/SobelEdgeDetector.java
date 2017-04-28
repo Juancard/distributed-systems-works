@@ -1,4 +1,4 @@
-package Tp2.Ex04;
+package Tp2.Ex04.Common;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

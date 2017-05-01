@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.ConnectException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -62,22 +63,30 @@ public class MainMenu {
 
     public void start() throws IOException {
         String imageUrl = askForImage();
-        URL url = new URL(imageUrl);
+        BufferedImage originalImage = this.imageFromUrl(imageUrl);
 
-        System.out.println("Reading image from url: " + imageUrl);
-        BufferedImage image = ImageIO.read(url);
+        BufferedImage finalImage = this.onCallingSobel(originalImage);
 
-        System.out.println("Image read. Starting. ");
+        String filename = this.filenameFromPath(imageUrl) + "_edged";
+        String extension = this.getFilenameExtension(imageUrl);
+
+        System.out.println("Image saved in: " + this.saveImage(finalImage, filename, extension) );
+    }
+
+    private BufferedImage onCallingSobel(BufferedImage originalImage) throws RemoteException {
+        System.out.println("Image read. Starting...");
         long startTime = System.currentTimeMillis();
-        BufferedImage finalImage = this.edgeDetectorClient.detectEdges(image);
+        BufferedImage finalImage = this.edgeDetectorClient.detectEdges(originalImage);
         long endTime = System.currentTimeMillis();
-        CommonMain.display("Execution time: " + (endTime - startTime) + " miliseconds");
+        CommonMain.createSection("Execution time: " + (endTime - startTime) + " miliseconds");
 
-        File f = new File(IMAGES_PATH + this.filenameFromPath(imageUrl) + "_edged" + "." + this.getFilenameExtension(imageUrl));
-        ImageIO.write(finalImage, this.getFilenameExtension(imageUrl), f);
+        return finalImage;
+    }
 
-        System.out.println("Image saved in: " + f.getAbsolutePath());
-
+    private String saveImage(BufferedImage image, String filename, String extension) throws IOException {
+        File f = new File(IMAGES_PATH + filename + "." + extension);
+        ImageIO.write(image, extension, f);
+        return f.getAbsolutePath();
     }
 
     private String filenameFromPath(String filename) {
@@ -90,17 +99,26 @@ public class MainMenu {
 
     private String askForImage() {
         String DEFAULT = "http://tutorialspoint.com/java_dip/images/digital_image_processing.jpg";
+        final String SUPER_BIG_IMAGE = "http://4k.com/wp-content/uploads/2014/06/4k-image-santiago.jpg";
         //DEFAULT = "https://www.tutorialspoint.com/java_dip/images/grayscale.jpg";
         //DEFAULT = "http://www.smalljpg.com/temp/20170424223049.jpg";
         //DEFAULT = "http://www.smalljpg.com/temp/20170424224711.jpg";
         //DEFAULT = "https://s29.postimg.org/kjex7dx6f/300px-_Valve_original_1.png";
         //DEFAULT = "http://4.bp.blogspot.com/_6ZIqLRChuQg/TF0-bhL6zoI/AAAAAAAAAoE/56OJXkRAFz4/s1600/lenaOriginal.png";
-        final String SUPER_BIG_IMAGE = "http://4k.com/wp-content/uploads/2014/06/4k-image-santiago.jpg";
-        DEFAULT = SUPER_BIG_IMAGE;
+        //DEFAULT = SUPER_BIG_IMAGE;
         System.out.print("Enter image url (default image if no input): ");
         String imageUrl = sc.nextLine();
 
         return (imageUrl.isEmpty())? DEFAULT : imageUrl;
+    }
+
+    private BufferedImage imageFromUrl(String imageUrl) throws IOException {
+        URL url = new URL(imageUrl);
+
+        System.out.println("Reading image from url: " + imageUrl);
+        BufferedImage image = ImageIO.read(url);
+
+        return image;
     }
 
 }

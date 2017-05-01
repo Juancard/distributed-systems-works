@@ -9,6 +9,7 @@ import java.rmi.RemoteException;
  * Time: 19:41
  */
 public interface IEdgeDetectorService extends Remote {
+    public static final String DNS_NAME = "EDGE_DETECTOR_SERVICE";
     public static final String DNS_NAME_1 = "EDGE_DETECTOR_SERVICE_1";
     public static final String DNS_NAME_2 = "EDGE_DETECTOR_SERVICE_2";
     public static final String DNS_NAME_3 = "EDGE_DETECTOR_SERVICE_3";

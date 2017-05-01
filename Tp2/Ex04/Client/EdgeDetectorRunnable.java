@@ -35,7 +35,7 @@ public class EdgeDetectorRunnable implements Runnable {
     @Override
     public void run() {
         try {
-            System.out.println(String.format("On run (%d):%dx%d", this.id, originalImage.getWidth(), originalImage.getHeight()));
+            System.out.println(String.format("Running (%d):%dx%d", this.id, originalImage.getWidth(), originalImage.getHeight()));
             this.finalPixelValues = service.detectEdges(sobelEdgeDetector.toPixelArray2d(this.originalImage));
             this.maxPixelValue = this.sobelEdgeDetector.getMaxPixelValue(this.finalPixelValues);
             System.out.println(String.format("Finished (%d):%dx%d", this.id, originalImage.getWidth(), originalImage.getHeight()));

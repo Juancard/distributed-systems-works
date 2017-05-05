@@ -57,13 +57,6 @@ public class EdgeDetectorClient {
         this.threads = new HashMap<Integer, Thread>();
     }
 
-    private IEdgeDetectorService connectToService(int port) throws RemoteException, NotBoundException {
-        String dns = IEdgeDetectorService.DNS_NAME;
-        Registry r = this.registries.get(port);
-        IEdgeDetectorService service = (IEdgeDetectorService) r.lookup(dns);
-        return service;
-    }
-
     public ImageSerializable detectEdges(ImageSerializable image) throws RemoteException {
         return new ImageSerializable(this.callEdgeDetector(image.getBufferedImage()));
     }
@@ -166,21 +159,17 @@ public class EdgeDetectorClient {
             while (!connected && serverIsUp){
                 portToConnect = this.portsAvailable.get(portPos);
                 try {
-                    service = this.connectToService(portToConnect);
+                    service = this.getService(portToConnect);
                     connected = true;
                 } catch (RemoteException e) {
-                    System.out.println("RemoteException - Se cayo servicio en puerto: " + portToConnect);
+                    System.out.println("Se cayo servicio en puerto: " + portToConnect);
                     if (++portPos == this.portsAvailable.size())
                         portPos = 0;
                     if (portPos == portPosition)
                         serverIsUp = false;
 
                 } catch (NotBoundException e) {
-                    System.out.println("NotBoundException - Se cayo servicio en puerto: " + portToConnect);
-                    if (++portPos == this.portsAvailable.size())
-                        portPos = 0;
-                    if (portPos == portPosition)
-                        serverIsUp = false;
+                    e.printStackTrace();
                 }
             }
 
@@ -198,6 +187,13 @@ public class EdgeDetectorClient {
             if (++portPosition == this.portsAvailable.size())
                 portPosition = 0;
         }
+    }
+
+    private IEdgeDetectorService getService(int port) throws RemoteException, NotBoundException {
+        String dns = IEdgeDetectorService.DNS_NAME;
+        Registry r = this.registries.get(port);
+        IEdgeDetectorService service = (IEdgeDetectorService) r.lookup(dns);
+        return service;
     }
 
     private void startAllThreads() {

@@ -16,10 +16,10 @@ import java.rmi.server.UnicastRemoteObject;
 public class RMIServer {
 
     public static final int SERVER_PORT = 5024;
-    public static final int EDGE_DETECTOR_SERVICE_PORT_1 = 5124;
-    public static final int EDGE_DETECTOR_SERVICE_PORT_2 = 5224;
-    public static final int EDGE_DETECTOR_SERVICE_PORT_3 = 5324;
-    public static final int EDGE_DETECTOR_SERVICE_PORT_4 = 5424;
+    public static final int EDGE_DETECTOR_SERVICE_PORT_1 = 5224;
+    public static final int EDGE_DETECTOR_SERVICE_PORT_2 = 5324;
+    public static final int EDGE_DETECTOR_SERVICE_PORT_3 = 5424;
+    public static final int EDGE_DETECTOR_SERVICE_PORT_4 = 5524;
     public static final int EDGE_DETECTOR_OPEN_PORTS = 4;
 
 

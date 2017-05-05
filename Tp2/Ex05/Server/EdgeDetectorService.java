@@ -1,8 +1,8 @@
-package Tp2.Ex04.Server;
+package Tp2.Ex05.Server;
 
-import Tp2.Ex04.Common.IEdgeDetectorService;
-import Tp2.Ex04.Common.ImageSerializable;
-import Tp2.Ex04.Common.SobelEdgeDetector;
+import Tp2.Ex05.Common.IEdgeDetectorService;
+import Tp2.Ex05.Common.ImageSerializable;
+import Tp2.Ex05.Common.SobelEdgeDetector;
 
 import java.rmi.RemoteException;
 

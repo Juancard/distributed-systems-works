@@ -1,9 +1,9 @@
-package Tp2.Ex04.Client;
+package Tp2.Ex05.Client;
 
-import Tp2.Ex04.Common.IEdgeDetectorService;
-import Tp2.Ex04.Common.ImageChunkHandler;
-import Tp2.Ex04.Common.ImageSerializable;
-import Tp2.Ex04.Common.SobelEdgeDetector;
+import Tp2.Ex05.Common.IEdgeDetectorService;
+import Tp2.Ex05.Common.ImageChunkHandler;
+import Tp2.Ex05.Common.ImageSerializable;
+import Tp2.Ex05.Common.SobelEdgeDetector;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -21,40 +21,47 @@ import java.util.HashMap;
  */
 public class EdgeDetectorClient {
 
-    private Registry registry;
+
+    private HashMap<Integer, Registry> registries;
+    private static final int TOTAL_PORTS_AVAILABLE = 4;
 
     // Will split image in 4 parts: 2 rows and 2 cols
-    public static final int IMAGE_ROWS = 1;
-    public static final int IMAGE_COLS = 1;
+    public static final int IMAGE_ROWS = 2;
+    public static final int IMAGE_COLS = 2;
     public static final int REDUNDANT_PIXELS = 1;
 
     // Many services will be called to apply sobel filter
-    private ArrayList<IEdgeDetectorService> iEdgeDetectorServices;
     private HashMap<Integer, Runnable> runnables;
-    HashMap<Integer, Thread> threads;
+    private HashMap<Integer, Thread> threads;
+    private ArrayList<Integer> portsAvailable;
 
-    public EdgeDetectorClient(String host, int port) throws RemoteException, NotBoundException {
-        this.registry = LocateRegistry.getRegistry(host, port);
+    public EdgeDetectorClient(String host, int startingPort){
+        this.registries = new HashMap<Integer, Registry>();
+        this.portsAvailable = new ArrayList<Integer>();
 
-        this.iEdgeDetectorServices = new ArrayList<IEdgeDetectorService>();
+        int currentPort;
+        for (int i=0; i < TOTAL_PORTS_AVAILABLE; i++){
+            currentPort = startingPort + i;
+            portsAvailable.add(currentPort);
+            System.out.println("Connecting to port: " + currentPort);
+            try {
+                Registry r = LocateRegistry.getRegistry(host, currentPort);
+                this.registries.put(currentPort, r);
+            } catch (RemoteException e) {
+                System.out.println("CATCHED IN: registries, port: " + currentPort);
+                e.printStackTrace();
+            }
+        }
+
         this.runnables = new HashMap<Integer, Runnable>();
         this.threads = new HashMap<Integer, Thread>();
-
-        this.connectToServices();
     }
 
-    private void connectToServices() throws RemoteException, NotBoundException {
-        String currentDns = "";
-        for (int i=1; i <= IMAGE_COLS * IMAGE_ROWS; i++){
-
-            try {
-                currentDns = (String) IEdgeDetectorService.class.getField("DNS_NAME_" + i).get(null);
-            } catch (IllegalAccessException e) {e.printStackTrace();} catch (NoSuchFieldException e) {e.printStackTrace();}
-
-            IEdgeDetectorService service = (IEdgeDetectorService) this.registry.lookup(currentDns);
-
-            this.iEdgeDetectorServices.add(service);
-        }
+    private IEdgeDetectorService connectToService(int port) throws RemoteException, NotBoundException {
+        String dns = IEdgeDetectorService.DNS_NAME;
+        Registry r = this.registries.get(port);
+        IEdgeDetectorService service = (IEdgeDetectorService) r.lookup(dns);
+        return service;
     }
 
     public ImageSerializable detectEdges(ImageSerializable image) throws RemoteException {
@@ -147,13 +154,49 @@ public class EdgeDetectorClient {
         // - thread id,
         // - image chunck id and
         // - runnable id.
+        int portPosition = 0;
         for (int i=0; i < images.length; i++) {
             BufferedImage chunk = images[i];
-            IEdgeDetectorService service = this.iEdgeDetectorServices.get(i);
+            IEdgeDetectorService service = null;
+
+            boolean connected = false;
+            boolean serverIsUp = true;
+            int portPos = portPosition;
+            int portToConnect;
+            while (!connected && serverIsUp){
+                portToConnect = this.portsAvailable.get(portPos);
+                try {
+                    service = this.connectToService(portToConnect);
+                    connected = true;
+                } catch (RemoteException e) {
+                    System.out.println("RemoteException - Se cayo servicio en puerto: " + portToConnect);
+                    if (++portPos == this.portsAvailable.size())
+                        portPos = 0;
+                    if (portPos == portPosition)
+                        serverIsUp = false;
+
+                } catch (NotBoundException e) {
+                    System.out.println("NotBoundException - Se cayo servicio en puerto: " + portToConnect);
+                    if (++portPos == this.portsAvailable.size())
+                        portPos = 0;
+                    if (portPos == portPosition)
+                        serverIsUp = false;
+                }
+            }
+
+            if (!serverIsUp) {
+                System.out.println("Server is down: No available ports to connect to");
+                System.out.println("Please, try again later.");
+                System.exit(1);
+            }
+
             Runnable r = new EdgeDetectorRunnable(service, chunk, i);
             Thread t = new Thread(r);
             this.runnables.put(i, r);
             this.threads.put(i, t);
+
+            if (++portPosition == this.portsAvailable.size())
+                portPosition = 0;
         }
     }
 

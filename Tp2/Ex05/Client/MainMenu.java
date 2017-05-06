@@ -1,14 +1,12 @@
 package Tp2.Ex05.Client;
 
 import Common.CommonMain;
-import Tp2.Ex05.Client.EdgeDetectorClient;
 import Tp2.Ex05.Common.NoPortsAvailableException;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.ConnectException;
 import java.net.URL;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -20,8 +18,6 @@ import java.util.Scanner;
  * Time: 17:30
  */
 public class MainMenu {
-    private static final String DEFAULT_HOST = "localhost";
-    private static final int DEFAULT_PORT = 5025;
     private static final int TP_NUMBER = 2;
     private static final int EXERCISE_NUMBER = 5;
     private static final String EXERCISE_TITLE = "Sobel Operator";
@@ -29,49 +25,42 @@ public class MainMenu {
     private static final String IMAGES_PATH = "distributed-systems-works/Tp2/Ex05/Resources/Images/";
 
     private Scanner sc = new Scanner(System.in);
-    private String host;
-    private int port;
     private EdgeDetectorClient edgeDetectorClient;
 
     public static void main(String[] args) throws IOException {
-        MainMenu mainMenu = null;
 
         try {
-            mainMenu = new MainMenu(DEFAULT_HOST, DEFAULT_PORT);
+            MainMenu mainMenu = new MainMenu();
+            CommonMain.showWelcomeMessage(TP_NUMBER, EXERCISE_NUMBER, EXERCISE_TITLE + " - Client side");
+            mainMenu.start();
         } catch (NotBoundException e) {
             CommonMain.display("Error starting RMI client: " + e.toString());
-            System.exit(1);
-        }
-
-        CommonMain.showWelcomeMessage(TP_NUMBER, EXERCISE_NUMBER, EXERCISE_TITLE + " - Client side");
-        try {
-            mainMenu.start();
         } catch (NoPortsAvailableException e) {
-            CommonMain.display("Server is down: No ports available currently");
-            CommonMain.display("Please, try again later.");
+            CommonMain.display(e.getMessage());
         }
+
+
     }
 
-    public MainMenu(String defaultHost, int defaultPort) throws RemoteException, NotBoundException, ConnectException {
-        newClient(defaultHost, defaultPort);
+    public MainMenu() throws IOException, NotBoundException, NoPortsAvailableException {
+        this.edgeDetectorClient = new EdgeDetectorClient();
+
     }
 
-    private void newClient(String defaultHost, int defaultPort) throws RemoteException, NotBoundException {
-        this.host = CommonMain.askForHost(defaultHost);
-        this.port = CommonMain.askForPort(defaultPort);
-        this.edgeDetectorClient = new EdgeDetectorClient(host, port);
-    }
 
     public void start() throws IOException, NoPortsAvailableException {
+        /*
         String imageUrl = askForImage();
         BufferedImage originalImage = this.imageFromUrl(imageUrl);
-
+                     */
+        BufferedImage originalImage = ImageIO.read(new File("/home/juan/Desktop/4k-image-santiago.jpg"));
         BufferedImage finalImage = this.onCallingSobel(originalImage);
-
+                       /*
         String filename = this.filenameFromPath(imageUrl) + "_edged";
         String extension = this.getFilenameExtension(imageUrl);
 
         System.out.println("Image saved in: " + this.saveImage(finalImage, filename, extension) );
+        */
     }
 
     private BufferedImage onCallingSobel(BufferedImage originalImage) throws RemoteException, NoPortsAvailableException {

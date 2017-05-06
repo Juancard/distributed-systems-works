@@ -1,13 +1,12 @@
 package Tp2.Ex05.Client;
 
+import Common.ServerInfo;
 import Tp2.Ex05.Common.*;
 
 import java.awt.image.BufferedImage;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -18,20 +17,33 @@ import java.util.HashMap;
  */
 public class EdgeDetectorClient {
 
+    private static final String PORTS_PATH = "distributed-systems-works/Tp2/Ex05/Common/remote_ports.txt";
+
     // Will split image in the amount of cells defined by row * col
-    public static final int IMAGE_ROWS = 4;
-    public static final int IMAGE_COLS = 4;
+    public static final int IMAGE_ROWS = 3;
+    public static final int IMAGE_COLS = 3;
     public static final int REDUNDANT_PIXELS = 1;
 
     // Many services will be called to apply sobel filter
     private HashMap<Integer, Runnable> runnables;
     private HashMap<Integer, Thread> threads;
-    private ServicesManager servicesManager;
+    private RemotePortsManager remotePortsManager;
 
-    public EdgeDetectorClient(String host, int port){
+    public EdgeDetectorClient() throws NoPortsAvailableException, IOException {
         this.runnables = new HashMap<Integer, Runnable>();
         this.threads = new HashMap<Integer, Thread>();
-        this.servicesManager = new ServicesManager(host, port);
+
+        ArrayList<ServerInfo> remotePorts = this.loadRemotePorts(PORTS_PATH);
+        this.remotePortsManager = new RemotePortsManager(remotePorts);
+    }
+
+    private ArrayList<ServerInfo> loadRemotePorts(String portsPath) throws NoPortsAvailableException, IOException {
+        try {
+            ArrayList<ServerInfo> remotePorts = RemotePortsLoader.remotePortsFrom(portsPath);
+            return remotePorts;
+        } catch (FileNotFoundException e) {
+            throw new NoPortsAvailableException("No file with remote ports found in: '" + portsPath + "'");
+        }
     }
 
     public ImageSerializable detectEdges(ImageSerializable image) throws RemoteException, NoPortsAvailableException {
@@ -126,7 +138,7 @@ public class EdgeDetectorClient {
         // - runnable id.
         for (int i=0; i < images.length; i++) {
             BufferedImage chunk = images[i];
-            IEdgeDetectorService service = this.servicesManager.getService();
+            IEdgeDetectorService service = this.remotePortsManager.getService();
 
             Runnable r = new EdgeDetectorRunnable(service, chunk, i);
             Thread t = new Thread(r);

@@ -1,8 +1,12 @@
 package Tp2.Ex05.Server;
 
 import Common.CommonMain;
-import Tp2.Ex05.Common.IEdgeDetectorService;
+import Common.ServerInfo;
+import Tp2.Ex05.Common.RemotePortsLoader;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -13,44 +17,62 @@ import java.util.Scanner;
  */
 public class MainServer {
 
-    private static final int TP_NUMBER = 2;
-    private static final int EXERCISE_NUMBER = 5;
     private static final String EXERCISE_TITLE = "Sobel server";
-
-    public static final int DISTRIBUTED_PORTS = 4;
-    public static final int STARTING_PORT = 5025;
+    private static final String PORTS_PATH = "distributed-systems-works/Tp2/Ex05/Common/remote_ports.txt";
 
     private static Scanner sc = new Scanner(System.in);
     private static HashMap<Integer, Thread> threads;
     private static HashMap<Integer, RMIServer> servers;
 
     public static void main(String[] args) {
-        startServers();
-        handleMainOptions();
-        System.exit(1);
+        if (startServers()) {
+            handleMainOptions();
+        }
     }
 
-    private static void startServers() {
+    private static boolean startServers() {
+        ArrayList<ServerInfo> remotePorts;
+        try {
+            remotePorts = RemotePortsLoader.remotePortsFrom(PORTS_PATH);
+        } catch (FileNotFoundException e) {
+            System.out.println("No file with remote ports found in: '" + PORTS_PATH + "'");
+            System.out.println(e.getMessage());
+            return false;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+
         threads = new HashMap<Integer, Thread>();
         servers = new HashMap<Integer, RMIServer>();
-        Thread thread;
-        int port;
-        RMIServer server;
+        boolean isLocalhost;
+        String host; int port; Thread thread; RMIServer server;
 
-        for (int i=0; i < DISTRIBUTED_PORTS; i++){
-            port = STARTING_PORT + i;
-            server = new RMIServer(port);
-            thread = new Thread(server);
+        for (ServerInfo remotePort : remotePorts){
+            host = remotePort.getHost();
+            port = remotePort.getPort();
+            isLocalhost = host.equals("localhost") || host.equals("127.0.0.1");
 
-            threads.put(port, thread);
-            servers.put(port, server);
-            thread.start();
+            if ( !isLocalhost )
+                System.out.println("WARN - Server with host " + host + " can not be started from localhost");
+            else {
+                server = new RMIServer(port);
+                thread = new Thread(server);
+
+                threads.put(port, thread);
+                servers.put(port, server);
+
+                thread.start();
+                try {
+                    thread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
         }
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
+
+        return true;
     }
 
     private static void showMain() {

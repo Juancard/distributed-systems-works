@@ -17,7 +17,7 @@ import java.util.HashMap;
  */
 public class EdgeDetectorClient {
 
-    private static final String PORTS_PATH = "distributed-systems-works/Tp2/Ex05/Common/remote_ports.txt";
+    private static final String PORTS_PATH = "distributed-systems-works/Tp2/Ex05/Resources/config/remote_ports.cfg";
 
     // Will split image in the amount of cells defined by row * col
     public static final int IMAGE_ROWS = 3;

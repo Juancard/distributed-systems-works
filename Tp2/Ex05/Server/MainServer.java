@@ -18,7 +18,7 @@ import java.util.Scanner;
 public class MainServer {
 
     private static final String EXERCISE_TITLE = "Sobel server";
-    private static final String PORTS_PATH = "distributed-systems-works/Tp2/Ex05/Common/remote_ports.txt";
+    private static final String PORTS_PATH = "distributed-systems-works/Tp2/Ex05/Resources/config/remote_ports.cfg";
 
     private static Scanner sc = new Scanner(System.in);
     private static HashMap<Integer, Thread> threads;

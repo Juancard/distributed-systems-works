@@ -49,18 +49,15 @@ public class MainMenu {
 
 
     public void start() throws IOException, NoPortsAvailableException {
-        /*
         String imageUrl = askForImage();
         BufferedImage originalImage = this.imageFromUrl(imageUrl);
-                     */
-        BufferedImage originalImage = ImageIO.read(new File("/home/juan/Desktop/4k-image-santiago.jpg"));
+
         BufferedImage finalImage = this.onCallingSobel(originalImage);
-                       /*
+
         String filename = this.filenameFromPath(imageUrl) + "_edged";
         String extension = this.getFilenameExtension(imageUrl);
 
         System.out.println("Image saved in: " + this.saveImage(finalImage, filename, extension) );
-        */
     }
 
     private BufferedImage onCallingSobel(BufferedImage originalImage) throws RemoteException, NoPortsAvailableException {

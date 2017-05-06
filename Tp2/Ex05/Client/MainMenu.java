@@ -2,6 +2,7 @@ package Tp2.Ex05.Client;
 
 import Common.CommonMain;
 import Tp2.Ex05.Client.EdgeDetectorClient;
+import Tp2.Ex05.Common.NoPortsAvailableException;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -43,7 +44,12 @@ public class MainMenu {
         }
 
         CommonMain.showWelcomeMessage(TP_NUMBER, EXERCISE_NUMBER, EXERCISE_TITLE + " - Client side");
-        mainMenu.start();
+        try {
+            mainMenu.start();
+        } catch (NoPortsAvailableException e) {
+            CommonMain.display("Server is down: No ports available currently");
+            CommonMain.display("Please, try again later.");
+        }
     }
 
     public MainMenu(String defaultHost, int defaultPort) throws RemoteException, NotBoundException, ConnectException {
@@ -56,7 +62,7 @@ public class MainMenu {
         this.edgeDetectorClient = new EdgeDetectorClient(host, port);
     }
 
-    public void start() throws IOException {
+    public void start() throws IOException, NoPortsAvailableException {
         String imageUrl = askForImage();
         BufferedImage originalImage = this.imageFromUrl(imageUrl);
 
@@ -68,7 +74,7 @@ public class MainMenu {
         System.out.println("Image saved in: " + this.saveImage(finalImage, filename, extension) );
     }
 
-    private BufferedImage onCallingSobel(BufferedImage originalImage) throws RemoteException {
+    private BufferedImage onCallingSobel(BufferedImage originalImage) throws RemoteException, NoPortsAvailableException {
         System.out.println("Image read. Starting...");
         long startTime = System.currentTimeMillis();
         BufferedImage finalImage = this.edgeDetectorClient.detectEdges(originalImage);

@@ -21,6 +21,7 @@ public class TimeWorker extends MyCustomWorker {
     public TimeWorker(Socket clientSocket, SharedDate sharedDate) {
         super(clientSocket);
         this.sharedDate = sharedDate;
+        this.sharedDate.addConsumer();
     }
 
     public void run() {
@@ -28,6 +29,7 @@ public class TimeWorker extends MyCustomWorker {
             boolean clientClosed = this.clientConnection.isClosed();
             while (!clientClosed){
                 Date date = this.sharedDate.getCurrentDate();
+                this.display(date.toString());
                 this.sendToClient(date);
                 clientClosed = this.clientConnection.isClosed();
             }

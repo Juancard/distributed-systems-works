@@ -38,14 +38,10 @@ public class MainMenu {
 
 
     public void start() {
-        while (true) {
-            try {
-                Date currentDate = this.timeClient.getCurrentDate();
-                CommonMain.display("Client: Server date is " + currentDate.toString());
-            } catch (Exception e) {
-                CommonMain.display(e.getMessage());
-                return;
-            }
+        try {
+            this.timeClient.startTimeListener();
+        } catch (Exception e) {
+            CommonMain.display(e.getMessage());
         }
     }
 }

@@ -23,11 +23,15 @@ public class SharedDate {
     }
 
     public void addConsumer(){
-        this.totalConsumers++;
+        synchronized (this){
+            this.totalConsumers++;
+        }
     }
 
     public void removeConsumer(){
-        this.totalConsumers--;
+        synchronized (this){
+            this.totalConsumers--;
+        }
     }
 
     public synchronized void setCurrentDate() {
@@ -45,15 +49,15 @@ public class SharedDate {
 
     public synchronized Date getCurrentDate() {
         while (!this.hasChanged)
-            try { wait(); } catch (InterruptedException e) {e.printStackTrace();}
+            try {wait();} catch (InterruptedException e) {e.printStackTrace();}
 
-        if (this.consumersThatHaveReadDate.size() >= totalConsumers){
+        int consumer = this.getCurrentThreadId();
+        if (!(this.consumersThatHaveReadDate.contains(consumer)))
+            this.consumersThatHaveReadDate.add(consumer);
+
+        if (this.consumersThatHaveReadDate.size() >= this.totalConsumers){
             this.consumersThatHaveReadDate = new ArrayList<Integer>();
             this.hasChanged = false;
-        } else {
-            int consumer = this.getCurrentThreadId();
-            if (!(this.consumersThatHaveReadDate.contains(consumer)))
-                this.consumersThatHaveReadDate.add(consumer);
         }
 
         return this.date;

@@ -25,7 +25,6 @@ public class TimeServer extends MyCustomServer implements Runnable{
     }
 
     protected Runnable newRunnable(Socket clientSocket){
-        this.sharedDate.addConsumer();
         return new TimeWorker(clientSocket, this.sharedDate);
     }
 

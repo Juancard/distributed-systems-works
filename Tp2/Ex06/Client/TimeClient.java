@@ -2,6 +2,7 @@ package Tp2.Ex06.Client;
 
 import Common.Socket.SocketConnection;
 
+import java.io.IOException;
 import java.util.Date;
 
 /**
@@ -9,31 +10,24 @@ import java.util.Date;
  * Date: 07/05/17
  * Time: 14:46
  */
-public class TimeClient extends SocketConnection implements Runnable{
+public class TimeClient extends SocketConnection{
+
+    private Date clientDate;
 
     public TimeClient(String host, int port) {
         super(host, port);
+
     }
 
-    public Date getCurrentDate() throws Exception {
-        Object response = this.read();
-
-        if (response instanceof Exception)
-            throw (Exception) response;
-
-        return (Date) this.read();
-    }
-
-
-    @Override
-    public void run() {
+    public void startTimeListener() throws Exception {
         while (true) {
-            try {
-                this.out(this.getCurrentDate().toString());
-            } catch (Exception e) {
-                e.printStackTrace();
-                break;
-            }
+            Object response = this.read();
+
+            if (response instanceof Exception)
+                throw (Exception) response;
+
+            this.clientDate = (Date) response;
+            this.out(clientDate.toString());
         }
     }
 }

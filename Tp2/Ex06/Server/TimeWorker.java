@@ -1,11 +1,13 @@
 package Tp2.Ex06.Server;
 
 import Common.Socket.MyCustomWorker;
+import Tp2.Ex06.Common.SharedDate;
 
 import java.io.EOFException;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.Date;
 
 /**
  * User: juan
@@ -13,32 +15,31 @@ import java.net.SocketException;
  * Time: 12:54
  */
 public class TimeWorker extends MyCustomWorker {
-    public TimeWorker(Socket clientSocket) {
+
+    private SharedDate sharedDate;
+
+    public TimeWorker(Socket clientSocket, SharedDate sharedDate) {
         super(clientSocket);
+        this.sharedDate = sharedDate;
     }
 
     public void run() {
         try {
-
             boolean clientClosed = this.clientConnection.isClosed();
             while (!clientClosed){
-                Object objectFromClient = this.clientConnection.read();
-                if (objectFromClient == null) break;
-                this.handleClientInput(objectFromClient);
-
+                Date date = this.sharedDate.getCurrentDate();
+                this.sendToClient(date);
                 clientClosed = this.clientConnection.isClosed();
             }
-
-        } catch (SocketException e) {
-            this.display("Connection lost with client");
-        } catch (EOFException e) {
-            this.display("Client disconnected");
-        } catch (IOException e) {
-            this.display(e.getMessage());
         } catch (Exception e) {
             this.display(e.getMessage());
         } finally {
             this.close();
         }
+    }
+
+    public void close(){
+        this.sharedDate.removeConsumer();
+        super.close();
     }
 }

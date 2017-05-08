@@ -1,10 +1,14 @@
 package Tp2.Ex01.Server.MainServer;
 
+import Common.PropertiesManager;
+import Common.ServerInfo;
+import Tp2.Ex01.Common.FileClient;
 import Tp2.Ex01.Server.Common.FileServer;
 import Common.Socket.SocketConnection;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.Properties;
 
 /**
  * User: juan
@@ -13,12 +17,24 @@ import java.net.Socket;
  */
 public class MainServer extends FileServer {
 
-    public MainServer(int port, String filesPath, String logPath) throws IOException {
+    private ServerInfo backupServer;
+
+    public MainServer(int port, ServerInfo backupServer, String filesPath, String logPath) throws IOException {
         super(port, filesPath, logPath);
+        this.backupServer = backupServer;
     }
 
     protected Runnable newRunnable(Socket connection){
         this.out("Main Server: Creating Server Thread");
-        return new MainServerConnection(new SocketConnection(connection), this.fileManager, this.logManager);
+
+        SocketConnection socketConnection = new SocketConnection(connection);
+        FileClient backupConnection = new FileClient(backupServer.getHost(), backupServer.getPort());
+
+        return new MainServerConnection(
+                socketConnection,
+                backupConnection,
+                this.fileManager,
+                this.logManager
+        );
     }
 }

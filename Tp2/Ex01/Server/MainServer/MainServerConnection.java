@@ -18,28 +18,17 @@ import java.util.Properties;
  */
 public class MainServerConnection extends FileWorker implements Runnable {
 
-    public static final String PROPERTIES_PATH = "distributed-systems-works/Tp2/Ex01/config.properties";
+    private FileClient backupConnection;
 
-    private FileClient backupClient;
-
-    public MainServerConnection(SocketConnection clientConnection, FileManager fileManager, LogManager logManager) {
+    public MainServerConnection(SocketConnection clientConnection, FileClient backupConnection, FileManager fileManager, LogManager logManager) {
         super(clientConnection, fileManager, logManager);
-
-        Properties properties = null;
-        try {
-            properties = PropertiesManager.loadProperties(PROPERTIES_PATH);
-        } catch (IOException e) {e.printStackTrace();}
-
-        String backupHost = properties.getProperty("BACKUP_SERVER_HOST");
-        int backupPort = Integer.parseInt(properties.getProperty("BACKUP_SERVER_PORT"));
-
-        this.backupClient = new FileClient(backupHost, backupPort);
+        this.backupConnection = backupConnection;
     }
 
     protected boolean del() throws IOException, ClassNotFoundException {
         String fileName = this.readFromClient().toString();
         boolean delResult = fileManager.del(fileName);
-        if (delResult) backupClient.del(fileName);
+        if (delResult) backupConnection.del(fileName);
         return delResult;
 
     }
@@ -47,12 +36,12 @@ public class MainServerConnection extends FileWorker implements Runnable {
     protected boolean post() throws IOException, ClassNotFoundException {
         TextFile textFile = (TextFile) this.readFromClient();
         boolean postResult = fileManager.post(textFile);
-        if (postResult) backupClient.post(textFile.getName(), textFile.getContent());
+        if (postResult) backupConnection.post(textFile.getName(), textFile.getContent());
         return postResult;
     }
 
     public void close(){
-        this.backupClient.close();
+        this.backupConnection.close();
         super.close();
     }
 }

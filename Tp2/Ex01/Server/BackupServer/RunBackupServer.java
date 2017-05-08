@@ -18,16 +18,20 @@ public class RunBackupServer {
     public static void main(String[] args) {
         try {
             Properties properties = PropertiesManager.loadProperties(RunBackupServer.PROPERTIES_PATH);
-            CommonMain.showWelcomeMessage(properties);
-
-            int port = Integer.parseInt(properties.getProperty("BACKUP_SERVER_PORT"));
-            String filesPath = properties.getProperty("BACKUP_FILES_PATH");
-            String logFilePath = properties.getProperty("BACKUP_LOG_FILE_PATH");
-
-            BackupServer backupServer = new BackupServer(port, filesPath, logFilePath);
-            backupServer.startServer();
+            new RunBackupServer(properties);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public RunBackupServer(Properties properties) throws IOException {
+        CommonMain.showWelcomeMessage(properties);
+
+        int port = Integer.parseInt(properties.getProperty("BACKUP_SERVER_PORT"));
+        String filesPath = properties.getProperty("BACKUP_FILES_PATH");
+        String logFilePath = properties.getProperty("BACKUP_LOG_FILE_PATH");
+
+        BackupServer backupServer = new BackupServer(port, filesPath, logFilePath);
+        backupServer.startServer();
     }
 }

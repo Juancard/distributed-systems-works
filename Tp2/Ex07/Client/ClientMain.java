@@ -2,9 +2,10 @@ package Tp2.Ex07.Client;
 
 import Common.CommonMain;
 import Common.PropertiesManager;
-import Tp2.Ex07.FileClient;
-import Tp2.Ex07.User;
+import Tp2.Ex01.Client.RunFileClient;
+import Tp2.Ex07.Common.User;
 
+import javax.security.auth.login.LoginException;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.Scanner;
@@ -19,49 +20,50 @@ public class ClientMain {
     public static final String PROPERTIES_PATH = "distributed-systems-works/Tp2/Ex07/config.properties";
 
     public static void main(String[] args) throws IOException {
-        Properties properties = PropertiesManager.loadProperties(ClientMain.PROPERTIES_PATH);
-        ClientMain clientMain = new ClientMain(properties);
+        ClientMain clientMain = new ClientMain();
         clientMain.start();
     }
 
     private Properties properties;
     private FileClient fileClient;
-    private User loggedUser;
 
-    public ClientMain(Properties properties){
-        this.properties = properties;
+    public ClientMain(){
+        try {
+            this.properties = PropertiesManager.loadProperties(ClientMain.PROPERTIES_PATH);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void start() {
         this.connectToServer();
-        this.showWelcomeMessage();
+        CommonMain.showWelcomeMessage(this.properties);
         this.showLogin();
     }
 
     private void connectToServer() {
-        String host = this.properties.getProperty("HOST");
-        int port = Integer.parseInt(this.properties.getProperty("PORT"));
+        String host = this.properties.getProperty("SERVER_HOST");
+        int port = Integer.parseInt(this.properties.getProperty("SERVER_PORT"));
         this.fileClient = new FileClient(host, port);
     }
 
     private void showLogin() {
         CommonMain.createSection("Log in");
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Username: ");
-        String username = scanner.nextLine();
-        System.out.print("Password: ");
-        String password = scanner.nextLine();
+        boolean isLogged = false;
 
-        this.fileClient.logIn(username, password);
+        while (!isLogged){
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("Username: ");
+            String username = scanner.nextLine();
+            System.out.print("Password: ");
+            String password = scanner.nextLine();
+            try {
+                this.fileClient.login(username, password);
+            } catch (LoginException e) {
+                CommonMain.display(e.getMessage());
+            }
+        }
 
-    }
-
-    private void showWelcomeMessage() {
-        int tpNumber = Integer.parseInt(properties.getProperty("TP_NUMBER"));
-        int exerciseNumber = Integer.parseInt(properties.getProperty("EXERCISE_NUMBER"));
-        String exerciseTitle = properties.getProperty("EXERCISE_TITLE");
-
-        CommonMain.showWelcomeMessage(tpNumber, exerciseNumber, exerciseTitle);
     }
 
 

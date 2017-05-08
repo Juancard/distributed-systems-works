@@ -1,6 +1,9 @@
 package Tp2.Ex07.Client;
 
-import Tp2.Ex07.User;
+import Tp2.Ex07.Common.FileProtocol;
+import Tp2.Ex07.Common.User;
+
+import javax.security.auth.login.LoginException;
 
 /**
  * User: juan
@@ -15,8 +18,14 @@ public class FileClient extends Tp2.Ex01.Common.FileClient {
         super(host, port);
     }
 
-    public boolean logIn(String username, String password){
+    public void login(String username, String password) throws LoginException {
         User user = new User(username, password);
-        return true;
+        this.send(FileProtocol.LOGIN);
+        this.send(user);
+
+        Object loginResult = this.read();
+        if (loginResult instanceof LoginException){
+            throw (LoginException) loginResult;
+        }
     }
 }

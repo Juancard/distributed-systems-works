@@ -1,8 +1,10 @@
 package Tp2.Ex01.Server.BackupServer;
 
 import Common.CommonMain;
+import Common.PropertiesManager;
 
 import java.io.IOException;
+import java.util.Properties;
 
 /**
  * User: juan
@@ -11,19 +13,18 @@ import java.io.IOException;
  */
 public class RunBackupServer {
 
-    private static final int DEFAULT_PORT = 5121;
-    private static final int TP_NUMBER = 2;
-    private static final int EXERCISE_NUMBER = 1;
-    private static final String TP_TITLE = "Backup Server";
-
-    private static final String FILES_PATH = "distributed-systems-works/Tp2/Ex01/Server/BackupServer/Resources/Files/";
-    private static final String LOG_FILE_PATH = "distributed-systems-works/Tp2/Ex01/Server/BackupServer/Resources/Log/backup_server_log.txt";
+    public static final String PROPERTIES_PATH = "distributed-systems-works/Tp2/Ex01/config.properties";
 
     public static void main(String[] args) {
         try {
-            CommonMain.showWelcomeMessage(TP_NUMBER, EXERCISE_NUMBER, TP_TITLE);
-            int port = CommonMain.askForPort("Backup server port", DEFAULT_PORT);
-            BackupServer backupServer = new BackupServer(port, FILES_PATH, LOG_FILE_PATH);
+            Properties properties = PropertiesManager.loadProperties(RunBackupServer.PROPERTIES_PATH);
+            CommonMain.showWelcomeMessage(properties);
+
+            int port = Integer.parseInt(properties.getProperty("BACKUP_SERVER_PORT"));
+            String filesPath = properties.getProperty("BACKUP_FILES_PATH");
+            String logFilePath = properties.getProperty("BACKUP_LOG_FILE_PATH");
+
+            BackupServer backupServer = new BackupServer(port, filesPath, logFilePath);
             backupServer.startServer();
         } catch (IOException e) {
             e.printStackTrace();

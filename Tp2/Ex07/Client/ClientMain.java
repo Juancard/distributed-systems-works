@@ -1,7 +1,9 @@
-package Tp2.Ex07;
+package Tp2.Ex07.Client;
 
 import Common.CommonMain;
 import Common.PropertiesManager;
+import Tp2.Ex07.FileClient;
+import Tp2.Ex07.User;
 
 import java.io.IOException;
 import java.util.Properties;

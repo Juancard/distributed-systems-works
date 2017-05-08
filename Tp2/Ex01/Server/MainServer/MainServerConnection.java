@@ -1,5 +1,6 @@
 package Tp2.Ex01.Server.MainServer;
 
+import Common.PropertiesManager;
 import Tp2.Ex01.Common.FileClient;
 import Common.TextFile;
 import Common.FileManager;
@@ -8,6 +9,7 @@ import Tp2.Ex01.Server.Common.FileWorker;
 import Tp2.Ex01.Server.Common.LogManager;
 
 import java.io.*;
+import java.util.Properties;
 
 /**
  * User: juan
@@ -16,15 +18,22 @@ import java.io.*;
  */
 public class MainServerConnection extends FileWorker implements Runnable {
 
-    private static final int BACKUP_SERVER_PORT = 5121;
-    private static final String BACKUP_SERVER_HOST = "localhost";
+    public static final String PROPERTIES_PATH = "distributed-systems-works/Tp2/Ex01/config.properties";
 
     private FileClient backupClient;
 
     public MainServerConnection(SocketConnection clientConnection, FileManager fileManager, LogManager logManager) {
         super(clientConnection, fileManager, logManager);
-        this.backupClient = new FileClient(BACKUP_SERVER_HOST, BACKUP_SERVER_PORT);
 
+        Properties properties = null;
+        try {
+            properties = PropertiesManager.loadProperties(PROPERTIES_PATH);
+        } catch (IOException e) {e.printStackTrace();}
+
+        String backupHost = properties.getProperty("BACKUP_SERVER_HOST");
+        int backupPort = Integer.parseInt(properties.getProperty("BACKUP_SERVER_PORT"));
+
+        this.backupClient = new FileClient(backupHost, backupPort);
     }
 
     protected boolean del() throws IOException, ClassNotFoundException {

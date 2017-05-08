@@ -1,11 +1,15 @@
 package Tp2.Ex01.Server.MainServer;
 
+import Common.PropertiesManager;
+import com.sun.corba.se.impl.oa.poa.POAPolicyMediatorBase_R;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import static java.nio.file.StandardWatchEventKinds.*;
 
@@ -18,8 +22,8 @@ import static java.nio.file.StandardWatchEventKinds.*;
 
 
 public class FilesWatcher {
-    private static final String LOCAL_FILES_PATH = "distributed-systems-works/Tp2/Ex01/Server/MainServer/Resources/Files/";
-    private static final String BACKUP_FILES_PATH = "distributed-systems-works/Tp2/Ex01/Server/BackupServer/Resources/Files/";
+
+    public static final String PROPERTIES_PATH = "distributed-systems-works/Tp2/Ex01/config.properties";
 
     private WatchService watcher;
     private final Map<WatchKey,Path> keys;
@@ -29,8 +33,9 @@ public class FilesWatcher {
     }
 
     public FilesWatcher() throws IOException {
-        Path localFilesPath = Paths.get(LOCAL_FILES_PATH);
-        Path backupFilesPath = Paths.get(BACKUP_FILES_PATH);
+        Properties properties = PropertiesManager.loadProperties(PROPERTIES_PATH);
+        Path localFilesPath = Paths.get(properties.getProperty("SERVER_FILES_PATH"));
+        Path backupFilesPath = Paths.get("BACKUP_FILES_PATH");
 
         this.keys = new HashMap<WatchKey,Path>();
         this.watcher = FileSystems.getDefault().newWatchService();

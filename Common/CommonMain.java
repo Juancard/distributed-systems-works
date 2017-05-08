@@ -1,5 +1,6 @@
 package Common;
 
+import java.util.Properties;
 import java.util.Scanner;
 
 /**
@@ -54,6 +55,13 @@ public class CommonMain {
         String header = "Sistemas Distribuidos y Programación Paralela";
         String subtitle = String.format("TP N° %d - Ex. N° %d", tpNumber, exerciseNumber);
         createSection(header + "\n" + subtitle + "\n" + title);
+    }
+    public static void showWelcomeMessage(Properties properties) {
+        int tpNumber = Integer.parseInt(properties.getProperty("TP_NUMBER"));
+        int exerciseNumber = Integer.parseInt(properties.getProperty("EXERCISE_NUMBER"));
+        String exerciseTitle = properties.getProperty("EXERCISE_TITLE");
+
+        CommonMain.showWelcomeMessage(tpNumber, exerciseNumber, exerciseTitle);
     }
 
     public static String repeat(int count, String with) {

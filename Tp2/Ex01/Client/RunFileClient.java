@@ -1,8 +1,11 @@
 package Tp2.Ex01.Client;
 
 import Common.CommonMain;
+import Common.PropertiesManager;
 import Tp2.Ex01.Common.FileClient;
 
+import java.io.IOException;
+import java.util.Properties;
 import java.util.Scanner;
 
 /**
@@ -10,26 +13,26 @@ import java.util.Scanner;
  * Date: 12/03/17
  * Time: 12:20
  */
-public class ClientConsole {
-
-    private static final String DEFAULT_HOST = "localhost";
-    private static final int DEFAULT_PORT = 5021;
-    private static final int TP_NUMBER = 2;
-    private static final int EXERCISE_NUMBER = 1;
+public class RunFileClient {
 
     private static Scanner sc = new Scanner(System.in);
     private static FileClient myFileClient;
 
-    public static void main(String[] args) {
-        CommonMain.showWelcomeMessage(TP_NUMBER, EXERCISE_NUMBER, "File Server with Backup - Client");
+    public static final String PROPERTIES_PATH = "distributed-systems-works/Tp2/Ex01/config.properties";
+    private static Properties properties;
+
+    public static void main(String[] args) throws IOException {
+        properties = PropertiesManager.loadProperties(PROPERTIES_PATH);
+        CommonMain.showWelcomeMessage(properties);
         newClient();
         handleMainOptions();
     }
 
 
     private static void newClient() {
-        String host = CommonMain.askForHost(DEFAULT_HOST);
-        int port = CommonMain.askForPort(DEFAULT_PORT);
+        String host = properties.getProperty("SERVER_HOST");
+        int port = Integer.parseInt(properties.getProperty("SERVER_PORT"));
+
         myFileClient = new FileClient(host, port);
     }
 

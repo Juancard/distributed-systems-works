@@ -1,34 +1,28 @@
-package Tp2.Ex01.Server.MainServer;
+package Tp2.Ex07.Server.MainServer;
 
-import Common.PropertiesManager;
 import Common.ServerInfo;
-import Tp2.Ex01.Common.FileClient;
-import Tp2.Ex01.Server.Common.FileServer;
 import Common.Socket.SocketConnection;
+import Tp2.Ex01.Common.FileClient;
 
-import java.io.*;
+import java.io.IOException;
 import java.net.Socket;
-import java.util.Properties;
 
 /**
  * User: juan
  * Date: 08/04/17
  * Time: 13:53
  */
-public class MainServer extends FileServer {
-
-    protected ServerInfo backupServer;
+public class MainServer extends Tp2.Ex01.Server.MainServer.MainServer {
 
     public MainServer(int port, ServerInfo backupServer, String filesPath, String logPath) throws IOException {
-        super(port, filesPath, logPath);
-        this.backupServer = backupServer;
+        super(port, backupServer, filesPath, logPath);
     }
 
     protected Runnable newRunnable(Socket connection){
         this.out("Main Server: Creating Server Thread");
 
         SocketConnection socketConnection = new SocketConnection(connection);
-        FileClient backupConnection = new FileClient(backupServer.getHost(), backupServer.getPort());
+        FileClient backupConnection = new FileClient(this.backupServer.getHost(), this.backupServer.getPort());
 
         return new MainServerConnection(
                 socketConnection,

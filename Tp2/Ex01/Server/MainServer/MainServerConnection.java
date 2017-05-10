@@ -30,7 +30,6 @@ public class MainServerConnection extends FileWorker implements Runnable {
         boolean delResult = fileManager.del(fileName);
         if (delResult) backupConnection.del(fileName);
         return delResult;
-
     }
 
     protected boolean post() throws IOException, ClassNotFoundException {

@@ -11,3 +11,39 @@
 2017-05-08 18:19:42.156  - Client: /127.0.0.1:57261 - Message: POST
 2017-05-08 18:20:03.701  - Client: /127.0.0.1:57261 - Message: DEL
 2017-05-08 18:20:09.161  - Client: /127.0.0.1:57261 - Message: Client disconnected
+2017-05-10 15:12:40.813 : Listening on port: 5027...
+2017-05-10 15:12:49.906 : Main Server: Creating Server Thread
+2017-05-10 15:12:49.954 : New connection with client: /127.0.0.1:60551
+2017-05-10 15:12:53.585  - Client: /127.0.0.1:60551 - Message: LOGIN
+2017-05-10 15:17:49.177 : Listening on port: 5027...
+2017-05-10 15:17:53.294 : Main Server: Creating Server Thread
+2017-05-10 15:17:53.317 : New connection with client: /127.0.0.1:60559
+2017-05-10 15:17:56.135  - Client: /127.0.0.1:60559 - Message: LOGIN
+2017-05-10 15:19:15.047 : Listening on port: 5027...
+2017-05-10 15:19:20.546 : Main Server: Creating Server Thread
+2017-05-10 15:19:20.570 : New connection with client: /127.0.0.1:60563
+2017-05-10 15:19:23.559  - Client: /127.0.0.1:60563 - Message: LOGIN
+2017-05-10 15:21:03.348 : Listening on port: 5027...
+2017-05-10 15:21:08.149 : Main Server: Creating Server Thread
+2017-05-10 15:21:08.182 : New connection with client: /127.0.0.1:60570
+2017-05-10 15:21:13.024  - Client: /127.0.0.1:60570 - Message: LOGIN
+2017-05-10 15:21:42.362 : Main Server: Creating Server Thread
+2017-05-10 15:21:42.366 : New connection with client: /127.0.0.1:60573
+2017-05-10 15:21:52.555 : Listening on port: 5027...
+2017-05-10 15:22:00.040 : Main Server: Creating Server Thread
+2017-05-10 15:22:00.062 : New connection with client: /127.0.0.1:60577
+2017-05-10 15:22:02.914  - Client: /127.0.0.1:60577 - Message: LOGIN
+2017-05-10 15:34:10.887 : Listening on port: 5027...
+2017-05-10 15:34:21.597 : Listening on port: 5027...
+2017-05-10 15:34:27.553 : Main Server: Creating Server Thread
+2017-05-10 15:34:27.576 : New connection with client: /127.0.0.1:60611
+2017-05-10 15:34:36.493  - Client: /127.0.0.1:60611 - Message: LOGIN
+2017-05-10 15:34:36.544  - Client: /127.0.0.1:60611 - Message: Client disconnected
+2017-05-10 15:35:26.178 : Listening on port: 5027...
+2017-05-10 15:35:30.969 : Main Server: Creating Server Thread
+2017-05-10 15:35:30.997 : New connection with client: /127.0.0.1:60616
+2017-05-10 15:35:35.079  - Client: /127.0.0.1:60616 - Message: LOGIN
+2017-05-10 15:37:09.106  - Client: /127.0.0.1:60616 - Message: Client disconnected
+2017-05-10 15:37:12.619 : Main Server: Creating Server Thread
+2017-05-10 15:37:12.622 : New connection with client: /127.0.0.1:60620
+2017-05-10 15:37:19.121  - Client: /127.0.0.1:60620 - Message: LOGIN

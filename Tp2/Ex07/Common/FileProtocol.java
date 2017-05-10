@@ -6,5 +6,5 @@ package Tp2.Ex07.Common;
  * Time: 15:38
  */
 public class FileProtocol extends Tp2.Ex01.Common.FileProtocol{
-    public static final String LOGIN ="LOGIN";
+    public static final String LOGIN = "LOGIN";
 }

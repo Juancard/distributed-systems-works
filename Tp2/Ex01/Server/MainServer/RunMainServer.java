@@ -21,27 +21,36 @@ public class RunMainServer {
         try {
             // Configuration data on servers
             Properties properties = PropertiesManager.loadProperties(RunMainServer.PROPERTIES_PATH);
-            new RunMainServer(properties);
+            new RunMainServer(properties).run();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    protected int serverPort;
+    protected String filesPath;
+    protected String logFilePath;
+    protected ServerInfo backupServerInfo;
+
+
     public RunMainServer(Properties properties) throws IOException {
         CommonMain.showWelcomeMessage(properties);
 
         // Main server data
-        int serverPort = Integer.parseInt(properties.getProperty("SERVER_PORT"));
-        String filesPath = properties.getProperty("SERVER_FILES_PATH");
-        String logFilePath = properties.getProperty("SERVER_LOG_FILE_PATH");
+        this.serverPort = Integer.parseInt(properties.getProperty("SERVER_PORT"));
+        this.filesPath = properties.getProperty("SERVER_FILES_PATH");
+        this.logFilePath = properties.getProperty("SERVER_LOG_FILE_PATH");
 
         // Backup server data
         String backupHost = properties.getProperty("BACKUP_SERVER_HOST");
         int backupPort = Integer.parseInt(properties.getProperty("BACKUP_SERVER_PORT"));
-        ServerInfo backupServerInfo = new ServerInfo(backupHost, backupPort);
+        this.backupServerInfo = new ServerInfo(backupHost, backupPort);
 
+    }
+
+    protected void run() throws IOException {
         // Run server
-        MainServer mainServer = new MainServer(serverPort, backupServerInfo, filesPath, logFilePath);
+        MainServer mainServer = new MainServer(this.serverPort, this.backupServerInfo, this.filesPath, this.logFilePath);
         mainServer.startServer();
     }
 }

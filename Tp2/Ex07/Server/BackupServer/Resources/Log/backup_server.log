@@ -8,3 +8,30 @@
 2017-05-08 18:19:42.211  - Client: /127.0.0.1:51360 - Message: POST
 2017-05-08 18:20:03.741  - Client: /127.0.0.1:51360 - Message: DEL
 2017-05-08 18:20:09.162  - Client: /127.0.0.1:51360 - Message: Client disconnected
+2017-05-10 15:12:31.350 : Listening on port: 5127...
+2017-05-10 15:12:49.934 : Backup Server: Creating Backup Connection
+2017-05-10 15:12:49.955 : New connection with client: /127.0.0.1:53299
+2017-05-10 15:12:53.641  - Client: /127.0.0.1:53299 - Message: Client disconnected
+2017-05-10 15:17:53.314 : Backup Server: Creating Backup Connection
+2017-05-10 15:17:53.315 : New connection with client: /127.0.0.1:53307
+2017-05-10 15:17:56.185  - Client: /127.0.0.1:53307 - Message: Client disconnected
+2017-05-10 15:19:20.567 : Backup Server: Creating Backup Connection
+2017-05-10 15:19:20.567 : New connection with client: /127.0.0.1:53311
+2017-05-10 15:19:23.596  - Client: /127.0.0.1:53311 - Message: Client disconnected
+2017-05-10 15:21:08.178 : Backup Server: Creating Backup Connection
+2017-05-10 15:21:08.179 : New connection with client: /127.0.0.1:53318
+2017-05-10 15:21:13.072  - Client: /127.0.0.1:53318 - Message: Client disconnected
+2017-05-10 15:21:42.365 : Backup Server: Creating Backup Connection
+2017-05-10 15:21:42.366 : New connection with client: /127.0.0.1:53321
+2017-05-10 15:21:50.643  - Client: /127.0.0.1:53321 - Message: Client disconnected
+2017-05-10 15:22:00.060 : Backup Server: Creating Backup Connection
+2017-05-10 15:22:00.060 : New connection with client: /127.0.0.1:53325
+2017-05-10 15:22:02.955  - Client: /127.0.0.1:53325 - Message: Client disconnected
+2017-05-10 15:34:27.573 : Backup Server: Creating Backup Connection
+2017-05-10 15:34:27.573 : New connection with client: /127.0.0.1:53359
+2017-05-10 15:34:36.545  - Client: /127.0.0.1:53359 - Message: Client disconnected
+2017-05-10 15:35:30.993 : Backup Server: Creating Backup Connection
+2017-05-10 15:35:30.994 : New connection with client: /127.0.0.1:53364
+2017-05-10 15:37:09.107  - Client: /127.0.0.1:53364 - Message: Client disconnected
+2017-05-10 15:37:12.621 : Backup Server: Creating Backup Connection
+2017-05-10 15:37:12.622 : New connection with client: /127.0.0.1:53368

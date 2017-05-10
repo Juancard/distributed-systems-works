@@ -1,17 +1,27 @@
 package Tp2.Ex07.Common;
 
+import java.io.Serializable;
+
 /**
  * User: juan
  * Date: 08/05/17
  * Time: 15:02
  */
-public class User {
+public class User implements Serializable{
     private String username;
     private String password;
 
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 
     @Override

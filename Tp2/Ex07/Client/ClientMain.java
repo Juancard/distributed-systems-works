@@ -40,7 +40,7 @@ public class ClientMain {
     private void start() {
         this.connectToServer();
         CommonMain.showWelcomeMessage(this.properties);
-        //this.showLogin();
+        this.showLogin();
         this.handleMainOptions();
     }
 
@@ -61,6 +61,7 @@ public class ClientMain {
             String password = this.scanner.nextLine();
             try {
                 this.fileClient.login(username, password);
+                isLogged = true;
             } catch (LoginException e) {
                 CommonMain.display(e.getMessage());
             }

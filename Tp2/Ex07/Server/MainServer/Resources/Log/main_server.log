@@ -47,3 +47,93 @@
 2017-05-10 15:37:12.619 : Main Server: Creating Server Thread
 2017-05-10 15:37:12.622 : New connection with client: /127.0.0.1:60620
 2017-05-10 15:37:19.121  - Client: /127.0.0.1:60620 - Message: LOGIN
+2017-05-10 16:18:43.889 : Listening on port: 5027...
+2017-05-10 16:19:19.289 : Listening on port: 5027...
+2017-05-10 16:21:33.631 : Listening on port: 5027...
+2017-05-10 16:21:49.147 : Listening on port: 5027...
+2017-05-10 16:22:14.806 : Listening on port: 5027...
+2017-05-10 16:29:18.798 : Main Server: Creating Server Thread
+2017-05-10 16:29:18.821 : New connection with client: /127.0.0.1:60788
+2017-05-10 16:29:21.708  - Client: /127.0.0.1:60788 - Message: Client disconnected
+2017-05-10 16:29:25.530 : Listening on port: 5027...
+2017-05-10 16:29:59.053 : Listening on port: 5027...
+2017-05-10 16:31:03.308 : Main Server: Creating Server Thread
+2017-05-10 16:31:03.323 : New connection with client: /127.0.0.1:60801
+2017-05-10 16:31:05.158  - Client: /127.0.0.1:60801 - Message: Client disconnected
+2017-05-10 16:31:08.939 : Listening on port: 5027...
+2017-05-10 16:31:50.274 : Main Server: Creating Server Thread
+2017-05-10 16:31:50.287 : New connection with client: /127.0.0.1:60805
+2017-05-10 16:31:51.532  - Client: /127.0.0.1:60805 - Message: Client disconnected
+2017-05-10 16:31:55.235 : Listening on port: 5027...
+2017-05-10 18:32:14.818 : Main Server: Creating Server Thread
+2017-05-10 18:32:14.868 : New connection with client: /127.0.0.1:32921
+2017-05-10 18:32:17.865  - Client: /127.0.0.1:32921 - Message: Client disconnected
+2017-05-10 18:35:45.373 : Main Server: Creating Server Thread
+2017-05-10 18:35:45.376 : New connection with client: /127.0.0.1:32937
+2017-05-10 18:35:48.433  - Client: /127.0.0.1:32937 - Message: Client disconnected
+2017-05-10 20:15:37.418 : Listening on port: 5027...
+2017-05-10 20:15:42.711 : Main Server: Creating Server Thread
+2017-05-10 20:15:42.769 : New connection with client: /127.0.0.1:33199
+2017-05-10 20:15:48.844  - Client: /127.0.0.1:33199 - Message: LOGIN
+2017-05-10 20:19:10.172 : Listening on port: 5027...
+2017-05-10 20:19:15.493 : Main Server: Creating Server Thread
+2017-05-10 20:19:15.510 : New connection with client: /127.0.0.1:33208
+2017-05-10 20:19:20.681  - Client: /127.0.0.1:33208 - Message: LOGIN
+2017-05-10 20:21:19.220 : Listening on port: 5027...
+2017-05-10 20:21:24.436 : Main Server: Creating Server Thread
+2017-05-10 20:21:24.468 : New connection with client: /127.0.0.1:33216
+2017-05-10 20:21:27.067  - Client: /127.0.0.1:33216 - Message: LOGIN
+2017-05-10 20:22:01.904 : Listening on port: 5027...
+2017-05-10 20:22:21.380 : Main Server: Creating Server Thread
+2017-05-10 20:22:21.398 : New connection with client: /127.0.0.1:33222
+2017-05-10 20:22:24.352  - Client: /127.0.0.1:33222 - Message: LOGIN
+2017-05-10 20:23:01.812 : Listening on port: 5027...
+2017-05-10 20:23:30.004 : Main Server: Creating Server Thread
+2017-05-10 20:23:30.023 : New connection with client: /127.0.0.1:33227
+2017-05-10 20:23:34.093  - Client: /127.0.0.1:33227 - Message: LOGIN
+2017-05-10 20:23:51.520 : Listening on port: 5027...
+2017-05-10 20:23:55.734 : Main Server: Creating Server Thread
+2017-05-10 20:23:55.758 : New connection with client: /127.0.0.1:33231
+2017-05-10 20:23:59.253  - Client: /127.0.0.1:33231 - Message: LOGIN
+2017-05-10 20:26:46.739 : Listening on port: 5027...
+2017-05-10 20:26:51.568 : Main Server: Creating Server Thread
+2017-05-10 20:26:51.591 : New connection with client: /127.0.0.1:33238
+2017-05-10 20:26:55.723  - Client: /127.0.0.1:33238 - Message: LOGIN
+2017-05-10 20:28:35.294 : Listening on port: 5027...
+2017-05-10 20:28:40.373 : Main Server: Creating Server Thread
+2017-05-10 20:28:40.391 : New connection with client: /127.0.0.1:33247
+2017-05-10 20:28:44.428  - Client: /127.0.0.1:33247 - Message: LOGIN
+2017-05-10 20:32:06.069 : Listening on port: 5027...
+2017-05-10 20:32:10.900 : Main Server: Creating Server Thread
+2017-05-10 20:32:10.918 : New connection with client: /127.0.0.1:33261
+2017-05-10 20:32:14.027  - Client: /127.0.0.1:33261 - Message: LOGIN
+2017-05-10 20:32:41.698 : Listening on port: 5027...
+2017-05-10 20:32:46.087 : Main Server: Creating Server Thread
+2017-05-10 20:32:46.110 : New connection with client: /127.0.0.1:33266
+2017-05-10 20:32:48.439  - Client: /127.0.0.1:33266 - Message: LOGIN
+2017-05-10 20:34:23.706 : Listening on port: 5027...
+2017-05-10 20:34:28.033 : Main Server: Creating Server Thread
+2017-05-10 20:34:28.050 : New connection with client: /127.0.0.1:33273
+2017-05-10 20:34:30.493  - Client: /127.0.0.1:33273 - Message: LOGIN
+2017-05-10 20:35:55.286  - Client: /127.0.0.1:33273 - Message: Client disconnected
+2017-05-10 20:35:57.982 : Main Server: Creating Server Thread
+2017-05-10 20:35:57.988 : New connection with client: /127.0.0.1:33278
+2017-05-10 20:36:11.709  - Client: /127.0.0.1:33278 - Message: LOGIN
+2017-05-10 20:36:17.222  - Client: /127.0.0.1:33278 - Message: LOGIN
+2017-05-10 20:45:22.925 : Listening on port: 5027...
+2017-05-10 20:45:28.784 : Main Server: Creating Server Thread
+2017-05-10 20:45:28.800 : New connection with client: /127.0.0.1:33302
+2017-05-10 20:45:31.826  - Client: /127.0.0.1:33302 - Message: LOGIN
+2017-05-10 20:45:37.035  - Client: /127.0.0.1:33302 - Message: LOGIN
+2017-05-10 20:45:44.936  - Client: /127.0.0.1:33302 - Message: LOGIN
+2017-05-10 20:45:51.323  - Client: /127.0.0.1:33302 - Message: LOGIN
+2017-05-10 20:47:35.303  - Client: /127.0.0.1:33302 - Message: Client disconnected
+2017-05-10 20:47:38.257 : Main Server: Creating Server Thread
+2017-05-10 20:47:38.260 : New connection with client: /127.0.0.1:33308
+2017-05-10 20:47:43.131  - Client: /127.0.0.1:33308 - Message: LOGIN
+2017-05-10 20:47:50.461  - Client: /127.0.0.1:33308 - Message: LOGIN
+2017-05-10 20:48:44.262 : Listening on port: 5027...
+2017-05-10 20:48:49.406 : Main Server: Creating Server Thread
+2017-05-10 20:48:49.424 : New connection with client: /127.0.0.1:33317
+2017-05-10 20:48:52.755  - Client: /127.0.0.1:33317 - Message: LOGIN
+2017-05-10 20:48:57.919  - Client: /127.0.0.1:33317 - Message: LOGIN

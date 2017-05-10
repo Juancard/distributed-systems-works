@@ -2,10 +2,8 @@ package Tp2.Ex07.Client;
 
 import Common.CommonMain;
 import Common.PropertiesManager;
-import Tp2.Ex01.Client.RunFileClient;
-import Tp2.Ex07.Common.User;
+import Tp2.Ex07.Common.LoginException;
 
-import javax.security.auth.login.LoginException;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.Scanner;
@@ -61,9 +59,10 @@ public class ClientMain {
             String password = this.scanner.nextLine();
             try {
                 this.fileClient.login(username, password);
+                CommonMain.display("Success: User has logged in");
                 isLogged = true;
             } catch (LoginException e) {
-                CommonMain.display(e.getMessage());
+                CommonMain.display("Error: " + e.getMessage());
             }
         }
 

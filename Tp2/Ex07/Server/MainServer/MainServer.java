@@ -6,6 +6,10 @@ import Tp2.Ex01.Common.FileClient;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 /**
  * User: juan
@@ -14,8 +18,11 @@ import java.net.Socket;
  */
 public class MainServer extends Tp2.Ex01.Server.MainServer.MainServer {
 
-    public MainServer(int port, ServerInfo backupServer, String filesPath, String logPath) throws IOException {
+    private String databaseUrl;
+
+    public MainServer(int port, ServerInfo backupServer, String databaseUrl, String filesPath, String logPath) throws IOException {
         super(port, backupServer, filesPath, logPath);
+        this.databaseUrl = databaseUrl;
     }
 
     protected Runnable newRunnable(Socket connection){
@@ -27,6 +34,7 @@ public class MainServer extends Tp2.Ex01.Server.MainServer.MainServer {
         return new MainServerConnection(
                 socketConnection,
                 backupConnection,
+                this.databaseUrl,
                 this.fileManager,
                 this.logManager
         );

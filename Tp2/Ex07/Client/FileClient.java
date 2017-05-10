@@ -1,9 +1,8 @@
 package Tp2.Ex07.Client;
 
 import Tp2.Ex07.Common.FileProtocol;
+import Tp2.Ex07.Common.LoginException;
 import Tp2.Ex07.Common.User;
-
-import javax.security.auth.login.LoginException;
 
 /**
  * User: juan

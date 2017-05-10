@@ -13,13 +13,21 @@ import java.util.Properties;
 public class RunMainServer extends Tp2.Ex01.Server.MainServer.RunMainServer{
 
     public static final String PROPERTIES_PATH = "distributed-systems-works/Tp2/Ex07/config.properties";
+    private String databaseUrl;
 
     public RunMainServer(Properties properties) throws IOException {
         super(properties);
+        this.databaseUrl = properties.getProperty("DB_URL");
     }
 
     protected void run() throws IOException {
-        MainServer mainServer = new MainServer(this.serverPort, this.backupServerInfo, this.filesPath, this.logFilePath);
+        MainServer mainServer = new MainServer(
+                this.serverPort,
+                this.backupServerInfo,
+                this.databaseUrl,
+                this.filesPath,
+                this.logFilePath
+        );
         mainServer.startServer();
     }
 

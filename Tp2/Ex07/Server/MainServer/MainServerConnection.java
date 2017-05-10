@@ -5,9 +5,13 @@ import Common.FileManager;
 import Common.Socket.SocketConnection;
 import Tp2.Ex01.Common.FileClient;
 import Tp2.Ex01.Server.Common.LogManager;
+import Tp2.Ex07.Common.LoginException;
 import Tp2.Ex07.Common.User;
+import Tp2.Ex07.Server.MainServer.Database.DatabaseManager;
+import Tp2.Ex07.Server.MainServer.Database.UserHandler;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * User: juan
@@ -16,8 +20,11 @@ import java.io.IOException;
  */
 public class MainServerConnection extends Tp2.Ex01.Server.MainServer.MainServerConnection{
 
-    public MainServerConnection(SocketConnection clientConnection, FileClient backupConnection, FileManager fileManager, LogManager logManager) {
+    private DatabaseManager databaseManager;
+
+    public MainServerConnection(SocketConnection clientConnection, FileClient backupConnection, String databaseUrl, FileManager fileManager, LogManager logManager) {
         super(clientConnection, backupConnection, fileManager, logManager);
+        this.databaseManager = new DatabaseManager(databaseUrl);
     }
 
     // This is what gets called from parent class on RUN.
@@ -47,20 +54,33 @@ public class MainServerConnection extends Tp2.Ex01.Server.MainServer.MainServerC
         } else if (request.equals(FileProtocol.LOGIN)){
             out = this.login();
         }
-
         return out;
     }
 
-    public boolean login() {
-        User userLogged = null;
-        try {
-            userLogged = (User) this.readFromClient();
+    public Object login() throws SQLException, IOException, ClassNotFoundException {
+        User givenUser = (User) this.readFromClient();
+        String username = givenUser.getUsername();
+        String pass = givenUser.getPassword();
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        UserHandler userHandler = new UserHandler(this.databaseManager.getConnection());
+
+        // username exists?
+        if (!(userHandler.userExists(username)))
+            return new LoginException("User '" + username + "' does not exists.");
+
+        // password is correct?
+        if (!(userHandler.isValidUserAndPass(username, pass)))
+            return new LoginException("Wrong password for user '" + username + "'.");
+
+        return true;
+    }
+
+    public void close(){
+        super.close();
+        try {
+            this.databaseManager.closeConnection();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-        return true;
     }
 }

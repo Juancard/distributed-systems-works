@@ -31,14 +31,27 @@ public class BackupAccountManager extends AccountsManager{
 
     private boolean backupPost(TextFile textFile){
         FileClient fileClient = new FileClient(this.backupHost, this.backupPort);
-        boolean result = fileClient.post(textFile.getName(), textFile.getContent());
-        fileClient.close();
-        return result;
+        boolean result = false;
+        try {
+            result = fileClient.post(textFile.getName(), textFile.getContent());
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = false;
+        } finally {
+            fileClient.close();
+            return result;
+        }
     }
 
     public TextFile get(String owner){
         FileClient fileClient = new FileClient(this.backupHost, this.backupPort);
-        String content = fileClient.get(owner);
+        String content = null;
+        try {
+            content = fileClient.get(owner);
+        } catch (Exception e) {
+            e.printStackTrace();
+           content = "";
+        }
         fileClient.close();
         return new TextFile(owner, content);
     }

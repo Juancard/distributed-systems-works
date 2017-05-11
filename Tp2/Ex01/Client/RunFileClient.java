@@ -67,18 +67,26 @@ public class RunFileClient {
     }
 
     private static void handleFilesAvailable() {
-        String[] filesAvailable = myFileClient.dir();
-        for (String fileName : filesAvailable)
-            CommonMain.display(fileName);
+        try {
+            String[] filesAvailable = myFileClient.dir();
+            for (String fileName : filesAvailable)
+                CommonMain.display(fileName);
+        } catch (Exception e) {
+            CommonMain.display(e.getMessage());
+        }
+
     }
 
     private static void handleGetFile() {
         System.out.print("Enter File Name: ");
         String fileName = sc.nextLine();
-        String fileContent = myFileClient.get(fileName);
-
-        CommonMain.display("File name: " + fileName);
-        CommonMain.display("Content: " + fileContent);
+        try {
+            String fileContent = myFileClient.get(fileName);
+            CommonMain.display("File name: " + fileName);
+            CommonMain.display("Content: " + fileContent);
+        } catch (Exception e) {
+            CommonMain.display(e.getMessage());
+        }
     }
 
     private static void handlePostFile() {
@@ -86,20 +94,28 @@ public class RunFileClient {
         String fileName = sc.nextLine();
         System.out.print("Enter File content: ");
         String fileContent = sc.nextLine();
-        if (myFileClient.post(fileName, fileContent))
-            CommonMain.display("File successfully created");
-        else
-            CommonMain.display("File could not be added. Try again later.");
+        try {
+            if (myFileClient.post(fileName, fileContent))
+                CommonMain.display("File successfully created");
+            else
+                CommonMain.display("File could not be added. Try again later.");
+        } catch (Exception e) {
+            CommonMain.display(e.getMessage());
+        }
     }
 
     private static void handleDelFile() {
         System.out.print("Enter File Name: ");
         String fileName = sc.nextLine();
 
-        if (myFileClient.del(fileName))
-            CommonMain.display("File successfully deleted");
-        else
-            CommonMain.display("File could not be deleted. Try again later.");
+        try {
+            if (myFileClient.del(fileName))
+                CommonMain.display("File successfully deleted");
+            else
+                CommonMain.display("File could not be deleted. Try again later.");
+        } catch (Exception e) {
+            CommonMain.display(e.getMessage());
+        }
     }
 
     public static void showMain(){

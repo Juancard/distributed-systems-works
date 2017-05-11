@@ -14,28 +14,48 @@ public class FileClient extends SocketConnection {
         super(host, port);
     }
 
-    public boolean post(String fileName, String fileContent) {
+    public boolean post(String fileName, String fileContent) throws Exception{
         this.send(FileProtocol.POST);
         this.send(new TextFile(fileName, fileContent));
-        return (Boolean) this.read();
+
+        Object in = this.read();
+        if (in instanceof Exception)
+            throw (Exception) in;
+
+        return (Boolean) in;
     }
 
-    public boolean del(String fileName) {
+    public boolean del(String fileName) throws Exception {
         this.send(FileProtocol.DEL);
         this.send(fileName);
-        return (Boolean) this.read();
+
+        Object in = this.read();
+        if (in instanceof Exception)
+            throw (Exception) in;
+
+        return (Boolean) in;
     }
 
-    public String get(String fileName) {
+    public String get(String fileName) throws Exception {
         this.send(FileProtocol.GET);
         this.send(fileName);
-        TextFile textFile = (TextFile) this.read();
+
+        Object in = this.read();
+        if (in instanceof Exception)
+            throw (Exception) in;
+
+        TextFile textFile = (TextFile) in;
         return textFile.getContent();
     }
 
-    public String[] dir() {
+    public String[] dir() throws Exception {
         this.send(FileProtocol.DIR);
-        return (String[]) this.read();
+
+        Object in = this.read();
+        if (in instanceof Exception)
+            throw (Exception) in;
+
+        return (String[]) in;
     }
 
     public Object read(){

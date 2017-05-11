@@ -3,6 +3,7 @@ package Tp2.Ex07.Client;
 import Common.CommonMain;
 import Common.PropertiesManager;
 import Tp2.Ex07.Common.LoginException;
+import Tp2.Ex07.Common.PermissionException;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -79,11 +80,11 @@ public class ClientMain {
                 salir = true;
             } else if (opcion.equals("1")){
                 CommonMain.createSection("List files");
-                handleFilesAvailable();
+                //handleFilesAvailable();
                 CommonMain.pause();
             } else if (opcion.equals("2")){
                 CommonMain.createSection("Get a file");
-                handleGetFile();
+                //handleGetFile();
                 CommonMain.pause();
             } else if (opcion.equals("3")){
                 CommonMain.createSection("Post a file");
@@ -91,13 +92,13 @@ public class ClientMain {
                 CommonMain.pause();
             } else if (opcion.equals("4")){
                 CommonMain.createSection("Delete a file");
-                handleDelFile();
+                //handleDelFile();
                 CommonMain.pause();
             }
         }
         this.fileClient.close();
     }
-
+                          /*
     private void handleFilesAvailable() {
         String[] filesAvailable = this.fileClient.dir();
         for (String fileName : filesAvailable)
@@ -112,18 +113,22 @@ public class ClientMain {
         CommonMain.display("File name: " + fileName);
         CommonMain.display("Content: " + fileContent);
     }
-
+                           */
     private void handlePostFile() {
         System.out.print("Enter File Name: ");
         String fileName = this.scanner.nextLine();
         System.out.print("Enter File content: ");
         String fileContent = this.scanner.nextLine();
-        if (this.fileClient.post(fileName, fileContent))
-            CommonMain.display("File successfully created");
-        else
-            CommonMain.display("File could not be added. Try again later.");
+        try {
+            if (this.fileClient.post(fileName, fileContent))
+                CommonMain.display("File successfully created");
+            else
+                CommonMain.display("File could not be added. Try again later.");
+        } catch (PermissionException e) {
+            CommonMain.display("Error with user permissions: " + e.getMessage());
+        }
     }
-
+                        /*
     private void handleDelFile() {
         System.out.print("Enter File Name: ");
         String fileName = this.scanner.nextLine();
@@ -133,7 +138,7 @@ public class ClientMain {
         else
             CommonMain.display("File could not be deleted. Try again later.");
     }
-
+                        */
     public void showMain(){
         CommonMain.createSection("Main");
         System.out.println("1 - List files");

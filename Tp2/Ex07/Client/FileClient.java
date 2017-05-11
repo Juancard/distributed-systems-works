@@ -1,7 +1,9 @@
 package Tp2.Ex07.Client;
 
+import Common.TextFile;
 import Tp2.Ex07.Common.FileProtocol;
 import Tp2.Ex07.Common.LoginException;
+import Tp2.Ex07.Common.PermissionException;
 import Tp2.Ex07.Common.User;
 
 /**
@@ -10,8 +12,6 @@ import Tp2.Ex07.Common.User;
  * Time: 15:21
  */
 public class FileClient extends Tp2.Ex01.Common.FileClient {
-
-    private User loggedUser;
 
     public FileClient(String host, int port) {
         super(host, port);
@@ -26,5 +26,17 @@ public class FileClient extends Tp2.Ex01.Common.FileClient {
         if (loginResult instanceof LoginException){
             throw (LoginException) loginResult;
         }
+    }
+
+    @Override
+    public boolean post(String fileName, String fileContent) throws PermissionException {
+        this.send(FileProtocol.POST);
+        this.send(new TextFile(fileName, fileContent));
+        Object in = this.read();
+
+        if (in instanceof PermissionException)
+            throw (PermissionException) in;
+
+        return (Boolean) in;
     }
 }

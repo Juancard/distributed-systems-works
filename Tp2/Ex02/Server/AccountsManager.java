@@ -1,5 +1,6 @@
 package Tp2.Ex02.Server;
 
+import Common.FileException;
 import Common.FileManager;
 import Common.TextFile;
 import Tp2.Ex02.Common.BankException;
@@ -29,8 +30,9 @@ public class AccountsManager extends FileManager{
         } catch (IOException e) {
             e.printStackTrace();
             throw new BankException("Could not get username account: " + e.getMessage());
+        } catch (FileException e) {
+            throw new BankException("Could not get username account: " + e.getMessage());
         }
-
     }
 
     public boolean hasAccount(String owner){

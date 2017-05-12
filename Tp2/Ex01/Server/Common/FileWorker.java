@@ -1,5 +1,6 @@
 package Tp2.Ex01.Server.Common;
 
+import Common.FileException;
 import Common.FileManager;
 import Common.Socket.MyCustomWorker;
 import Common.Socket.SocketConnection;
@@ -63,12 +64,24 @@ public class FileWorker extends MyCustomWorker {
 
     protected Object get() throws IOException, ClassNotFoundException {
         String fileName = this.readFromClient().toString();
-        return fileManager.get(fileName);
+        Object out;
+        try {
+            out =  fileManager.get(fileName);
+        } catch (FileException e) {
+            this.display(e.getMessage());
+            out = e;
+        }
+        return out;
     }
 
-    protected boolean del() throws IOException, ClassNotFoundException {
+    protected Object del() throws IOException, ClassNotFoundException {
         String fileName = this.readFromClient().toString();
-        return fileManager.del(fileName);
+        try {
+            return fileManager.del(fileName);
+        } catch (FileException e) {
+            this.display(e.getMessage());
+            return e;
+        }
     }
 
     protected boolean post() throws IOException, ClassNotFoundException {

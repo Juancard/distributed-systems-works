@@ -163,3 +163,7 @@
 2017-05-11 18:35:31.235 : New connection with client: /127.0.0.1:55956
 2017-05-11 18:35:33.428  - Client: /127.0.0.1:55956 - Message: LOGIN
 2017-05-11 18:35:36.468  - Client: /127.0.0.1:55956 - Message: POST
+2017-05-11 21:43:08.516 : Listening on port: 5027...
+2017-05-11 21:43:19.105 : Main Server: Creating Server Thread
+2017-05-11 21:43:19.139 : New connection with client: /127.0.0.1:56539
+2017-05-11 21:43:25.336  - Client: /127.0.0.1:56539 - Message: LOGIN

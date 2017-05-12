@@ -110,3 +110,6 @@
 2017-05-11 18:35:24.605  - Client: /127.0.0.1:40912 - Message: Client disconnected
 2017-05-11 18:35:31.232 : Backup Server: Creating Backup Connection
 2017-05-11 18:35:31.232 : New connection with client: /127.0.0.1:40919
+2017-05-11 21:43:01.646 : Listening on port: 5127...
+2017-05-11 21:43:19.125 : Backup Server: Creating Backup Connection
+2017-05-11 21:43:19.141 : New connection with client: /127.0.0.1:41502

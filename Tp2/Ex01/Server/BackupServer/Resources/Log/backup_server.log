@@ -56,3 +56,10 @@
 2017-05-08 17:16:09.421  - Client: /127.0.0.1:33352 - Message: POST
 2017-05-08 17:16:26.198  - Client: /127.0.0.1:33352 - Message: DEL
 2017-05-08 17:16:33.532  - Client: /127.0.0.1:33352 - Message: Client disconnected
+2017-05-11 21:29:08.063 : Listening on port: 5121...
+2017-05-11 21:29:30.172 : Backup Server: Creating Backup Connection
+2017-05-11 21:29:30.210 : New connection with client: /127.0.0.1:59217
+2017-05-11 21:38:53.039 : Listening on port: 5121...
+2017-05-11 21:39:01.960 : Backup Server: Creating Backup Connection
+2017-05-11 21:39:01.972 : New connection with client: /127.0.0.1:59230
+2017-05-11 21:42:44.801  - Client: /127.0.0.1:59230 - Message: Client disconnected

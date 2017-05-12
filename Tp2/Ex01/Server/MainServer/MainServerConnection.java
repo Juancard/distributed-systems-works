@@ -1,5 +1,6 @@
 package Tp2.Ex01.Server.MainServer;
 
+import Common.FileException;
 import Common.PropertiesManager;
 import Tp2.Ex01.Common.FileClient;
 import Common.TextFile;
@@ -25,16 +26,21 @@ public class MainServerConnection extends FileWorker implements Runnable {
         this.backupConnection = backupConnection;
     }
 
-    protected boolean del() throws IOException, ClassNotFoundException {
+    protected Object del() throws IOException, ClassNotFoundException {
         String fileName = this.readFromClient().toString();
-        boolean delResult = fileManager.del(fileName);
-        if (delResult) try {
-            backupConnection.del(fileName);
+        try {
+            boolean delResult = fileManager.del(fileName);
+            if (delResult)
+                delResult = backupConnection.del(fileName);
+            return delResult;
+        } catch(FileException e){
+            this.display(e.getMessage());
+            return e;
         } catch (Exception e) {
             e.printStackTrace();
+            this.display(e.getMessage());
             return false;
         }
-        return delResult;
     }
 
     protected boolean post() throws IOException, ClassNotFoundException {
@@ -44,6 +50,7 @@ public class MainServerConnection extends FileWorker implements Runnable {
             backupConnection.post(textFile.getName(), textFile.getContent());
         } catch (Exception e) {
             e.printStackTrace();
+            this.display(e.getMessage());
             return false;
         }
         return postResult;

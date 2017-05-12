@@ -25,10 +25,11 @@ public class FileManager {
     }
 
 
-    public synchronized TextFile get(String fileName) throws IOException {
+    public synchronized TextFile get(String fileName) throws IOException, FileException {
         File[] filesFoundWithName = this.getFilesByName(fileName);
         if (filesFoundWithName.length <= 0)
-            return new TextFile(fileName, "");
+            throw new FileException("No files for given filename");
+
         return new TextFile(fileName, this.getFileContent(filesFoundWithName[0]));
     }
 
@@ -38,11 +39,12 @@ public class FileManager {
     }
 
 
-    public synchronized boolean del(String fileName) {
+    public synchronized boolean del(String fileName) throws FileException {
         File[] filesFound = this.getFilesByName(fileName);
-        if (filesFound.length > 0)
-            return filesFound[0].delete();
-        return true;
+        if (filesFound.length <= 0)
+            throw new FileException("No files for given filename");
+
+        return filesFound[0].delete();
     }
 
     public synchronized boolean exists(String fileName){

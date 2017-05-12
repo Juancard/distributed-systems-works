@@ -1,5 +1,6 @@
 package Tp2.Ex01.Common;
 
+import Common.FileException;
 import Common.TextFile;
 import Common.Socket.SocketConnection;
 
@@ -52,6 +53,8 @@ public class FileClient extends SocketConnection {
         this.send(FileProtocol.DIR);
 
         Object in = this.read();
+        if (in instanceof FileException)
+            throw (FileException) in;
         if (in instanceof Exception)
             throw (Exception) in;
 

@@ -5,3 +5,4 @@
 2017-05-12 18:11:50.882  - Client: /127.0.0.1:45603 - Message: LOGIN
 2017-05-12 18:11:50.896  - Client: /127.0.0.1:45603 - Message: User trying to log: User{username='admin', password='admin'}
 2017-05-12 18:11:50.898  - Client: /127.0.0.1:45603 - Message: User logged successfully: User{username='admin', password='admin'}
+2017-05-12 18:27:56.191 : Listening on port: 6027...

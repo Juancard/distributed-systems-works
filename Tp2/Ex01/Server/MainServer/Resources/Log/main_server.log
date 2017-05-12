@@ -1,98 +1,21 @@
-2017-04-21 18:09:38.091 : Listening on port: 5021...
-2017-04-21 18:09:50.249 : Main Server: Creating Server Thread
-2017-04-21 18:09:50.288 : New connection with client: /127.0.0.1:56820
-2017-04-21 18:12:45.386 : Listening on port: 5021...
-2017-04-21 18:12:57.385 : Listening on port: 5021...
-2017-04-21 18:13:03.028 : Main Server: Creating Server Thread
-2017-04-21 18:13:03.131 : New connection with client: /127.0.0.1:56831
-2017-04-21 18:15:53.132 : Listening on port: 5021...
-2017-04-21 18:15:59.213 : Main Server: Creating Server Thread
-2017-04-21 18:15:59.252 : New connection with client: /127.0.0.1:56843
-2017-04-21 18:16:01.294  - Client: /127.0.0.1:56843 - Message: DIR
-2017-04-21 18:16:45.861  - Client: /127.0.0.1:56843 - Message: GET
-2017-04-21 18:16:55.700  - Client: /127.0.0.1:56843 - Message: GET
-2017-04-21 18:17:07.749  - Client: /127.0.0.1:56843 - Message: POST
-2017-04-21 18:17:07.790  - Client: /127.0.0.1:56843 - Message: TextFile{name='lala.txt', content='lala'}
-2017-04-21 18:25:11.111 : Listening on port: 5021...
-2017-04-21 18:25:17.650 : Main Server: Creating Server Thread
-2017-04-21 18:25:17.687 : New connection with client: /127.0.0.1:56859
-2017-04-21 18:25:21.362  - Client: /127.0.0.1:56859 - Message: DIR
-2017-04-21 18:25:27.882  - Client: /127.0.0.1:56859 - Message: POST
-2017-04-21 18:25:27.924  - Client: /127.0.0.1:56859 - Message: TextFile{name='lala', content='lala'}
-2017-04-21 18:28:18.889 : Listening on port: 5021...
-2017-04-21 18:28:25.862 : Main Server: Creating Server Thread
-2017-04-21 18:28:25.906 : New connection with client: /127.0.0.1:56866
-2017-04-21 18:28:27.669  - Client: /127.0.0.1:56866 - Message: DIR
-2017-04-21 18:28:32.583  - Client: /127.0.0.1:56866 - Message: POST
-2017-04-21 18:28:35.055  - Client: /127.0.0.1:56866 - Message: DIR
-2017-04-21 18:28:41.987  - Client: /127.0.0.1:56866 - Message: GET
-2017-04-21 18:28:49.931  - Client: /127.0.0.1:56866 - Message: DEL
-2017-04-21 18:28:52.807  - Client: /127.0.0.1:56866 - Message: DIR
-2017-04-21 18:28:54.666  - Client: /127.0.0.1:56866 - Message: Client disconnected
-2017-04-21 18:32:31.251 : Listening on port: 5021...
-2017-04-21 18:32:37.102 : Main Server: Creating Server Thread
-2017-04-21 18:32:37.136 : New connection with client: /127.0.0.1:56875
-2017-04-21 18:32:39.597  - Client: /127.0.0.1:56875 - Message: Client disconnected
-2017-04-21 18:34:02.777 : Listening on port: 5021...
-2017-04-21 18:34:08.534 : Main Server: Creating Server Thread
-2017-04-21 18:34:08.568 : New connection with client: /127.0.0.1:56885
-2017-04-21 18:34:11.256  - Client: /127.0.0.1:56885 - Message: Client disconnected
-2017-04-21 18:37:36.501 : Listening on port: 5021...
-2017-04-21 18:37:44.308 : Main Server: Creating Server Thread
-2017-04-21 18:37:44.344 : New connection with client: /127.0.0.1:56894
-2017-04-21 18:37:47.011  - Client: /127.0.0.1:56894 - Message: Client disconnected
-2017-04-21 18:38:34.822 : Listening on port: 5021...
-2017-04-21 18:38:44.043 : Main Server: Creating Server Thread
-2017-04-21 18:38:44.078 : New connection with client: /127.0.0.1:56901
-2017-04-21 18:38:47.218  - Client: /127.0.0.1:56901 - Message: DIR
-2017-04-21 18:38:55.406  - Client: /127.0.0.1:56901 - Message: GET
-2017-04-21 18:39:17.485  - Client: /127.0.0.1:56901 - Message: POST
-2017-04-21 18:39:22.523  - Client: /127.0.0.1:56901 - Message: DEL
-2017-04-21 18:39:25.539  - Client: /127.0.0.1:56901 - Message: Client disconnected
-2017-05-08 16:32:29.476 : Listening on port: 5021...
-2017-05-08 16:32:53.941 : Main Server: Creating Server Thread
-2017-05-08 16:32:54.031 : New connection with client: /127.0.0.1:57396
-2017-05-08 16:33:05.044  - Client: /127.0.0.1:57396 - Message: DIR
-2017-05-08 16:33:24.510  - Client: /127.0.0.1:57396 - Message: GET
-2017-05-08 16:33:32.123  - Client: /127.0.0.1:57396 - Message: Client disconnected
-2017-05-08 16:39:59.506 : Listening on port: 5021...
-2017-05-08 16:40:31.471 : Main Server: Creating Server Thread
-2017-05-08 16:40:31.493 : New connection with client: /127.0.0.1:57410
-2017-05-08 16:40:51.807  - Client: /127.0.0.1:57410 - Message: POST
-2017-05-08 16:49:12.701 : Listening on port: 5021...
-2017-05-08 16:49:26.284 : Main Server: Creating Server Thread
-2017-05-08 16:49:26.310 : New connection with client: /127.0.0.1:57424
-2017-05-08 16:50:56.210 : Listening on port: 5021...
-2017-05-08 16:51:07.723 : Main Server: Creating Server Thread
-2017-05-08 16:51:07.754 : New connection with client: /127.0.0.1:57494
-2017-05-08 16:52:38.550  - Client: /127.0.0.1:57494 - Message: DIR
-2017-05-08 16:52:57.225  - Client: /127.0.0.1:57494 - Message: POST
-2017-05-08 16:53:19.810  - Client: /127.0.0.1:57494 - Message: DEL
-2017-05-08 16:53:26.916  - Client: /127.0.0.1:57494 - Message: Client disconnected
-2017-05-08 16:54:39.836 : Main Server: Creating Server Thread
-2017-05-08 16:54:39.838 : New connection with client: /127.0.0.1:57498
-2017-05-08 16:54:56.019  - Client: /127.0.0.1:57498 - Message: DIR
-2017-05-08 16:54:58.257  - Client: /127.0.0.1:57498 - Message: Client disconnected
-2017-05-08 17:15:21.173 : Main Server: Creating Server Thread
-2017-05-08 17:15:21.176 : New connection with client: /127.0.0.1:57519
-2017-05-08 17:15:26.129 : Listening on port: 5021...
-2017-05-08 17:15:36.552 : Listening on port: 5021...
-2017-05-08 17:15:41.083 : Main Server: Creating Server Thread
-2017-05-08 17:15:41.114 : New connection with client: /127.0.0.1:57525
-2017-05-08 17:15:53.997  - Client: /127.0.0.1:57525 - Message: DIR
-2017-05-08 17:16:09.379  - Client: /127.0.0.1:57525 - Message: POST
-2017-05-08 17:16:12.115  - Client: /127.0.0.1:57525 - Message: DIR
-2017-05-08 17:16:26.157  - Client: /127.0.0.1:57525 - Message: DEL
-2017-05-08 17:16:29.932  - Client: /127.0.0.1:57525 - Message: DIR
-2017-05-08 17:16:33.531  - Client: /127.0.0.1:57525 - Message: Client disconnected
-2017-05-11 21:29:14.133 : Listening on port: 5021...
-2017-05-11 21:29:30.140 : Main Server: Creating Server Thread
-2017-05-11 21:29:30.205 : New connection with client: /127.0.0.1:55945
-2017-05-11 21:29:36.671  - Client: /127.0.0.1:55945 - Message: DIR
-2017-05-11 21:29:45.435  - Client: /127.0.0.1:55945 - Message: GET
-2017-05-11 21:29:54.747  - Client: /127.0.0.1:55945 - Message: GET
-2017-05-11 21:38:56.666 : Listening on port: 5021...
-2017-05-11 21:39:01.942 : Main Server: Creating Server Thread
-2017-05-11 21:39:01.973 : New connection with client: /127.0.0.1:55958
-2017-05-11 21:39:12.841  - Client: /127.0.0.1:55958 - Message: GET
-2017-05-11 21:39:17.302  - Client: /127.0.0.1:55958 - Message: GET
+2017-05-12 18:38:34.145 : Listening on port: 5021...
+2017-05-12 18:38:38.127 : Main Server: Creating Server Thread
+2017-05-12 18:38:38.150 : New connection with client: /127.0.0.1:37642
+2017-05-12 18:38:48.636  - Client: /127.0.0.1:37642 - Message: Request: DIR
+2017-05-12 18:38:48.636  - Client: /127.0.0.1:37642 - Message: Response: [Ljava.lang.String;@f265828
+2017-05-12 18:39:15.928  - Client: /127.0.0.1:37642 - Message: Request: POST
+2017-05-12 18:39:16.019  - Client: /127.0.0.1:37642 - Message: Response: true
+2017-05-12 18:39:27.681  - Client: /127.0.0.1:37642 - Message: Request: GET
+2017-05-12 18:39:27.685  - Client: /127.0.0.1:37642 - Message: Response: TextFile{name='a', content='a'}
+2017-05-12 18:39:40.286  - Client: /127.0.0.1:37642 - Message: Request: DEL
+2017-05-12 18:39:40.364  - Client: /127.0.0.1:37642 - Message: Response: true
+2017-05-12 18:39:43.923  - Client: /127.0.0.1:37642 - Message: Client disconnected
+2017-05-12 18:41:05.621 : Listening on port: 5021...
+2017-05-12 18:41:12.390 : Main Server: Creating Server Thread
+2017-05-12 18:41:12.484 : New connection with client: /127.0.0.1:37712
+2017-05-12 18:41:18.278  - Client: /127.0.0.1:37712 - Message: Request: POST
+2017-05-12 18:41:18.346  - Client: /127.0.0.1:37712 - Message: Response: Common.FileException: filename can not be an empty value
+2017-05-12 18:41:48.257  - Client: /127.0.0.1:37712 - Message: Request: GET
+2017-05-12 18:41:48.311  - Client: /127.0.0.1:37712 - Message: No files for given filename
+2017-05-12 18:41:48.311  - Client: /127.0.0.1:37712 - Message: Response: Common.FileException: No files for given filename
+2017-05-12 18:41:52.190  - Client: /127.0.0.1:37712 - Message: Client disconnected

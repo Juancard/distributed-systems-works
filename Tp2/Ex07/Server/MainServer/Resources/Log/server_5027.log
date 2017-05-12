@@ -13,3 +13,10 @@
 2017-05-12 18:12:57.517  - Client: /127.0.0.1:36959 - Message: GET
 2017-05-12 18:13:03.245  - Client: /127.0.0.1:36959 - Message: DEL
 2017-05-12 18:13:07.052  - Client: /127.0.0.1:36959 - Message: Client disconnected
+2017-05-12 18:27:56.191 : Listening on port: 5027...
+2017-05-12 18:28:04.288 : Main Server. Starting Connection
+2017-05-12 18:28:04.296 : Main Server. Connected to backup localhost/127.0.0.1:5227
+2017-05-12 18:28:04.299 : New connection with client: /127.0.0.1:36988
+2017-05-12 18:28:08.535  - Client: /127.0.0.1:36988 - Message: Request: LOGIN
+2017-05-12 18:28:08.587  - Client: /127.0.0.1:36988 - Message: User trying to log: User{username='', password=''}
+2017-05-12 18:28:08.714  - Client: /127.0.0.1:36988 - Message: Response: Tp2.Ex07.Common.LoginException: User '' does not exists.

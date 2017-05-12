@@ -22,15 +22,16 @@ public class SocketConnection {
         this.startConnection(clientSocket);
     }
 
-    public SocketConnection(String host, int port){
+    public SocketConnection(String host, int port) throws IOException {
         try {
             Socket clientSocket = new Socket(host, port);
             this.startConnection(clientSocket);
         } catch (UnknownHostException e){
-            System.out.println("UnknownHostException: Not a valid Ip and Port combination.");
-        } catch (IOException e) {
-            this.out("Error in instantiating new server thread: " + e.getMessage() + ".");
             this.close();
+            throw new UnknownHostException("Not a valid Ip and Port combination.");
+        } catch (IOException e) {
+            this.close();
+            throw new IOException(e.getMessage() + ".");
         }
     }
 
@@ -45,9 +46,19 @@ public class SocketConnection {
         }
     }
 
-    public Object read() throws IOException, ClassNotFoundException {
-        Object read = this.socketInput.readObject();
-        return read;
+    public Object read() throws ClassNotFoundException, IOException {
+        try {
+            Object read = this.socketInput.readObject();
+            return read;
+        } catch (IOException e) {
+            String m = "Error in reading from server. Cause: " + e.getMessage();
+            this.close();
+            throw new IOException(m);
+        } catch (ClassNotFoundException e) {
+            String m = "Error in reading from server. Cause: " + e.getMessage();
+            this.close();
+            throw new ClassNotFoundException(m);
+        }
     }
 
     public void send(Object toSend) {

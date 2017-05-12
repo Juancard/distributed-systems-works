@@ -26,35 +26,39 @@ public class MyCustomServer {
         this.threadsPool = new HashMap<Thread, Runnable>();
     }
 
-    public void startServer() {
+    public void startServer() throws IOException {
         this.instantiateServer();
         this.handleConnections();
     }
 
-    private void instantiateServer() {
+    private void instantiateServer() throws IOException {
         try {
             this.serverSocket = new ServerSocket(this.port);
             String toPrint = String.format("Listening on port: %d...", this.port);
             this.out(toPrint);
         } catch (IOException e) {
-            this.out("Error in creating new server socket");
+            String m = "Error in creating new server socket. Cause:" + e.getMessage();
+            this.out(m);
             this.closeServer();
+            throw new IOException(m);
         }
     }
 
-    private void handleConnections() {
+    private void handleConnections() throws IOException {
         Socket clientSocket;
         while (!this.serverSocket.isClosed()){
             try {
                 clientSocket = this.serverSocket.accept();
                 this.newConnection(clientSocket);
             } catch (IOException e) {
-                this.out("IOException: Error in establishing connection with client");
+                String m = "Error in establishing connection with client. Cause: " + e.getMessage();
+                this.out(m);
+                throw new IOException(m);
             }
         }
     }
 
-    private void newConnection(Socket clientSocket) {
+    private void newConnection(Socket clientSocket) throws IOException {
         Runnable runnable = this.newRunnable(clientSocket);
         Thread t = this.newThread(runnable);
         this.threadsPool.put(t, runnable);
@@ -68,7 +72,7 @@ public class MyCustomServer {
         return thread;
     }
 
-    protected Runnable newRunnable(Socket clientSocket){
+    protected Runnable newRunnable(Socket clientSocket) throws IOException {
         return new Runnable() {
             @Override
             public void run() {

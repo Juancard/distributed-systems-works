@@ -52,7 +52,7 @@ public class MainServerConnection extends Tp2.Ex01.Server.MainServer.MainServerC
         } else if (request.equals(FileProtocol.DEL)){
             out = this.del();
         } else if (request.equals(FileProtocol.GET)){
-            out = this.get();
+            out = this.onGet();
         } else if (request.equals(FileProtocol.DIR)){
             out = this.dir();
         } else if (request.equals(FileProtocol.LOGIN)){
@@ -79,6 +79,11 @@ public class MainServerConnection extends Tp2.Ex01.Server.MainServer.MainServerC
         this.userLogged = givenUser;
 
         return true;
+    }
+
+    private Object onGet() throws IOException, ClassNotFoundException {
+        String fileName = this.readFromClient().toString();
+        return super.get(fileName);
     }
 
     protected Object onPost() throws IOException, ClassNotFoundException, SQLException {

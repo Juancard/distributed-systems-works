@@ -85,7 +85,7 @@ public class ClientMain {
                 CommonMain.pause();
             } else if (opcion.equals("2")){
                 CommonMain.createSection("Get a file");
-                //handleGetFile();
+                handleGetFile();
                 CommonMain.pause();
             } else if (opcion.equals("3")){
                 CommonMain.createSection("Post a file");
@@ -105,16 +105,21 @@ public class ClientMain {
         for (String fileName : filesAvailable)
             CommonMain.display(fileName);
     }
-
+                           */
     private void handleGetFile() {
         System.out.print("Enter File Name: ");
         String fileName = this.scanner.nextLine();
-        String fileContent = this.fileClient.get(fileName);
-
-        CommonMain.display("File name: " + fileName);
-        CommonMain.display("Content: " + fileContent);
+        String fileContent = null;
+        try {
+            fileContent = this.fileClient.get(fileName);
+            CommonMain.display("File name: " + fileName);
+            CommonMain.display("Content: " + fileContent);
+        } catch (PermissionException e) {
+            CommonMain.display("Error with user permissions: " + e.getMessage());
+        } catch (FileException e) {
+            CommonMain.display("Error: " + e.getMessage());
+        }
     }
-                           */
     private void handlePostFile() {
         System.out.print("Enter File Name: ");
         String fileName = this.scanner.nextLine();

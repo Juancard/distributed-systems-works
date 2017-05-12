@@ -42,4 +42,19 @@ public class FileClient extends Tp2.Ex01.Common.FileClient {
 
         return (Boolean) in;
     }
+
+    @Override
+    public String get(String fileName) throws PermissionException, FileException {
+        this.send(FileProtocol.GET);
+        this.send(fileName);
+        Object in = this.read();
+
+        if (in instanceof PermissionException)
+            throw (PermissionException) in;
+        if (in instanceof FileException)
+            throw (FileException) in;
+
+        TextFile textFile = (TextFile) in;
+        return textFile.getContent();
+    }
 }

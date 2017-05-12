@@ -64,10 +64,17 @@ public class FileWorker extends MyCustomWorker {
 
     protected Object get() throws IOException, ClassNotFoundException {
         String fileName = this.readFromClient().toString();
+        return this.get(fileName);
+    }
+
+    protected Object get(String fileName) {
         Object out;
         try {
             out =  fileManager.get(fileName);
         } catch (FileException e) {
+            this.display(e.getMessage());
+            out = e;
+        } catch (IOException e) {
             this.display(e.getMessage());
             out = e;
         }

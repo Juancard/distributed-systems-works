@@ -81,7 +81,7 @@ public class ClientMain {
                 salir = true;
             } else if (opcion.equals("1")){
                 CommonMain.createSection("List files");
-                //handleFilesAvailable();
+                handleFilesAvailable();
                 CommonMain.pause();
             } else if (opcion.equals("2")){
                 CommonMain.createSection("Get a file");
@@ -99,13 +99,18 @@ public class ClientMain {
         }
         this.fileClient.close();
     }
-                          /*
+
     private void handleFilesAvailable() {
-        String[] filesAvailable = this.fileClient.dir();
-        for (String fileName : filesAvailable)
-            CommonMain.display(fileName);
+        try {
+            String[] filesAvailable = this.fileClient.dir();
+            for (String fileName : filesAvailable)
+                CommonMain.display(fileName);
+        } catch (Exception e) {
+            CommonMain.display("Error: " + e.getMessage());
+        }
+
     }
-                           */
+
     private void handleGetFile() {
         System.out.print("Enter File Name: ");
         String fileName = this.scanner.nextLine();

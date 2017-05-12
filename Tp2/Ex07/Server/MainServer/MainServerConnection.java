@@ -1,6 +1,5 @@
 package Tp2.Ex07.Server.MainServer;
 
-import Common.FileException;
 import Common.TextFile;
 import Tp2.Ex07.Common.FileProtocol;
 import Common.FileManager;
@@ -11,11 +10,14 @@ import Tp2.Ex07.Common.LoginException;
 import Tp2.Ex07.Common.PermissionException;
 import Tp2.Ex07.Common.User;
 import Tp2.Ex07.Server.MainServer.Database.DatabaseManager;
-import Tp2.Ex07.Server.MainServer.Database.UserPermissionHandler;
+import Tp2.Ex07.Server.MainServer.Database.PermissionHandler;
 import Tp2.Ex07.Server.MainServer.Database.UserHandler;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.function.Predicate;
 
 /**
  * User: juan
@@ -55,7 +57,7 @@ public class MainServerConnection extends Tp2.Ex01.Server.MainServer.MainServerC
         } else if (request.equals(FileProtocol.GET)){
             out = this.onGet();
         } else if (request.equals(FileProtocol.DIR)){
-            out = this.dir();
+            out = this.onDir();
         } else if (request.equals(FileProtocol.LOGIN)){
             out = this.login();
         }
@@ -82,13 +84,37 @@ public class MainServerConnection extends Tp2.Ex01.Server.MainServer.MainServerC
         return true;
     }
 
+    private Object onDir() throws SQLException {
+        String username = this.userLogged.getUsername();
+        PermissionHandler permissionHandler = new PermissionHandler(this.databaseManager.getConnection());
+
+        // User has get permissions?
+        boolean canDir = permissionHandler.hasAccessPermissionTo(username, PermissionHandler.PERMISSION_DIR);
+        if (!(canDir))
+            return new PermissionException(
+                    "User " +
+                            "'" + userLogged.getUsername() + "'" + " " +
+                            "is not allowed to get list of available files"
+            );
+
+        final ArrayList<String> allFiles = new ArrayList<String>(Arrays.asList(this.fileManager.dir()));
+        ArrayList<String> userFiles = permissionHandler.getFilesWithPermission(username, PermissionHandler.PERMISSION_DIR);
+
+        ArrayList<String> out = new ArrayList<String>();
+        for (String userFile : userFiles)
+            if (allFiles.contains(userFile))
+                out.add(userFile);
+
+        return out.toArray(new String[out.size()]);
+    }
+
     private Object onGet() throws IOException, ClassNotFoundException, SQLException {
         String filename = this.readFromClient().toString();
         String username = this.userLogged.getUsername();
-        UserPermissionHandler userPermissionHandler = new UserPermissionHandler(this.databaseManager.getConnection());
+        PermissionHandler permissionHandler = new PermissionHandler(this.databaseManager.getConnection());
 
         // User has get permissions?
-        boolean canGet = userPermissionHandler.hasAccessPermissionTo(username, UserPermissionHandler.PERMISSION_GET);
+        boolean canGet = permissionHandler.hasAccessPermissionTo(username, PermissionHandler.PERMISSION_GET);
         if (!(canGet))
             return new PermissionException(
                     "User " +
@@ -96,7 +122,7 @@ public class MainServerConnection extends Tp2.Ex01.Server.MainServer.MainServerC
                             "is not allowed to get files"
             );
 
-        boolean canGetFile = userPermissionHandler.hasResourcePermission(username, UserPermissionHandler.PERMISSION_GET, filename);
+        boolean canGetFile = permissionHandler.hasResourcePermission(username, PermissionHandler.PERMISSION_GET, filename);
         if (!canGetFile)
             return new PermissionException("No sufficient permissions to get this file");
 
@@ -106,10 +132,10 @@ public class MainServerConnection extends Tp2.Ex01.Server.MainServer.MainServerC
     protected Object onPost() throws IOException, ClassNotFoundException, SQLException {
         TextFile textFile = (TextFile) this.readFromClient();
         String username = this.userLogged.getUsername();
-        UserPermissionHandler userPermissionHandler = new UserPermissionHandler(this.databaseManager.getConnection());
+        PermissionHandler permissionHandler = new PermissionHandler(this.databaseManager.getConnection());
 
         // User has post permissions?
-        boolean canPost = userPermissionHandler.hasAccessPermissionTo(username, UserPermissionHandler.PERMISSION_POST);
+        boolean canPost = permissionHandler.hasAccessPermissionTo(username, PermissionHandler.PERMISSION_POST);
         if (!(canPost))
             return new PermissionException(
                 "User " +
@@ -122,7 +148,7 @@ public class MainServerConnection extends Tp2.Ex01.Server.MainServer.MainServerC
 
         // if file exists, user has to have post permission.
         if (fileExists){
-            boolean canPostFile = userPermissionHandler.hasResourcePermission(username, UserPermissionHandler.PERMISSION_POST, textFile.getName());
+            boolean canPostFile = permissionHandler.hasResourcePermission(username, PermissionHandler.PERMISSION_POST, textFile.getName());
             if (!(canPostFile))
                 return new PermissionException("User is not allowed to post file. Cause: filename already exists");
         }
@@ -135,7 +161,7 @@ public class MainServerConnection extends Tp2.Ex01.Server.MainServer.MainServerC
         boolean hasPostInDirectory = (Boolean) postResult;
         // if post is ok, save permission data in db
         if (hasPostInDirectory) {
-            boolean hasInsert = userPermissionHandler.allPermissionsToResource(username, textFile.getName());
+            boolean hasInsert = permissionHandler.allPermissionsToResource(username, textFile.getName());
             return hasInsert;
         } else return false;
     }

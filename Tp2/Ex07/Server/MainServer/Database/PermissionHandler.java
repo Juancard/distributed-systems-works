@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * Date: 11/05/17
  * Time: 17:21
  */
-public class UserPermissionHandler {
+public class PermissionHandler {
     public static final String TBL_PERMISSION = "PERMISSION";
     public static final String ATTRIB_PERMISSION_NAME = "permission_name";
     public static final String ATTRIB_PERMISSION_ID = "permission_id";
@@ -27,7 +27,7 @@ public class UserPermissionHandler {
 
     private Connection dbConnection;
 
-    public UserPermissionHandler(Connection dbConnection){
+    public PermissionHandler(Connection dbConnection){
         this.dbConnection = dbConnection;
     }
 
@@ -55,6 +55,8 @@ public class UserPermissionHandler {
         while (resultSet.next()) {
             permissions.add(resultSet.getString(ATTRIB_PERMISSION_NAME));
         }
+
+        resultSet.close(); st.close();
         return permissions;
     }
 
@@ -82,6 +84,8 @@ public class UserPermissionHandler {
         while (resultSet.next()) {
             permissions.add(resultSet.getString(ATTRIB_PERMISSION_NAME));
         }
+
+        resultSet.close(); st.close();
         return permissions;
     }
 
@@ -109,7 +113,7 @@ public class UserPermissionHandler {
                 ");";
         System.out.println("Query: " + query);
 
-        int result = st.executeUpdate(query);
+        int result = st.executeUpdate(query); st.close();
         return result == 1; // 1 means: one row updated
     }
 
@@ -125,5 +129,38 @@ public class UserPermissionHandler {
         hasDir = hasDir || this.insertResourcePermission(username, PERMISSION_DIR, filename);
 
         return hasPost && hasGet && hasDel && hasDir;
+    }
+
+    public ArrayList<String> getFilesWithPermission(String username, String permission) throws SQLException {
+        Statement st = this.dbConnection.createStatement();
+
+        String query = "SELECT " + ATTRIB_FILENAME +
+                " FROM " + TBL_RESOURCE_PERMISSION + " rp " +
+                    "WHERE EXISTS (" +
+                        "SELECT * FROM " + UserHandler.TBL_NAME + " u " +
+                            "WHERE " +
+                                "rp." + UserHandler.ATTRIB_ID + "=u." + UserHandler.ATTRIB_ID +
+                                " AND " +
+                                UserHandler.ATTRIB_USERNAME + "='" + username + "'" +
+                        ") " +
+                    "AND " +
+                    "EXISTS (" +
+                        "SELECT * FROM " + TBL_PERMISSION + " p " +
+                            "WHERE " +
+                            "rp." + ATTRIB_PERMISSION_ID + "=p." + ATTRIB_PERMISSION_ID +
+                            " AND " + ATTRIB_PERMISSION_NAME + "='" + permission + "'" +
+                    ");";
+
+        System.out.println("Query: " + query);
+
+        ResultSet resultSet = st.executeQuery(query);
+        ArrayList<String> filesname = new ArrayList<String>();
+        while (resultSet.next()){
+            filesname.add(resultSet.getString(ATTRIB_FILENAME));
+        }
+
+        resultSet.close(); st.close();
+
+        return filesname;
     }
 }

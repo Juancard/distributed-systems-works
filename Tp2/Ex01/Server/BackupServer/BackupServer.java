@@ -28,6 +28,10 @@ public class BackupServer extends FileServer implements Runnable{
 
     @Override
     public void run() {
-        this.startServer();
+        try {
+            this.startServer();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

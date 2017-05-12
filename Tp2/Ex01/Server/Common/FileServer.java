@@ -48,7 +48,7 @@ public class FileServer extends MyCustomServer{
         this.logManager = new LogManager(logPrinter);
     }
 
-    protected Runnable newRunnable(Socket connection){
+    protected Runnable newRunnable(Socket connection) throws IOException {
         return new FileWorker(new SocketConnection(connection), this.fileManager, this.logManager);
     }
 

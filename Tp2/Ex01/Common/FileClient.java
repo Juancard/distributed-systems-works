@@ -4,6 +4,8 @@ import Common.FileException;
 import Common.TextFile;
 import Common.Socket.SocketConnection;
 
+import java.io.IOException;
+
 /**
  * User: juan
  * Date: 14/03/17
@@ -11,7 +13,7 @@ import Common.Socket.SocketConnection;
  */
 public class FileClient extends SocketConnection {
 
-    public FileClient(String host, int port) {
+    public FileClient(String host, int port) throws IOException {
         super(host, port);
     }
 
@@ -59,17 +61,6 @@ public class FileClient extends SocketConnection {
             throw (Exception) in;
 
         return (String[]) in;
-    }
-
-    public Object read(){
-        try {
-            return super.read();
-        } catch (Exception e) {
-            e.printStackTrace();
-            this.out("Error in reading object from socket. Closing socket: " + this.getIdentity());
-            this.close();
-            return null;
-        }
     }
 
 }

@@ -24,11 +24,17 @@ public class MainServer extends FileServer implements Runnable{
         this.backupServer = backupServer;
     }
 
-    protected Runnable newRunnable(Socket connection){
+    protected Runnable newRunnable(Socket connection) throws IOException {
         this.out("Main Server: Creating Server Thread");
 
         SocketConnection socketConnection = new SocketConnection(connection);
-        FileClient backupConnection = new FileClient(backupServer.getHost(), backupServer.getPort());
+        FileClient backupConnection = null;
+        try {
+            backupConnection = new FileClient(backupServer.getHost(), backupServer.getPort());
+        } catch (IOException e) {
+            String m = "Could not connect to backup server. Cause: " + e.getMessage();
+            throw new IOException(m);
+        }
 
         return new MainServerConnection(
                 socketConnection,
@@ -40,6 +46,8 @@ public class MainServer extends FileServer implements Runnable{
 
     @Override
     public void run() {
-        this.startServer();
+        try {
+            this.startServer();
+        } catch (IOException e) {e.printStackTrace();}
     }
 }

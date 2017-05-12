@@ -106,8 +106,11 @@ public class MainServerConnection extends Tp2.Ex01.Server.MainServer.MainServerC
         }
 
         // post file in directory
-        boolean hasPostInDirectory = super.post(textFile);
+        Object postResult = super.post(textFile);
+        if (postResult instanceof Exception)
+            return postResult;
 
+        boolean hasPostInDirectory = (Boolean) postResult;
         // if post is ok, save permission data in db
         if (hasPostInDirectory) {
             boolean hasInsert = userPermissionHandler.allPermissionsToResource(username, textFile.getName());

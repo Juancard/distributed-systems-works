@@ -33,7 +33,9 @@ public class FileManager {
         return new TextFile(fileName, this.getFileContent(filesFoundWithName[0]));
     }
 
-    public synchronized boolean post(TextFile fileToPost) {
+    public synchronized boolean post(TextFile fileToPost) throws FileException {
+        if (fileToPost.getName().isEmpty())
+            throw new FileException("filename can not be an empty value");
         String toSaveIn = filesPath.getPath() + "/" + fileToPost.getName();
         return this.createFile(toSaveIn, fileToPost);
     }

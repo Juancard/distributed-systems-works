@@ -24,7 +24,7 @@ public class BackupAccountManager extends AccountsManager{
         this.backupPort = backupPort;
     }
 
-    public boolean add(BankAccount account){
+    public boolean add(BankAccount account) throws BankException {
         if (!super.add(account)) return false;
         return this.backupPost(this.accountToTextFile(account));
     }

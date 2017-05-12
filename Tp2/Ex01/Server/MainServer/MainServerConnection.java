@@ -43,20 +43,27 @@ public class MainServerConnection extends FileWorker implements Runnable {
         }
     }
 
-    protected boolean post() throws IOException, ClassNotFoundException {
+    protected Object post() throws IOException, ClassNotFoundException {
         TextFile textFile = (TextFile) this.readFromClient();
         return this.post(textFile);
     }
 
-    protected boolean post(TextFile textFile){
-        boolean postResult = fileManager.post(textFile);
-        if (postResult) try {
-            backupConnection.post(textFile.getName(), textFile.getContent());
+    protected Object post(TextFile textFile){
+        Object postResult;
+
+        try {
+            postResult = fileManager.post(textFile);
+            if ((Boolean) postResult)
+                postResult = backupConnection.post(textFile.getName(), textFile.getContent());
+        } catch (FileException e) {
+            this.display(e.getLocalizedMessage());
+            postResult = e;
         } catch (Exception e) {
             e.printStackTrace();
             this.display(e.getMessage());
-            return false;
+            postResult = e;
         }
+
         return postResult;
     }
 

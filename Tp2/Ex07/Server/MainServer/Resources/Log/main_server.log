@@ -221,3 +221,23 @@
 2017-05-12 00:02:08.658  - Client: /127.0.0.1:56765 - Message: POST
 2017-05-12 00:03:10.957  - Client: /127.0.0.1:56765 - Message: POST
 2017-05-12 00:03:16.325  - Client: /127.0.0.1:56765 - Message: Client disconnected
+2017-05-12 00:20:32.842 : Listening on port: 5027...
+2017-05-12 00:20:43.240 : Listening on port: 5027...
+2017-05-12 00:20:53.071 : Main Server: Creating Server Thread
+2017-05-12 00:20:53.100 : New connection with client: /127.0.0.1:56788
+2017-05-12 00:20:59.362  - Client: /127.0.0.1:56788 - Message: LOGIN
+2017-05-12 00:21:03.709  - Client: /127.0.0.1:56788 - Message: LOGIN
+2017-05-12 00:21:07.728  - Client: /127.0.0.1:56788 - Message: POST
+2017-05-12 00:21:07.773  - Client: /127.0.0.1:56788 - Message: filename can not be an empty value
+2017-05-12 00:21:08.097  - Client: /127.0.0.1:56788 - Message: Client disconnected
+2017-05-12 00:22:43.159 : Main Server: Creating Server Thread
+2017-05-12 00:22:43.163 : New connection with client: /127.0.0.1:56793
+2017-05-12 00:22:47.267  - Client: /127.0.0.1:56793 - Message: LOGIN
+2017-05-12 00:22:52.811  - Client: /127.0.0.1:56793 - Message: POST
+2017-05-12 00:22:52.853  - Client: /127.0.0.1:56793 - Message: filename can not be an empty value
+2017-05-12 00:22:53.193  - Client: /127.0.0.1:56793 - Message: Client disconnected
+2017-05-12 00:24:46.477 : Main Server: Creating Server Thread
+2017-05-12 00:24:46.479 : New connection with client: /127.0.0.1:56798
+2017-05-12 00:24:49.814  - Client: /127.0.0.1:56798 - Message: LOGIN
+2017-05-12 00:24:55.654  - Client: /127.0.0.1:56798 - Message: POST
+2017-05-12 00:24:55.692  - Client: /127.0.0.1:56798 - Message: filename can not be an empty value

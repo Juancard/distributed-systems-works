@@ -18,9 +18,13 @@ public class AccountsManager extends FileManager{
         super(filesPathString);
     }
 
-    public boolean add(BankAccount account){
+    public boolean add(BankAccount account) throws BankException {
         System.out.println("Persisting: " + account);
-        return this.post(this.accountToTextFile(account));
+        try {
+            return this.post(this.accountToTextFile(account));
+        } catch (FileException e) {
+            throw new BankException("Could not add account: " + e.getMessage());
+        }
     }
 
     public BankAccount getByOwner(String owner) throws BankException {

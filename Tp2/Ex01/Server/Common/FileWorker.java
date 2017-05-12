@@ -84,9 +84,14 @@ public class FileWorker extends MyCustomWorker {
         }
     }
 
-    protected boolean post() throws IOException, ClassNotFoundException {
+    protected Object post() throws IOException, ClassNotFoundException {
         TextFile textFile = (TextFile) this.readFromClient();
-        return fileManager.post(textFile);
+        try {
+            return fileManager.post(textFile);
+        } catch (FileException e) {
+            this.display(e.getMessage());
+            return e;
+        }
     }
 
     public void display(String message){

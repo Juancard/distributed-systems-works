@@ -1,6 +1,7 @@
 package Tp2.Ex07.Client;
 
 import Common.CommonMain;
+import Common.FileException;
 import Common.PropertiesManager;
 import Tp2.Ex07.Common.LoginException;
 import Tp2.Ex07.Common.PermissionException;
@@ -126,6 +127,8 @@ public class ClientMain {
                 CommonMain.display("File could not be added. Try again later.");
         } catch (PermissionException e) {
             CommonMain.display("Error with user permissions: " + e.getMessage());
+        } catch (FileException e) {
+            CommonMain.display("Error: " + e.getMessage());
         }
     }
                         /*

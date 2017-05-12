@@ -16,7 +16,7 @@ import java.sql.SQLException;
  * Date: 08/04/17
  * Time: 13:53
  */
-public class MainServer extends Tp2.Ex01.Server.MainServer.MainServer {
+public class MainServer extends Tp2.Ex01.Server.MainServer.MainServer{
 
     private String databaseUrl;
 

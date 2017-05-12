@@ -15,7 +15,7 @@ import java.util.Properties;
  * Date: 08/04/17
  * Time: 13:53
  */
-public class MainServer extends FileServer {
+public class MainServer extends FileServer implements Runnable{
 
     protected ServerInfo backupServer;
 
@@ -36,5 +36,10 @@ public class MainServer extends FileServer {
                 this.fileManager,
                 this.logManager
         );
+    }
+
+    @Override
+    public void run() {
+        this.startServer();
     }
 }

@@ -163,4 +163,13 @@ public class PermissionHandler {
 
         return filesname;
     }
+
+    public boolean deleteFile(String filename) throws SQLException {
+        Statement st = this.dbConnection.createStatement();
+        String query = "DELETE FROM " + TBL_RESOURCE_PERMISSION +
+                       " WHERE " +
+                            ATTRIB_FILENAME + "='" + filename + "';";
+        int result = st.executeUpdate(query);
+        return true;
+    }
 }

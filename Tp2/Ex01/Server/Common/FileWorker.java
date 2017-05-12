@@ -83,6 +83,10 @@ public class FileWorker extends MyCustomWorker {
 
     protected Object del() throws IOException, ClassNotFoundException {
         String fileName = this.readFromClient().toString();
+        return this.del(fileName);
+    }
+
+    protected Object del(String fileName) {
         try {
             return fileManager.del(fileName);
         } catch (FileException e) {
@@ -90,6 +94,7 @@ public class FileWorker extends MyCustomWorker {
             return e;
         }
     }
+
 
     protected Object post() throws IOException, ClassNotFoundException {
         TextFile textFile = (TextFile) this.readFromClient();

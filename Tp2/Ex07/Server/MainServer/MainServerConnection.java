@@ -1,5 +1,6 @@
 package Tp2.Ex07.Server.MainServer;
 
+import Common.FileException;
 import Common.TextFile;
 import Tp2.Ex07.Common.FileProtocol;
 import Common.FileManager;
@@ -53,7 +54,7 @@ public class MainServerConnection extends Tp2.Ex01.Server.MainServer.MainServerC
         if (request.equals(FileProtocol.POST)) {
             out = this.onPost();
         } else if (request.equals(FileProtocol.DEL)){
-            out = this.del();
+            out = this.onDel();
         } else if (request.equals(FileProtocol.GET)){
             out = this.onGet();
         } else if (request.equals(FileProtocol.DIR)){
@@ -163,6 +164,44 @@ public class MainServerConnection extends Tp2.Ex01.Server.MainServer.MainServerC
         if (hasPostInDirectory) {
             boolean hasInsert = permissionHandler.allPermissionsToResource(username, textFile.getName());
             return hasInsert;
+        } else return false;
+    }
+
+    protected Object onDel() throws IOException, ClassNotFoundException, SQLException {
+        String filename =  this.readFromClient().toString();
+        String username = this.userLogged.getUsername();
+        PermissionHandler permissionHandler = new PermissionHandler(this.databaseManager.getConnection());
+
+        // User has del permissions?
+        boolean canDel = permissionHandler.hasAccessPermissionTo(username, PermissionHandler.PERMISSION_DEL);
+        if (!(canDel))
+            return new PermissionException(
+                    "User " +
+                            "'" + userLogged.getUsername() + "'" + " " +
+                            "is not allowed to delete files"
+            );
+
+        // Check if filename exists
+        boolean fileExists = this.fileManager.exists(filename);
+        if (!(fileExists))
+            return new FileException("File does not exists");
+
+        // if file exists, user has to have del permission.
+        boolean canDelFile = permissionHandler.hasResourcePermission(username, PermissionHandler.PERMISSION_DEL, filename);
+        if (!(canDelFile))
+            return new PermissionException("No sufficient permissions to delete file");
+
+        // file exists and user has del permission, then:
+        // delete file in directory
+        Object postResult = super.del(filename);
+        if (postResult instanceof Exception)
+            return postResult;
+
+        boolean hasPostInDirectory = (Boolean) postResult;
+        // if post is ok, update permission data in db
+        if (hasPostInDirectory) {
+            boolean hasDelete = permissionHandler.deleteFile(filename);
+            return hasDelete;
         } else return false;
     }
 

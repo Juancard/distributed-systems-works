@@ -93,7 +93,7 @@ public class ClientMain {
                 CommonMain.pause();
             } else if (opcion.equals("4")){
                 CommonMain.createSection("Delete a file");
-                //handleDelFile();
+                handleDelFile();
                 CommonMain.pause();
             }
         }
@@ -140,17 +140,21 @@ public class ClientMain {
             CommonMain.display("Error: " + e.getMessage());
         }
     }
-                        /*
+
     private void handleDelFile() {
         System.out.print("Enter File Name: ");
         String fileName = this.scanner.nextLine();
 
-        if (this.fileClient.del(fileName))
-            CommonMain.display("File successfully deleted");
-        else
-            CommonMain.display("File could not be deleted. Try again later.");
+        try {
+            if (this.fileClient.del(fileName))
+                CommonMain.display("File successfully deleted");
+            else
+                CommonMain.display("File could not be deleted. Try again later.");
+        } catch (Exception e) {
+            CommonMain.display("Error: " + e.getMessage());
+        }
     }
-                        */
+
     public void showMain(){
         CommonMain.createSection("Main");
         System.out.println("1 - List files");

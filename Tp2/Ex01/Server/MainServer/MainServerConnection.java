@@ -28,10 +28,14 @@ public class MainServerConnection extends FileWorker implements Runnable {
 
     protected Object del() throws IOException, ClassNotFoundException {
         String fileName = this.readFromClient().toString();
+        return this.del(fileName);
+    }
+
+    protected Object del(String filename){
         try {
-            boolean delResult = fileManager.del(fileName);
+            boolean delResult = fileManager.del(filename);
             if (delResult)
-                delResult = backupConnection.del(fileName);
+                delResult = backupConnection.del(filename);
             return delResult;
         } catch(FileException e){
             this.display(e.getMessage());

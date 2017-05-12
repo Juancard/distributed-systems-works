@@ -34,15 +34,19 @@ public class UserPermissionHandler {
     public ArrayList<String> getAccessPermissions(String username) throws SQLException {
         Statement st = this.dbConnection.createStatement();
 
-        String query = "SELECT "+ ATTRIB_PERMISSION_NAME + " from " + TBL_PERMISSION + " p " +
-                "  join (" +
-                "         select " + ATTRIB_PERMISSION_ID + " from " + TBL_ACCESS_PERMISSION + " uap " +
-                "           join (" +
-                "                  select " + UserHandler.ATTRIB_ID + " from " + UserHandler.TBL_NAME +
-                "                             where " + UserHandler.ATTRIB_USERNAME + "='" + username +"'" +
-                "                ) u" +
-                "             on uap."+ UserHandler.ATTRIB_ID + "=u." + UserHandler.ATTRIB_ID +
-                "       ) up on p." + ATTRIB_PERMISSION_ID + "=up." + ATTRIB_PERMISSION_ID +
+        String query = "SELECT "+ ATTRIB_PERMISSION_NAME +
+                " from " + TBL_PERMISSION + " p " +
+                " join (" +
+                    " select " + ATTRIB_PERMISSION_ID +
+                    " from " + TBL_ACCESS_PERMISSION + " uap " +
+                    " join (" +
+                        " select " + UserHandler.ATTRIB_ID +
+                        " from " + UserHandler.TBL_NAME +
+                        " where " + UserHandler.ATTRIB_USERNAME + "='" + username +"'" +
+                    ") u" +
+                    " on uap."+ UserHandler.ATTRIB_ID + "=u." + UserHandler.ATTRIB_ID +
+                ") up" +
+                " on p." + ATTRIB_PERMISSION_ID + "=up." + ATTRIB_PERMISSION_ID +
                 ";";
         System.out.println("Query: " + query);
 
@@ -63,8 +67,8 @@ public class UserPermissionHandler {
         Statement st = this.dbConnection.createStatement();
 
         String query = "SELECT " + ATTRIB_PERMISSION_NAME +
-                " FROM " + TBL_RESOURCE_PERMISSION + " rp " +
-                " JOIN " + UserHandler.TBL_NAME + " u ON rp. " + UserHandler.ATTRIB_ID + "=u." + UserHandler.ATTRIB_ID +
+                " FROM " + TBL_RESOURCE_PERMISSION + " rp" +
+                " JOIN " + UserHandler.TBL_NAME + " u ON rp." + UserHandler.ATTRIB_ID + "=u." + UserHandler.ATTRIB_ID +
                 " JOIN " + TBL_PERMISSION + " p on rp." + ATTRIB_PERMISSION_ID + "=p." + ATTRIB_PERMISSION_ID +
                 " WHERE " +
                 UserHandler.ATTRIB_USERNAME + "='" + username + "'" +
@@ -81,12 +85,45 @@ public class UserPermissionHandler {
         return permissions;
     }
 
-    public boolean hasPermissionOverFile(String username, String permission, String filename) throws SQLException {
+    public boolean hasResourcePermission(String username, String permission, String filename) throws SQLException {
         ArrayList<String> permissions = this.getResourcePermissions(username, filename);
         return permissions.contains(permission);
     }
 
-    public boolean newUserPermissionFile(String username, String permission, String filename) {
-        return true;
+    public boolean insertResourcePermission(String username, String permission, String filename) throws SQLException {
+        Statement st = this.dbConnection.createStatement();
+        
+        String query = "INSERT INTO " + TBL_RESOURCE_PERMISSION +
+                " VALUES (" +
+                    "NULL, " +
+                    "(SELECT " + UserHandler.ATTRIB_ID + 
+                        " FROM " + UserHandler.TBL_NAME + 
+                        " WHERE " + 
+                        UserHandler.ATTRIB_USERNAME + "='" + username + "'" + 
+                    "), " +
+                    "(SELECT " + ATTRIB_PERMISSION_ID + 
+                        " FROM " + TBL_PERMISSION +
+                        " WHERE " + ATTRIB_PERMISSION_NAME + "='" + permission + "'" +
+                    "), " +
+                    "'" + filename + "'" +
+                ");";
+        System.out.println("Query: " + query);
+
+        int result = st.executeUpdate(query);
+        return result == 1; // 1 means: one row updated
+    }
+
+    public boolean allPermissionsToResource(String username, String filename) throws SQLException {
+        boolean hasPost = this.hasResourcePermission(username, PERMISSION_POST, filename);
+        boolean hasGet = this.hasResourcePermission(username, PERMISSION_GET, filename);
+        boolean hasDel = this.hasResourcePermission(username, PERMISSION_DEL, filename);
+        boolean hasDir = this.hasResourcePermission(username, PERMISSION_DIR, filename);
+
+        hasPost = hasPost || this.insertResourcePermission(username, PERMISSION_POST, filename);
+        hasGet = hasGet || this.insertResourcePermission(username, PERMISSION_GET, filename);
+        hasDel = hasDel || this.insertResourcePermission(username, PERMISSION_DEL, filename);
+        hasDir = hasDir || this.insertResourcePermission(username, PERMISSION_DIR, filename);
+
+        return hasPost && hasGet && hasDel && hasDir;
     }
 }

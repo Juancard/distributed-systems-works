@@ -193,3 +193,31 @@
 2017-05-11 23:07:01.625  - Client: /127.0.0.1:56694 - Message: LOGIN
 2017-05-11 23:07:18.418  - Client: /127.0.0.1:56694 - Message: POST
 2017-05-11 23:07:43.064  - Client: /127.0.0.1:56694 - Message: Client disconnected
+2017-05-11 23:46:52.508 : Listening on port: 5027...
+2017-05-11 23:47:04.994 : Main Server: Creating Server Thread
+2017-05-11 23:47:05.032 : New connection with client: /127.0.0.1:56740
+2017-05-11 23:47:10.786  - Client: /127.0.0.1:56740 - Message: LOGIN
+2017-05-11 23:47:55.545  - Client: /127.0.0.1:56740 - Message: POST
+2017-05-11 23:55:27.257 : Listening on port: 5027...
+2017-05-11 23:55:31.214 : Main Server: Creating Server Thread
+2017-05-11 23:55:31.232 : New connection with client: /127.0.0.1:56749
+2017-05-11 23:55:36.606  - Client: /127.0.0.1:56749 - Message: LOGIN
+2017-05-11 23:55:45.012  - Client: /127.0.0.1:56749 - Message: POST
+2017-05-11 23:57:39.203 : Listening on port: 5027...
+2017-05-11 23:57:45.459 : Main Server: Creating Server Thread
+2017-05-11 23:57:45.477 : New connection with client: /127.0.0.1:56754
+2017-05-11 23:57:49.806  - Client: /127.0.0.1:56754 - Message: LOGIN
+2017-05-11 23:58:02.255  - Client: /127.0.0.1:56754 - Message: POST
+2017-05-12 00:00:20.361 : Listening on port: 5027...
+2017-05-12 00:00:25.254 : Main Server: Creating Server Thread
+2017-05-12 00:00:25.280 : New connection with client: /127.0.0.1:56758
+2017-05-12 00:00:28.957  - Client: /127.0.0.1:56758 - Message: LOGIN
+2017-05-12 00:00:38.831  - Client: /127.0.0.1:56758 - Message: POST
+2017-05-12 00:01:33.022  - Client: /127.0.0.1:56758 - Message: POST
+2017-05-12 00:01:41.763  - Client: /127.0.0.1:56758 - Message: Client disconnected
+2017-05-12 00:01:45.523 : Main Server: Creating Server Thread
+2017-05-12 00:01:45.526 : New connection with client: /127.0.0.1:56765
+2017-05-12 00:01:50.759  - Client: /127.0.0.1:56765 - Message: LOGIN
+2017-05-12 00:02:08.658  - Client: /127.0.0.1:56765 - Message: POST
+2017-05-12 00:03:10.957  - Client: /127.0.0.1:56765 - Message: POST
+2017-05-12 00:03:16.325  - Client: /127.0.0.1:56765 - Message: Client disconnected

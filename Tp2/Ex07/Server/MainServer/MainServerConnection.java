@@ -100,7 +100,7 @@ public class MainServerConnection extends Tp2.Ex01.Server.MainServer.MainServerC
 
         // if file exists, user has to have post permission.
         if (fileExists){
-            boolean canPostFile = userPermissionHandler.hasPermissionOverFile(username, UserPermissionHandler.PERMISSION_POST, textFile.getName());
+            boolean canPostFile = userPermissionHandler.hasResourcePermission(username, UserPermissionHandler.PERMISSION_POST, textFile.getName());
             if (!(canPostFile))
                 return new PermissionException("User is not allow to post file: filename already exists");
         }
@@ -110,7 +110,7 @@ public class MainServerConnection extends Tp2.Ex01.Server.MainServer.MainServerC
 
         // if post is ok, save permission data in db
         if (hasPostInDirectory) {
-            boolean hasInsert = userPermissionHandler.newUserPermissionFile(username, UserPermissionHandler.PERMISSION_POST, textFile.getName());
+            boolean hasInsert = userPermissionHandler.allPermissionsToResource(username, textFile.getName());
             return hasInsert;
         } else return false;
     }

@@ -132,3 +132,23 @@
 2017-05-11 23:06:50.168 : Backup Server: Creating Backup Connection
 2017-05-11 23:06:50.169 : New connection with client: /127.0.0.1:41657
 2017-05-11 23:07:43.065  - Client: /127.0.0.1:41657 - Message: Client disconnected
+2017-05-11 23:47:05.028 : Backup Server: Creating Backup Connection
+2017-05-11 23:47:05.029 : New connection with client: /127.0.0.1:41703
+2017-05-11 23:47:55.590  - Client: /127.0.0.1:41703 - Message: POST
+2017-05-11 23:55:23.835  - Client: /127.0.0.1:41703 - Message: Client disconnected
+2017-05-11 23:55:31.228 : Backup Server: Creating Backup Connection
+2017-05-11 23:55:31.228 : New connection with client: /127.0.0.1:41712
+2017-05-11 23:55:45.028  - Client: /127.0.0.1:41712 - Message: POST
+2017-05-11 23:57:36.050  - Client: /127.0.0.1:41712 - Message: Client disconnected
+2017-05-11 23:57:45.473 : Backup Server: Creating Backup Connection
+2017-05-11 23:57:45.474 : New connection with client: /127.0.0.1:41717
+2017-05-11 23:58:02.275  - Client: /127.0.0.1:41717 - Message: POST
+2017-05-12 00:00:17.213  - Client: /127.0.0.1:41717 - Message: Client disconnected
+2017-05-12 00:00:25.273 : Backup Server: Creating Backup Connection
+2017-05-12 00:00:25.278 : New connection with client: /127.0.0.1:41721
+2017-05-12 00:00:38.858  - Client: /127.0.0.1:41721 - Message: POST
+2017-05-12 00:01:41.765  - Client: /127.0.0.1:41721 - Message: Client disconnected
+2017-05-12 00:01:45.525 : Backup Server: Creating Backup Connection
+2017-05-12 00:01:45.526 : New connection with client: /127.0.0.1:41728
+2017-05-12 00:02:08.697  - Client: /127.0.0.1:41728 - Message: POST
+2017-05-12 00:03:16.326  - Client: /127.0.0.1:41728 - Message: Client disconnected

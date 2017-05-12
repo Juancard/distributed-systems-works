@@ -1,0 +1,15 @@
+2017-05-12 18:10:16.810 : Listening on port: 5027...
+2017-05-12 18:10:51.263 : Main Server. Starting Connection
+2017-05-12 18:10:51.271 : Main Server. Connected to backup localhost/127.0.0.1:5227
+2017-05-12 18:10:51.274 : New connection with client: /127.0.0.1:36959
+2017-05-12 18:11:03.801  - Client: /127.0.0.1:36959 - Message: LOGIN
+2017-05-12 18:11:03.861  - Client: /127.0.0.1:36959 - Message: User trying to log: User{username='juan', password='ju'}
+2017-05-12 18:11:16.802  - Client: /127.0.0.1:36959 - Message: LOGIN
+2017-05-12 18:11:16.803  - Client: /127.0.0.1:36959 - Message: User trying to log: User{username='juan', password='juan'}
+2017-05-12 18:11:16.803  - Client: /127.0.0.1:36959 - Message: User logged successfully: User{username='juan', password='juan'}
+2017-05-12 18:11:28.668  - Client: /127.0.0.1:36959 - Message: DIR
+2017-05-12 18:12:11.698  - Client: /127.0.0.1:36959 - Message: GET
+2017-05-12 18:12:24.517  - Client: /127.0.0.1:36959 - Message: POST
+2017-05-12 18:12:57.517  - Client: /127.0.0.1:36959 - Message: GET
+2017-05-12 18:13:03.245  - Client: /127.0.0.1:36959 - Message: DEL
+2017-05-12 18:13:07.052  - Client: /127.0.0.1:36959 - Message: Client disconnected

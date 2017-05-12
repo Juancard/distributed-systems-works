@@ -1,0 +1,7 @@
+2017-05-12 18:10:16.815 : Listening on port: 6027...
+2017-05-12 18:11:46.050 : Main Server. Starting Connection
+2017-05-12 18:11:46.052 : Main Server. Connected to backup localhost/127.0.0.1:5227
+2017-05-12 18:11:46.055 : New connection with client: /127.0.0.1:45603
+2017-05-12 18:11:50.882  - Client: /127.0.0.1:45603 - Message: LOGIN
+2017-05-12 18:11:50.896  - Client: /127.0.0.1:45603 - Message: User trying to log: User{username='admin', password='admin'}
+2017-05-12 18:11:50.898  - Client: /127.0.0.1:45603 - Message: User logged successfully: User{username='admin', password='admin'}

@@ -4,10 +4,7 @@ import Common.FileManager;
 import Common.Socket.MyCustomServer;
 import Common.Socket.SocketConnection;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintStream;
+import java.io.*;
 import java.net.Socket;
 
 /**
@@ -31,8 +28,18 @@ public class FileServer extends MyCustomServer{
     }
 
     public void setLogFile(String logFilePath) throws FileNotFoundException {
-        this.logManager.setLogPrinter(new PrintStream(new FileOutputStream(logFilePath, true)));
-        System.out.println("Logs in: " + logFilePath);
+        File f = new File(logFilePath);
+        if (f.isDirectory()) {
+            f = new File(logFilePath + "server_" + this.getPort() + ".log");
+            if (!(f.exists()))
+                try {
+                    f.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+        }
+        this.logManager.setLogPrinter(new PrintStream(new FileOutputStream(f, true)));
+        System.out.println("Logs in: " + f.getPath());
     }
 
     private void prepareFileServer(String filesPath) throws IOException {

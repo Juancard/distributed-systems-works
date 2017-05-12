@@ -84,6 +84,7 @@ public class MainServerConnection extends Tp2.Ex01.Server.MainServer.MainServerC
 
         this.userLogged = givenUser;
 
+        this.display("User logged successfully: " + this.userLogged);
         return true;
     }
 
@@ -114,6 +115,7 @@ public class MainServerConnection extends Tp2.Ex01.Server.MainServer.MainServerC
     private Object onGet() throws IOException, ClassNotFoundException, SQLException {
         String filename = this.readFromClient().toString();
         String username = this.userLogged.getUsername();
+        this.display("User " + username + " - GET " + filename);
         PermissionHandler permissionHandler = new PermissionHandler(this.databaseManager.getConnection());
 
         // User has get permissions?
@@ -135,6 +137,8 @@ public class MainServerConnection extends Tp2.Ex01.Server.MainServer.MainServerC
     protected Object onPost() throws IOException, ClassNotFoundException, SQLException {
         TextFile textFile = (TextFile) this.readFromClient();
         String username = this.userLogged.getUsername();
+        this.display("User " + username + " - POST " + textFile);
+
         PermissionHandler permissionHandler = new PermissionHandler(this.databaseManager.getConnection());
 
         // User has post permissions?
@@ -172,6 +176,8 @@ public class MainServerConnection extends Tp2.Ex01.Server.MainServer.MainServerC
     protected Object onDel() throws IOException, ClassNotFoundException, SQLException {
         String filename =  this.readFromClient().toString();
         String username = this.userLogged.getUsername();
+        this.display("User " + username + " - DEL " + filename);
+
         PermissionHandler permissionHandler = new PermissionHandler(this.databaseManager.getConnection());
 
         // User has del permissions?
@@ -195,11 +201,11 @@ public class MainServerConnection extends Tp2.Ex01.Server.MainServer.MainServerC
 
         // file exists and user has del permission, then:
         // delete file in directory
-        Object postResult = super.del(filename);
-        if (postResult instanceof Exception)
-            return postResult;
+        Object delResult = super.del(filename);
+        if (delResult instanceof Exception)
+            return delResult;
 
-        boolean hasPostInDirectory = (Boolean) postResult;
+        boolean hasPostInDirectory = (Boolean) delResult;
         // if post is ok, update permission data in db
         if (hasPostInDirectory) {
             boolean hasDelete = permissionHandler.deleteFile(filename);

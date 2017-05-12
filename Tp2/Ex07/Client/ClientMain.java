@@ -109,9 +109,8 @@ public class ClientMain {
     private void handleGetFile() {
         System.out.print("Enter File Name: ");
         String fileName = this.scanner.nextLine();
-        String fileContent = null;
         try {
-            fileContent = this.fileClient.get(fileName);
+            String fileContent = this.fileClient.get(fileName);
             CommonMain.display("File name: " + fileName);
             CommonMain.display("Content: " + fileContent);
         } catch (PermissionException e) {

@@ -1,5 +1,6 @@
 package Tp2.Ex07.Server.MainServer;
 
+import Common.FileException;
 import Common.TextFile;
 import Tp2.Ex07.Common.FileProtocol;
 import Common.FileManager;
@@ -81,9 +82,25 @@ public class MainServerConnection extends Tp2.Ex01.Server.MainServer.MainServerC
         return true;
     }
 
-    private Object onGet() throws IOException, ClassNotFoundException {
-        String fileName = this.readFromClient().toString();
-        return super.get(fileName);
+    private Object onGet() throws IOException, ClassNotFoundException, SQLException {
+        String filename = this.readFromClient().toString();
+        String username = this.userLogged.getUsername();
+        UserPermissionHandler userPermissionHandler = new UserPermissionHandler(this.databaseManager.getConnection());
+
+        // User has get permissions?
+        boolean canGet = userPermissionHandler.hasAccessPermissionTo(username, UserPermissionHandler.PERMISSION_GET);
+        if (!(canGet))
+            return new PermissionException(
+                    "User " +
+                            "'" + userLogged.getUsername() + "'" + " " +
+                            "is not allowed to get files"
+            );
+
+        boolean canGetFile = userPermissionHandler.hasResourcePermission(username, UserPermissionHandler.PERMISSION_GET, filename);
+        if (!canGetFile)
+            return new PermissionException("No sufficient permissions to get this file");
+
+        return super.get(filename);
     }
 
     protected Object onPost() throws IOException, ClassNotFoundException, SQLException {
@@ -107,7 +124,7 @@ public class MainServerConnection extends Tp2.Ex01.Server.MainServer.MainServerC
         if (fileExists){
             boolean canPostFile = userPermissionHandler.hasResourcePermission(username, UserPermissionHandler.PERMISSION_POST, textFile.getName());
             if (!(canPostFile))
-                return new PermissionException("User is not allow to post file: filename already exists");
+                return new PermissionException("User is not allowed to post file. Cause: filename already exists");
         }
 
         // post file in directory

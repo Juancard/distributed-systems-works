@@ -113,3 +113,22 @@
 2017-05-11 21:43:01.646 : Listening on port: 5127...
 2017-05-11 21:43:19.125 : Backup Server: Creating Backup Connection
 2017-05-11 21:43:19.141 : New connection with client: /127.0.0.1:41502
+2017-05-11 23:02:40.875 : Listening on port: 5127...
+2017-05-11 23:02:56.396 : Backup Server: Creating Backup Connection
+2017-05-11 23:02:56.420 : New connection with client: /127.0.0.1:41637
+2017-05-11 23:03:17.452  - Client: /127.0.0.1:41637 - Message: POST
+2017-05-11 23:03:24.610  - Client: /127.0.0.1:41637 - Message: Client disconnected
+2017-05-11 23:03:29.239 : Backup Server: Creating Backup Connection
+2017-05-11 23:03:29.240 : New connection with client: /127.0.0.1:41640
+2017-05-11 23:03:45.357  - Client: /127.0.0.1:41640 - Message: POST
+2017-05-11 23:05:52.660  - Client: /127.0.0.1:41640 - Message: Client disconnected
+2017-05-11 23:05:59.575 : Backup Server: Creating Backup Connection
+2017-05-11 23:05:59.578 : New connection with client: /127.0.0.1:41651
+2017-05-11 23:06:16.331  - Client: /127.0.0.1:41651 - Message: POST
+2017-05-11 23:06:19.617  - Client: /127.0.0.1:41651 - Message: Client disconnected
+2017-05-11 23:06:22.852 : Backup Server: Creating Backup Connection
+2017-05-11 23:06:22.853 : New connection with client: /127.0.0.1:41654
+2017-05-11 23:06:46.707  - Client: /127.0.0.1:41654 - Message: Client disconnected
+2017-05-11 23:06:50.168 : Backup Server: Creating Backup Connection
+2017-05-11 23:06:50.169 : New connection with client: /127.0.0.1:41657
+2017-05-11 23:07:43.065  - Client: /127.0.0.1:41657 - Message: Client disconnected

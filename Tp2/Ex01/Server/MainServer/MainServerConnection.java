@@ -45,6 +45,10 @@ public class MainServerConnection extends FileWorker implements Runnable {
 
     protected boolean post() throws IOException, ClassNotFoundException {
         TextFile textFile = (TextFile) this.readFromClient();
+        return this.post(textFile);
+    }
+
+    protected boolean post(TextFile textFile){
         boolean postResult = fileManager.post(textFile);
         if (postResult) try {
             backupConnection.post(textFile.getName(), textFile.getContent());

@@ -85,6 +85,8 @@ public class MainServerConnection extends Tp2.Ex01.Server.MainServer.MainServerC
         TextFile textFile = (TextFile) this.readFromClient();
         String username = this.userLogged.getUsername();
         UserPermissionHandler userPermissionHandler = new UserPermissionHandler(this.databaseManager.getConnection());
+
+        // User has post permissions?
         boolean canPost = userPermissionHandler.hasAccessPermissionTo(username, UserPermissionHandler.PERMISSION_POST);
         if (!(canPost))
             return new PermissionException(
@@ -93,12 +95,24 @@ public class MainServerConnection extends Tp2.Ex01.Server.MainServer.MainServerC
                 "is not allowed to post files"
             );
 
-        /*
-        boolean postResult = this.fileManager.post(textFile);
-        if (postResult) backupConnection.post(textFile.getName(), textFile.getContent());
-        return postResult;
-        */
-        return true;
+        // Check if filename exists
+        boolean fileExists = this.fileManager.exists(textFile.getName());
+
+        // if file exists, user has to have post permission.
+        if (fileExists){
+            boolean canPostFile = userPermissionHandler.hasPermissionOverFile(username, UserPermissionHandler.PERMISSION_POST, textFile.getName());
+            if (!(canPostFile))
+                return new PermissionException("User is not allow to post file: filename already exists");
+        }
+
+        // post file in directory
+        boolean hasPostInDirectory = super.post(textFile);
+
+        // if post is ok, save permission data in db
+        if (hasPostInDirectory) {
+            boolean hasInsert = userPermissionHandler.newUserPermissionFile(username, UserPermissionHandler.PERMISSION_POST, textFile.getName());
+            return hasInsert;
+        } else return false;
     }
 
     public void close(){

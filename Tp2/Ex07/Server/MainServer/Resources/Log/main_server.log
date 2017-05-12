@@ -167,3 +167,29 @@
 2017-05-11 21:43:19.105 : Main Server: Creating Server Thread
 2017-05-11 21:43:19.139 : New connection with client: /127.0.0.1:56539
 2017-05-11 21:43:25.336  - Client: /127.0.0.1:56539 - Message: LOGIN
+2017-05-11 23:02:45.371 : Listening on port: 5027...
+2017-05-11 23:02:56.360 : Main Server: Creating Server Thread
+2017-05-11 23:02:56.420 : New connection with client: /127.0.0.1:56674
+2017-05-11 23:03:01.446  - Client: /127.0.0.1:56674 - Message: LOGIN
+2017-05-11 23:03:17.420  - Client: /127.0.0.1:56674 - Message: POST
+2017-05-11 23:03:24.608  - Client: /127.0.0.1:56674 - Message: Client disconnected
+2017-05-11 23:03:29.237 : Main Server: Creating Server Thread
+2017-05-11 23:03:29.240 : New connection with client: /127.0.0.1:56677
+2017-05-11 23:03:35.386  - Client: /127.0.0.1:56677 - Message: LOGIN
+2017-05-11 23:03:45.315  - Client: /127.0.0.1:56677 - Message: POST
+2017-05-11 23:05:55.696 : Listening on port: 5027...
+2017-05-11 23:05:59.562 : Main Server: Creating Server Thread
+2017-05-11 23:05:59.580 : New connection with client: /127.0.0.1:56688
+2017-05-11 23:06:05.602  - Client: /127.0.0.1:56688 - Message: LOGIN
+2017-05-11 23:06:16.307  - Client: /127.0.0.1:56688 - Message: POST
+2017-05-11 23:06:19.616  - Client: /127.0.0.1:56688 - Message: Client disconnected
+2017-05-11 23:06:22.850 : Main Server: Creating Server Thread
+2017-05-11 23:06:22.853 : New connection with client: /127.0.0.1:56691
+2017-05-11 23:06:27.034  - Client: /127.0.0.1:56691 - Message: LOGIN
+2017-05-11 23:06:37.326  - Client: /127.0.0.1:56691 - Message: POST
+2017-05-11 23:06:46.701  - Client: /127.0.0.1:56691 - Message: Client disconnected
+2017-05-11 23:06:50.166 : Main Server: Creating Server Thread
+2017-05-11 23:06:50.169 : New connection with client: /127.0.0.1:56694
+2017-05-11 23:07:01.625  - Client: /127.0.0.1:56694 - Message: LOGIN
+2017-05-11 23:07:18.418  - Client: /127.0.0.1:56694 - Message: POST
+2017-05-11 23:07:43.064  - Client: /127.0.0.1:56694 - Message: Client disconnected

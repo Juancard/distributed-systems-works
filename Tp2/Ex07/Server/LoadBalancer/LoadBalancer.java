@@ -26,7 +26,7 @@ public class LoadBalancer extends MyCustomServer implements Runnable{
 
     public void addServer(ServerInfo serverInfo) {
         this.servers.add(serverInfo);
-        this.out("Added server: " + serverInfo);
+        this.out("Load balancer adds server: " + serverInfo);
     }
 
     public void removeServer(ServerInfo serverInfo){
@@ -35,7 +35,7 @@ public class LoadBalancer extends MyCustomServer implements Runnable{
     }
 
     public int nextServerIndex(){
-        if (this.serverIndex < 0 || this.serverIndex >= this.servers.size())
+        if (this.serverIndex < 0 || this.serverIndex >= this.servers.size() - 1)
             this.serverIndex = 0;
         else
             this.serverIndex++;
@@ -44,6 +44,7 @@ public class LoadBalancer extends MyCustomServer implements Runnable{
 
     protected Runnable newRunnable(Socket clientSocket) {
         ServerInfo serverToConnectTo = this.servers.get(this.nextServerIndex());
+        this.out("Sending client: " + clientSocket.getRemoteSocketAddress() + " to server: " + serverToConnectTo);
         try {
             Socket socketToServer = new Socket(serverToConnectTo.getHost(), serverToConnectTo.getPort());
             Router.route(clientSocket, socketToServer);

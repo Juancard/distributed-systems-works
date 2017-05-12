@@ -67,6 +67,8 @@ public class MainServerConnection extends Tp2.Ex01.Server.MainServer.MainServerC
 
     public Object login() throws SQLException, IOException, ClassNotFoundException {
         User givenUser = (User) this.readFromClient();
+        this.display("User trying to log: " + givenUser);
+
         String username = givenUser.getUsername();
         String pass = givenUser.getPassword();
 

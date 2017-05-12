@@ -45,8 +45,8 @@ public class ClientMain {
     }
 
     private void connectToServer() {
-        String host = this.properties.getProperty("SERVER_HOST");
-        int port = Integer.parseInt(this.properties.getProperty("SERVER_PORT"));
+        String host = this.properties.getProperty("BALANCER_HOST");
+        int port = Integer.parseInt(this.properties.getProperty("BALANCER_PORT"));
         this.fileClient = new FileClient(host, port);
     }
 

@@ -26,10 +26,10 @@ public class MainServer extends Tp2.Ex01.Server.MainServer.MainServer{
     }
 
     protected Runnable newRunnable(Socket connection){
-        this.out("Main Server: Creating Server Thread");
-
+        this.out("Main Server. Starting Connection");
         SocketConnection socketConnection = new SocketConnection(connection);
         FileClient backupConnection = new FileClient(this.backupServer.getHost(), this.backupServer.getPort());
+        this.out("Main Server. Connected to backup " + backupConnection.getIdentity());
 
         return new MainServerConnection(
                 socketConnection,

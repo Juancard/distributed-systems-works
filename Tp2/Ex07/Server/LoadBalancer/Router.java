@@ -21,6 +21,7 @@ public class Router {
 
         fromClientToServer.start();
         fromServerToClient.start();
+
     }
 
     private static Thread readAndSendThread(final SocketConnection toReadFrom, final SocketConnection toSendTo){
@@ -33,13 +34,19 @@ public class Router {
     }
 
     private static void readAndSend(SocketConnection toReadFrom, SocketConnection toSendTo){
-        try {
-            Object read = toReadFrom.read();
-            toSendTo.send(read);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+        while (!(toReadFrom.isClosed()) && !(toSendTo.isClosed())){
+            try {
+                Object read = toReadFrom.read();
+                toSendTo.send(read);
+            } catch (IOException e) {
+                toReadFrom.close();
+                toSendTo.close();
+                break;
+            } catch (ClassNotFoundException e) {
+                toReadFrom.close();
+                toSendTo.close();
+                break;
+            }
         }
     }
 }

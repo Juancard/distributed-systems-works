@@ -33,9 +33,26 @@ public class RunServer {
 
     public RunServer(Properties properties) throws IOException {
         this.properties = properties;
+        this.mainServersInfo = this.loadMainServersInfo();
         this.prepareBackupServer();
         this.prepareMainServers();
         this.prepareLoadBalancer();
+    }
+
+    private ServerInfo[] loadMainServersInfo() {
+        final String SERVER_SEPARATOR = ",";
+        final String HOST_PORT_SEPARATOR = ":";
+
+        String serversValue = this.properties.getProperty("MAIN_SERVERS");
+        String[] pairsHostPort = serversValue.split(SERVER_SEPARATOR);
+        ServerInfo[] out = new ServerInfo[pairsHostPort.length];
+
+        for (int i=0; i<pairsHostPort.length; i++) {
+            String[] hostPost = pairsHostPort[i].split(HOST_PORT_SEPARATOR);
+            out[i] = new ServerInfo(hostPost[0], Integer.parseInt(hostPost[1]));
+        }
+
+        return out;
     }
 
     private void prepareBackupServer() throws IOException {
@@ -48,16 +65,12 @@ public class RunServer {
     }
 
     private void prepareMainServers() throws IOException {
-        int numberOfMainServers = 1;
+        int numberOfMainServers = this.mainServersInfo.length;
         this.mainServersThreads = new Thread[numberOfMainServers];
 
-        // Main server data
-        String serverHost = properties.getProperty("SERVER_HOST");
-        int serverPort = Integer.parseInt(properties.getProperty("SERVER_PORT"));
+        // Main server common data;
         String filesPath = properties.getProperty("SERVER_FILES_PATH");
         String logFilePath = properties.getProperty("SERVER_LOG_FILE_PATH");
-        ServerInfo serverInfo = new ServerInfo(serverHost, serverPort);
-        this.mainServersInfo = new ServerInfo[]{serverInfo};
 
         // Backup server data
         String backupHost = properties.getProperty("BACKUP_SERVER_HOST");
@@ -68,9 +81,8 @@ public class RunServer {
         String databaseUrl = properties.getProperty("DB_URL");
 
         for (int i=0; i < numberOfMainServers; i++){
-            ServerInfo s = this.mainServersInfo[i];
             MainServer mainServer = new MainServer(
-                    s.getPort(),
+                    this.mainServersInfo[i].getPort(),
                     backupServerInfo,
                     databaseUrl,
                     filesPath,

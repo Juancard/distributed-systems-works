@@ -50,7 +50,7 @@ public class MainServerConnection extends Tp2.Ex01.Server.MainServer.MainServerC
     private Object onClientRequest(String request) throws Exception {
         Object out = new Object();
 
-        this.display(request);
+        this.display("Request - " + request);
         if (request.equals(FileProtocol.POST)) {
             out = this.onPost();
         } else if (request.equals(FileProtocol.DEL)){
@@ -62,6 +62,8 @@ public class MainServerConnection extends Tp2.Ex01.Server.MainServer.MainServerC
         } else if (request.equals(FileProtocol.LOGIN)){
             out = this.login();
         }
+        this.display("Response - " + out.toString());
+
         return out;
     }
 

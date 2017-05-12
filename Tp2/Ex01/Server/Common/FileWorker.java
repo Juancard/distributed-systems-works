@@ -44,7 +44,7 @@ public class FileWorker extends MyCustomWorker {
     private Object onClientRequest(String request) throws Exception {
         Object out = new Object();
 
-        this.display(request);
+        this.display("Request - " + request);
         if (request.equals(FileProtocol.POST)) {
             out = this.post();
         } else if (request.equals(FileProtocol.DEL)){
@@ -54,6 +54,7 @@ public class FileWorker extends MyCustomWorker {
         } else if (request.equals(FileProtocol.DIR)){
             out = this.dir();
         }
+        this.display("Response - " + out);
 
         return out;
     }
@@ -72,10 +73,8 @@ public class FileWorker extends MyCustomWorker {
         try {
             out =  fileManager.get(fileName);
         } catch (FileException e) {
-            this.display(e.getMessage());
             out = e;
         } catch (IOException e) {
-            this.display(e.getMessage());
             out = e;
         }
         return out;
@@ -90,7 +89,6 @@ public class FileWorker extends MyCustomWorker {
         try {
             return fileManager.del(fileName);
         } catch (FileException e) {
-            this.display(e.getMessage());
             return e;
         }
     }
@@ -101,7 +99,6 @@ public class FileWorker extends MyCustomWorker {
         try {
             return fileManager.post(textFile);
         } catch (FileException e) {
-            this.display(e.getMessage());
             return e;
         }
     }

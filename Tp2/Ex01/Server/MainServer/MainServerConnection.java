@@ -38,11 +38,9 @@ public class MainServerConnection extends FileWorker implements Runnable {
                 delResult = backupConnection.del(filename);
             return delResult;
         } catch(FileException e){
-            this.display(e.getMessage());
             return e;
         } catch (Exception e) {
             e.printStackTrace();
-            this.display(e.getMessage());
             return false;
         }
     }
@@ -60,11 +58,9 @@ public class MainServerConnection extends FileWorker implements Runnable {
             if ((Boolean) postResult)
                 postResult = backupConnection.post(textFile.getName(), textFile.getContent());
         } catch (FileException e) {
-            this.display(e.getLocalizedMessage());
             postResult = e;
         } catch (Exception e) {
             e.printStackTrace();
-            this.display(e.getMessage());
             postResult = e;
         }
 

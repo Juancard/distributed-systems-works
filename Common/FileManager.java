@@ -28,7 +28,7 @@ public class FileManager {
     public synchronized TextFile get(String fileName) throws IOException, FileException {
         File[] filesFoundWithName = this.getFilesByName(fileName);
         if (filesFoundWithName.length <= 0)
-            throw new FileException("No files for given filename");
+            throw new FileException("No files found for given filename");
 
         return new TextFile(fileName, this.getFileContent(filesFoundWithName[0]));
     }
@@ -44,7 +44,7 @@ public class FileManager {
     public synchronized boolean del(String fileName) throws FileException {
         File[] filesFound = this.getFilesByName(fileName);
         if (filesFound.length <= 0)
-            throw new FileException("No files for given filename");
+            throw new FileException("No files found for given filename");
 
         return filesFound[0].delete();
     }

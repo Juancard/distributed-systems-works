@@ -2,6 +2,7 @@ package Tp2.Ex06.Client;
 
 import Common.Socket.SocketConnection;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.util.Date;
 
@@ -14,15 +15,16 @@ public class TimeClient extends SocketConnection{
 
     private Date clientDate;
 
-    public TimeClient(String host, int port) {
+    public TimeClient(String host, int port) throws IOException {
         super(host, port);
-
     }
 
     public void startTimeListener() throws Exception {
-        while (true) {
+        while (!(this.isClosed())) {
             Object response = this.read();
 
+            if (response instanceof EOFException)
+                throw (EOFException) response;
             if (response instanceof Exception)
                 throw (Exception) response;
 

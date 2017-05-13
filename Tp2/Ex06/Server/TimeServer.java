@@ -3,6 +3,7 @@ package Tp2.Ex06.Server;
 import Common.Socket.MyCustomServer;
 import Tp2.Ex06.Common.SharedDate;
 
+import java.io.IOException;
 import java.net.Socket;
 import java.util.Date;
 
@@ -28,7 +29,7 @@ public class TimeServer extends MyCustomServer implements Runnable{
         return new TimeWorker(clientSocket, this.sharedDate);
     }
 
-    public void startServer(){
+    public void startServer() throws IOException {
         this.startTimeSetter();
         super.startServer();
     }
@@ -39,7 +40,11 @@ public class TimeServer extends MyCustomServer implements Runnable{
 
     @Override
     public void run() {
-        this.startServer();
+        try {
+            this.startServer();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

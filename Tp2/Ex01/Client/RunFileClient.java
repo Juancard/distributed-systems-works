@@ -76,7 +76,7 @@ public class RunFileClient {
             connectionLost = myFileClient.isClosed();
         }
         if (connectionLost)
-            CommonMain.display("Connection lost with server. Closing app.");
+            CommonMain.display("Server is not currently available. Closing app.");
          else
             myFileClient.close();
     }

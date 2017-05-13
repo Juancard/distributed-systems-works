@@ -1,5 +1,6 @@
 package Common.Socket;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -50,12 +51,15 @@ public class SocketConnection {
         try {
             Object read = this.socketInput.readObject();
             return read;
+        } catch(EOFException e){
+            this.close();
+            throw new IOException("Connection lost.");
         } catch (IOException e) {
-            String m = "Error in reading from server. Cause: " + e.getMessage();
+            String m = "Error in reading from socket. Cause: " + e.getMessage();
             this.close();
             throw new IOException(m);
         } catch (ClassNotFoundException e) {
-            String m = "Error in reading from server. Cause: " + e.getMessage();
+            String m = "Error in reading from socket. Cause: " + e.getMessage();
             this.close();
             throw new ClassNotFoundException(m);
         }

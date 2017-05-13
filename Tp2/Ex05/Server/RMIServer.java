@@ -1,7 +1,9 @@
 package Tp2.Ex05.Server;
 
+import Tp2.Ex01.Server.Common.LogManager;
 import Tp2.Ex05.Common.IEdgeDetectorService;
 
+import java.io.*;
 import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -19,14 +21,16 @@ public class RMIServer implements Runnable{
     private Registry registry;
     private EdgeDetectorService edgeDetectorService;
     private int port;
+    private LogManager logManager;
 
     public RMIServer(int port){
         this.port = port;
+        this.logManager = new LogManager(System.out);
     }
 
     private void createRmiServer() throws RemoteException {
         this.registry = LocateRegistry.createRegistry(port);
-        display("RMI Server listening on port " + port + "...");
+        log("RMI Server listening on port " + port + "...");
     }
 
     private void supplyEdgeDetectorService() throws RemoteException, AlreadyBoundException {
@@ -37,12 +41,12 @@ public class RMIServer implements Runnable{
                 edgeDetectorService, this.port
         );
         this.registry.rebind(dns, iEdgeDetectorService);
-        display(String.format("Edge detector service is up as \"%s\" on port %d", dns, this.port));
+        log(String.format("Edge detector service is up as \"%s\" on port %d", dns, this.port));
     }
 
 
-    private static void display(String toDisplay) {
-        System.out.println(toDisplay);
+    private void log(String toDisplay) {
+        this.logManager.log(toDisplay);
     }
 
     @Override
@@ -73,5 +77,20 @@ public class RMIServer implements Runnable{
         } catch (NotBoundException e) {
             e.printStackTrace();
         }
+    }
+
+    public void setLogManager(String logFilePath) throws FileNotFoundException {
+        File f = new File(logFilePath);
+        if (f.isDirectory()) {
+            f = new File(logFilePath + "server_" + this.port + ".log");
+            if (!(f.exists()))
+                try {
+                    f.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+        }
+        this.logManager.setLogPrinter(new PrintStream(new FileOutputStream(f, true)));
+        System.out.println("Logs in: " + f.getPath());
     }
 }

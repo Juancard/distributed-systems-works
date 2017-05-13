@@ -17,7 +17,7 @@ import java.util.Scanner;
  * Date: 22/04/17
  * Time: 17:30
  */
-public class MainMenu {
+public class RunClient {
     private static final int TP_NUMBER = 2;
     private static final int EXERCISE_NUMBER = 5;
     private static final String EXERCISE_TITLE = "Sobel Operator";
@@ -30,11 +30,11 @@ public class MainMenu {
     public static void main(String[] args) throws IOException {
 
         try {
-            MainMenu mainMenu = new MainMenu();
+            RunClient runClient = new RunClient();
             CommonMain.showWelcomeMessage(TP_NUMBER, EXERCISE_NUMBER, EXERCISE_TITLE + " - Client side");
-            mainMenu.start();
+            runClient.start();
         } catch (NotBoundException e) {
-            CommonMain.display("Error starting RMI client: " + e.toString());
+            CommonMain.display("Error: " + e.toString());
         } catch (NoPortsAvailableException e) {
             CommonMain.display(e.getMessage());
         }
@@ -42,7 +42,7 @@ public class MainMenu {
 
     }
 
-    public MainMenu() throws IOException, NotBoundException, NoPortsAvailableException {
+    public RunClient() throws IOException, NotBoundException, NoPortsAvailableException {
         this.edgeDetectorClient = new EdgeDetectorClient();
 
     }

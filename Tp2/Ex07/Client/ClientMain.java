@@ -19,42 +19,59 @@ public class ClientMain {
 
     public static final String PROPERTIES_PATH = "distributed-systems-works/Tp2/Ex07/config.properties";
 
-    public static void main(String[] args) throws IOException {
-        ClientMain clientMain = new ClientMain();
-        clientMain.start();
-    }
+    public static void main(String[] args){
+        Properties properties = null;
 
-    private Properties properties;
-    private FileClient fileClient;
-    private Scanner scanner;
-
-    public ClientMain(){
         try {
-            this.properties = PropertiesManager.loadProperties(ClientMain.PROPERTIES_PATH);
-            this.scanner = new Scanner(System.in);
+            properties = PropertiesManager.loadProperties(PROPERTIES_PATH);
         } catch (IOException e) {
-            e.printStackTrace();
+            CommonMain.display("Error: Could not load properties file. \nCause: " + e.getMessage());
+            System.exit(1);
+        }
+
+        try {
+            CommonMain.showWelcomeMessage(properties);
+
+            String host = properties.getProperty("BALANCER_HOST");
+            int port = Integer.parseInt(properties.getProperty("BALANCER_PORT"));
+
+            ClientMain clientMain = new ClientMain(host, port);
+            clientMain.start();
+        } catch (Exception e) {
+            String m = "Error: " + e.getMessage();
+            CommonMain.display(m);
+            System.exit(1);
         }
     }
 
+    private FileClient fileClient;
+    private Scanner scanner;
+
+    public ClientMain(String host, int port) throws IOException {
+        this.fileClient = this.connectToServer(host, port);
+        this.scanner = new Scanner(System.in);
+    }
+
     private void start() {
-        this.connectToServer();
-        CommonMain.showWelcomeMessage(this.properties);
         this.showLogin();
         this.handleMainOptions();
     }
 
-    private void connectToServer() {
-        String host = this.properties.getProperty("BALANCER_HOST");
-        int port = Integer.parseInt(this.properties.getProperty("BALANCER_PORT"));
-        this.fileClient = new FileClient(host, port);
+    private FileClient connectToServer(String host, int port) throws IOException {
+        try {
+            return new FileClient(host, port);
+        } catch (IOException e) {
+            String m = "Could not connect to file server. Cause: " + e.getMessage();
+            throw new IOException(m);
+        }
     }
 
     private void showLogin() {
         CommonMain.createSection("Log in");
         boolean isLogged = false;
+        boolean lostConnection = this.fileClient.isClosed();
 
-        while (!isLogged){
+        while (!isLogged && !lostConnection){
             System.out.print("Username: ");
             String username = this.scanner.nextLine();
             System.out.print("Password: ");
@@ -65,16 +82,28 @@ public class ClientMain {
                 isLogged = true;
             } catch (LoginException e) {
                 CommonMain.display("Error: " + e.getMessage());
+            } catch (Exception e){
+                this.fileClient.close();
+                CommonMain.display("Error: " + e.getMessage());
             }
+
+            lostConnection = this.fileClient.isClosed();
         }
 
+        if (lostConnection) this.onConnectionLost();
+    }
+
+    private void onConnectionLost(){
+        CommonMain.display("Sorry: Lost connection with server. Closing app.");
+        System.exit(1);
     }
 
     private void handleMainOptions() {
         String opcion;
         boolean salir = false;
+        boolean lostConnection = this.fileClient.isClosed();
 
-        while (!salir) {
+        while (!salir && !lostConnection) {
             showMain();
             opcion = this.scanner.nextLine();
             if (opcion.equals("0")) {
@@ -96,8 +125,10 @@ public class ClientMain {
                 handleDelFile();
                 CommonMain.pause();
             }
+            lostConnection = this.fileClient.isClosed();
         }
-        this.fileClient.close();
+        if (lostConnection) this.onConnectionLost();
+        else this.fileClient.close();
     }
 
     private void handleFilesAvailable() {
@@ -122,6 +153,9 @@ public class ClientMain {
             CommonMain.display("Error with user permissions: " + e.getMessage());
         } catch (FileException e) {
             CommonMain.display("Error: " + e.getMessage());
+        } catch (Exception e) {
+            CommonMain.display("Error: " + e.getMessage());
+            this.fileClient.close();
         }
     }
     private void handlePostFile() {
@@ -138,6 +172,9 @@ public class ClientMain {
             CommonMain.display("Error with user permissions: " + e.getMessage());
         } catch (FileException e) {
             CommonMain.display("Error: " + e.getMessage());
+        } catch (Exception e) {
+            CommonMain.display("Error: " + e.getMessage());
+            this.fileClient.close();
         }
     }
 

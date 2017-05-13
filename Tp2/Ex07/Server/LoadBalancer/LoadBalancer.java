@@ -56,6 +56,10 @@ public class LoadBalancer extends MyCustomServer implements Runnable{
 
     @Override
     public void run() {
-        this.startServer();
+        try {
+            this.startServer();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

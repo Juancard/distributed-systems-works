@@ -7,6 +7,8 @@ import Tp2.Ex07.Common.LoginException;
 import Tp2.Ex07.Common.PermissionException;
 import Tp2.Ex07.Common.User;
 
+import java.io.IOException;
+
 /**
  * User: juan
  * Date: 08/05/17
@@ -14,11 +16,11 @@ import Tp2.Ex07.Common.User;
  */
 public class FileClient extends Tp2.Ex01.Common.FileClient {
 
-    public FileClient(String host, int port) {
+    public FileClient(String host, int port) throws IOException {
         super(host, port);
     }
 
-    public void login(String username, String password) throws LoginException {
+    public void login(String username, String password) throws LoginException, IOException, ClassNotFoundException {
         User user = new User(username, password);
         this.send(FileProtocol.LOGIN);
         this.send(user);
@@ -30,7 +32,7 @@ public class FileClient extends Tp2.Ex01.Common.FileClient {
     }
 
     @Override
-    public boolean post(String fileName, String fileContent) throws PermissionException, FileException {
+    public boolean post(String fileName, String fileContent) throws PermissionException, FileException, IOException, ClassNotFoundException {
         this.send(FileProtocol.POST);
         this.send(new TextFile(fileName, fileContent));
         Object in = this.read();
@@ -44,7 +46,7 @@ public class FileClient extends Tp2.Ex01.Common.FileClient {
     }
 
     @Override
-    public String get(String fileName) throws PermissionException, FileException {
+    public String get(String fileName) throws PermissionException, FileException, IOException, ClassNotFoundException {
         this.send(FileProtocol.GET);
         this.send(fileName);
         Object in = this.read();

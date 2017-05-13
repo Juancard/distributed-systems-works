@@ -53,7 +53,7 @@ public class SocketConnection {
             return read;
         } catch(EOFException e){
             this.close();
-            throw new IOException("Connection lost.");
+            throw new EOFException("Connection lost.");
         } catch (IOException e) {
             String m = "Error in reading from socket. Cause: " + e.getMessage();
             this.close();
@@ -69,7 +69,6 @@ public class SocketConnection {
         try {
             socketOutput.writeObject(toSend);
         } catch (IOException e) {
-            out("IOException: Error in sending object to socket");
             this.close();
         }
     }

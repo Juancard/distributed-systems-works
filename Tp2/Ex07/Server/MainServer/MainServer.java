@@ -25,10 +25,17 @@ public class MainServer extends Tp2.Ex01.Server.MainServer.MainServer{
         this.databaseUrl = databaseUrl;
     }
 
-    protected Runnable newRunnable(Socket connection){
+    protected Runnable newRunnable(Socket connection) throws IOException {
         this.out("Main Server. Starting Connection");
         SocketConnection socketConnection = new SocketConnection(connection);
-        FileClient backupConnection = new FileClient(this.backupServer.getHost(), this.backupServer.getPort());
+        FileClient backupConnection = null;
+        try {
+            backupConnection = new FileClient(this.backupServer.getHost(), this.backupServer.getPort());
+        } catch (IOException e) {
+            String m = "Could not connect to backup server. Cause: " + e.getMessage();
+            this.out(m);
+            throw new IOException(m);
+        }
         this.out("Main Server. Connected to backup " + backupConnection.getIdentity());
 
         return new MainServerConnection(

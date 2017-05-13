@@ -44,10 +44,14 @@ public class RunClient {
     private static final String FILENAME_SUFFIX = "_sobel_filter";
 
     private Scanner sc = new Scanner(System.in);
-    private String host;
-    private int port;
     private String imagesPath;
     private EdgeDetectorClient edgeDetectorClient;
+    private BufferedImage originalImage;
+    private String originalImageUrl;
+
+    private int rowsToSplitImage;
+    private int colsToSplitImage;
+    private int redundantPixels;
 
     public RunClient(String serverHost, int serverPort, String imagesPath, String[] servicesDNS) throws RemoteException, NotBoundException, ConnectException {
         newClient(serverHost, serverPort, servicesDNS);
@@ -55,27 +59,87 @@ public class RunClient {
     }
 
     private void newClient(String host, int port, String[] servicesDNS) throws RemoteException, NotBoundException {
-        this.host = host;
-        this.port = port;
         this.edgeDetectorClient = new EdgeDetectorClient(host, port, servicesDNS);
     }
 
     public void start() throws IOException {
-        String imageUrl = askForImage();
-        BufferedImage originalImage = this.imageFromUrl(imageUrl);
+        this.setOriginalImage();
+        this.setSplitParameters();
 
-        BufferedImage finalImage = this.onCallingSobel(originalImage);
 
-        String filename = this.filenameFromPath(imageUrl) + FILENAME_SUFFIX;
-        String extension = this.getFilenameExtension(imageUrl);
+        BufferedImage finalImage = this.onCallingSobel();
 
-        System.out.println("Image saved in: " + this.saveImage(finalImage, filename, extension) );
+        String filename = this.filenameFromPath(this.originalImageUrl) + FILENAME_SUFFIX;
+        String extension = this.getFilenameExtension(this.originalImageUrl);
+        CommonMain.display("Image saved in: " + this.saveImage(finalImage, filename, extension) );
     }
 
-    private BufferedImage onCallingSobel(BufferedImage originalImage) throws RemoteException {
-        System.out.println("Image read. Starting...");
+    private void setSplitParameters() {
+        this.rowsToSplitImage = this.askForRows();
+        this.colsToSplitImage = this.askForCols();
+        this.redundantPixels = this.askForRedundantPixels();
+    }
+
+    private int askForRows() {
+        final int DEFAULT_ROWS = 2;
+        final int MIN_VALUE = 1;
+        int out = DEFAULT_ROWS;
+
+        System.out.print(String.format("Number of rows to split image [%d]: ", DEFAULT_ROWS));
+        String rowsEntered = sc.nextLine();
+        try {
+            int value = Integer.parseInt(rowsEntered);
+            if (!(value < MIN_VALUE))
+                out = value;
+        } catch (NumberFormatException e){}
+
+        return out;
+    }
+
+    private int askForCols() {
+        final int DEFAULT_COLS = 2;
+        final int MIN_VALUE = 1;
+        int out = DEFAULT_COLS;
+
+        System.out.print(String.format("Number of cols to split image [%d]: ", DEFAULT_COLS));
+        String rowsEntered = sc.nextLine();
+        try {
+            int value = Integer.parseInt(rowsEntered);
+            if (!(value < MIN_VALUE))
+                out = value;
+        } catch (NumberFormatException e){}
+
+        return out;
+    }
+
+    private int askForRedundantPixels() {
+        final int DEFAULT_REDUNDANT_PIXELS = 1;
+        final int MIN_VALUE = 0;
+        int out = DEFAULT_REDUNDANT_PIXELS;
+        System.out.print(String.format("Number of redundant pixels  [%d]: ", DEFAULT_REDUNDANT_PIXELS));
+        String rowsEntered = sc.nextLine();
+        try {
+            int value = Integer.parseInt(rowsEntered);
+            if (!(value < MIN_VALUE))
+                out = value;
+        } catch (NumberFormatException e){}
+        return out;
+    }
+
+    private void setOriginalImage() throws IOException {
+        this.originalImageUrl = askForImage();
+        this.originalImage = this.imageFromUrl(this.originalImageUrl);
+    }
+
+    private BufferedImage onCallingSobel() throws RemoteException {
+        CommonMain.createSection("Applying Sobel Operator");
         long startTime = System.currentTimeMillis();
-        BufferedImage finalImage = this.edgeDetectorClient.detectEdges(originalImage);
+        BufferedImage finalImage = this.edgeDetectorClient.detectEdges(
+                this.originalImage,
+                this.rowsToSplitImage,
+                this.colsToSplitImage,
+                this.redundantPixels
+        );
         long endTime = System.currentTimeMillis();
         CommonMain.createSection("Execution time: " + (endTime - startTime) + " miliseconds");
 
@@ -105,7 +169,7 @@ public class RunClient {
         DEFAULT = "https://s29.postimg.org/kjex7dx6f/300px-_Valve_original_1.png";
         //DEFAULT = "http://4.bp.blogspot.com/_6ZIqLRChuQg/TF0-bhL6zoI/AAAAAAAAAoE/56OJXkRAFz4/s1600/lenaOriginal.png";
         //DEFAULT = SUPER_BIG_IMAGE;
-        System.out.print("Enter image url (default image if no input): ");
+        System.out.print(String.format("Enter image url [%s]: ", DEFAULT));
         String imageUrl = sc.nextLine();
 
         return (imageUrl.isEmpty())? DEFAULT : imageUrl;

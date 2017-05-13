@@ -23,12 +23,6 @@ public class EdgeDetectorClient {
 
     private Registry registry;
 
-    // Will split image in 4 parts: 2 rows and 2 cols
-    public static final int IMAGE_ROWS = 3;
-    public static final int IMAGE_COLS = 3;
-    public static final int REDUNDANT_PIXELS = 1;
-
-
     // Many services will be called to apply sobel filter
     private String[] servicesDNS;
     private ArrayList<IEdgeDetectorService> iEdgeDetectorServices;
@@ -55,15 +49,17 @@ public class EdgeDetectorClient {
         }
     }
 
-    public ImageSerializable detectEdges(ImageSerializable image) throws RemoteException {
-        return new ImageSerializable(this.callEdgeDetector(image.getBufferedImage()));
-    }
-    public BufferedImage detectEdges(BufferedImage image) throws RemoteException {
-        return this.callEdgeDetector(image);
+    public BufferedImage detectEdges(BufferedImage image, int rowsToSplitImage, int colsToSplitImage, int redundantPixels) throws RemoteException {
+        return this.callEdgeDetector(image, rowsToSplitImage, colsToSplitImage, redundantPixels);
     }
 
-    private BufferedImage callEdgeDetector(BufferedImage originalImage) throws RemoteException {
-        ImageChunkHandler imageChunkHandler = new ImageChunkHandler(IMAGE_ROWS, IMAGE_COLS, REDUNDANT_PIXELS, originalImage);
+    private BufferedImage callEdgeDetector(BufferedImage originalImage, int rowsToSplitImage, int colsToSplitImage, int redundantPixels) throws RemoteException {
+        ImageChunkHandler imageChunkHandler = new ImageChunkHandler(
+                rowsToSplitImage,
+                colsToSplitImage,
+                redundantPixels,
+                originalImage
+        );
 
         // Original image data displayed:
         System.out.println("Original Image: " + originalImage.getWidth() + "x" + originalImage.getHeight());

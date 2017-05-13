@@ -11,7 +11,6 @@ import java.rmi.RemoteException;
 public interface IEdgeDetectorService extends Remote {
     public static final String DNS_NAME = "EDGE_DETECTOR_SERVICE";
 
-    public ImageSerializable detectEdges(ImageSerializable image) throws RemoteException;
     public int[][] detectEdges(int[][] imagePixels) throws RemoteException;
 
 }

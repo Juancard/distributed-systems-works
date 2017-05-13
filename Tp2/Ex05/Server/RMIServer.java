@@ -35,8 +35,8 @@ public class RMIServer implements Runnable{
 
     private void supplyEdgeDetectorService() throws RemoteException, AlreadyBoundException {
         String dns = IEdgeDetectorService.DNS_NAME;
-        this.edgeDetectorService = new EdgeDetectorService();
-        edgeDetectorService.setId(dns + "_" + this.port);
+        String id = dns + "_" + this.port;
+        this.edgeDetectorService = new EdgeDetectorService(id, this.logManager);
         IEdgeDetectorService iEdgeDetectorService = (IEdgeDetectorService) UnicastRemoteObject.exportObject(
                 edgeDetectorService, this.port
         );
@@ -72,9 +72,12 @@ public class RMIServer implements Runnable{
             // get rid of the rmi registry
             UnicastRemoteObject.unexportObject(this.registry, true);
 
+            this.log("Server closed.");
         } catch (RemoteException e) {
+            this.log("Error in closing - " + e.getMessage());
             e.printStackTrace();
         } catch (NotBoundException e) {
+            this.log("Error in closing - " + e.getMessage());
             e.printStackTrace();
         }
     }

@@ -39,13 +39,11 @@ public class RemotePortsManager {
 
     private void connectToRegistries() {
         for (ServerInfo serverInfo : this.remotePorts.keySet()){
-            System.out.println("Connecting to: " + serverInfo);
             try {
                 Registry r = LocateRegistry.getRegistry(serverInfo.getHost(), serverInfo.getPort());
                 this.registries.put(serverInfo, r);
             } catch (RemoteException e) {
-                System.out.println("No registry available in: " + serverInfo);
-                e.printStackTrace();
+                System.out.println("Error connecting to " + serverInfo + ": " + e.getMessage());
             }
         }
     }

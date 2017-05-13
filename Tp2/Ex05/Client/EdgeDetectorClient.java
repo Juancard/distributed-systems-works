@@ -4,6 +4,7 @@ import Common.ServerInfo;
 import Tp2.Ex05.Common.*;
 
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.rmi.RemoteException;
@@ -17,44 +18,37 @@ import java.util.HashMap;
  */
 public class EdgeDetectorClient {
 
-    private static final String PORTS_PATH = "distributed-systems-works/Tp2/Ex05/Resources/config/remote_ports.cfg";
-
-    // Will split image in the amount of cells defined by row * col
-    public static final int IMAGE_ROWS = 3;
-    public static final int IMAGE_COLS = 3;
-    public static final int REDUNDANT_PIXELS = 1;
-
     // Many services will be called to apply sobel filter
     private HashMap<Integer, Runnable> runnables;
     private HashMap<Integer, Thread> threads;
     private RemotePortsManager remotePortsManager;
 
-    public EdgeDetectorClient() throws NoPortsAvailableException, IOException {
+    public EdgeDetectorClient(BufferedReader remotePortsReader) throws NoPortsAvailableException, IOException {
         this.runnables = new HashMap<Integer, Runnable>();
         this.threads = new HashMap<Integer, Thread>();
 
-        ArrayList<ServerInfo> remotePorts = this.loadRemotePorts(PORTS_PATH);
+        ArrayList<ServerInfo> remotePorts = this.loadRemotePorts(remotePortsReader);
         this.remotePortsManager = new RemotePortsManager(remotePorts);
     }
 
-    private ArrayList<ServerInfo> loadRemotePorts(String portsPath) throws NoPortsAvailableException, IOException {
-        try {
-            ArrayList<ServerInfo> remotePorts = RemotePortsLoader.remotePortsFrom(portsPath);
-            return remotePorts;
-        } catch (FileNotFoundException e) {
-            throw new NoPortsAvailableException("No file with remote ports found in: '" + portsPath + "'");
-        }
+    private ArrayList<ServerInfo> loadRemotePorts(BufferedReader remotePortsReader) throws NoPortsAvailableException, IOException {
+        ArrayList<ServerInfo> remotePorts = RemotePortsLoader.remotePortsFrom(remotePortsReader);
+        if (remotePorts.isEmpty())
+            throw new NoPortsAvailableException("Loading ports - No ports read from buffer reader.");
+        return remotePorts;
     }
 
-    public ImageSerializable detectEdges(ImageSerializable image) throws RemoteException, NoPortsAvailableException {
-        return new ImageSerializable(this.callEdgeDetector(image.getBufferedImage()));
-    }
-    public BufferedImage detectEdges(BufferedImage image) throws RemoteException, NoPortsAvailableException {
-        return this.callEdgeDetector(image);
+    public BufferedImage detectEdges(BufferedImage image, int rowsToSplitImage, int colsToSplitImage, int redundantPixels) throws RemoteException, NoPortsAvailableException {
+        return this.callEdgeDetector(
+                image,
+                rowsToSplitImage,
+                colsToSplitImage,
+                redundantPixels
+        );
     }
 
-    private BufferedImage callEdgeDetector(BufferedImage originalImage) throws RemoteException, NoPortsAvailableException {
-        ImageChunkHandler imageChunkHandler = new ImageChunkHandler(IMAGE_ROWS, IMAGE_COLS, REDUNDANT_PIXELS, originalImage);
+    private BufferedImage callEdgeDetector(BufferedImage originalImage, int rowsToSplitImage, int colsToSplitImage, int redundantPixels) throws RemoteException, NoPortsAvailableException {
+        ImageChunkHandler imageChunkHandler = new ImageChunkHandler(rowsToSplitImage, colsToSplitImage, redundantPixels, originalImage);
 
         // Original image data displayed:
         System.out.println("Original Image: " + originalImage.getWidth() + "x" + originalImage.getHeight());

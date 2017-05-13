@@ -1,5 +1,6 @@
 package Common;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
@@ -16,5 +17,15 @@ public class PropertiesManager {
         defaultProps.load(in);
         in.close();
         return defaultProps;
+    }
+
+    public static boolean propIsFileExists(Properties properties, String property){
+        return properties.contains(property)
+                && new File(properties.getProperty(property)).exists();
+    }
+
+    public static boolean propIsPath(Properties properties, String property){
+        return properties.contains(property)
+                && new File(properties.getProperty(property)).isDirectory();
     }
 }

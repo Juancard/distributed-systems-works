@@ -20,12 +20,6 @@ import java.util.Scanner;
 public class RunServer {
     public static final String PROPERTIES_PATH = "distributed-systems-works/Tp2/Ex05/Resources/Config/config.properties";
 
-    private static final String EXERCISE_TITLE = "Sobel server";
-    private static final String PORTS_PATH = "distributed-systems-works/Tp2/Ex05/Resources/Config/remote_ports.cfg";
-
-    private static Scanner sc = new Scanner(System.in);
-
-
     private ArrayList<ServerInfo> remotePorts;
     private final String logsPath;
     protected HashMap<Integer, Thread> threads;
@@ -35,7 +29,12 @@ public class RunServer {
         Properties properties = PropertiesManager.loadProperties(PROPERTIES_PATH);
         CommonMain.showWelcomeMessage(properties);
 
-        String remotePortsPath = properties.getProperty("REMOTE_PORTS_PATH");
+        if (PropertiesManager.propIsFileExists(properties, "REMOTE_PORTS_FILE"))
+            throw new IOException("Remote Ports file does not exists");
+        if (PropertiesManager.propIsPath(properties, "SERVER_LOG_PATH"))
+            throw new IOException("Server Log Path is not a valid directory");
+
+        String remotePortsPath = properties.getProperty("REMOTE_PORTS_FILE");
         String logsPath = properties.getProperty("SERVER_LOG_PATH");
 
         RunServer runServer = new RunServer(remotePortsPath, logsPath);

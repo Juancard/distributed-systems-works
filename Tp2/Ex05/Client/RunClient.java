@@ -1,15 +1,18 @@
 package Tp2.Ex05.Client;
 
 import Common.CommonMain;
+import Common.PropertiesManager;
 import Tp2.Ex05.Common.NoPortsAvailableException;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.Properties;
 import java.util.Scanner;
 
 /**
@@ -18,52 +21,145 @@ import java.util.Scanner;
  * Time: 17:30
  */
 public class RunClient {
-    private static final int TP_NUMBER = 2;
-    private static final int EXERCISE_NUMBER = 5;
-    private static final String EXERCISE_TITLE = "Sobel Operator";
-
-    private static final String IMAGES_PATH = "distributed-systems-works/Tp2/Ex05/Resources/Images/";
+    public static final String PROPERTIES_PATH = "distributed-systems-works/Tp2/Ex05/Resources/Config/config.properties";
+    private static final String FILENAME_SUFFIX = "_sobel_filter";
 
     private Scanner sc = new Scanner(System.in);
     private EdgeDetectorClient edgeDetectorClient;
+    private Path imagesPath;
+
+    private BufferedImage originalImage;
+    private String originalImageUrl;
+
+    private int rowsToSplitImage;
+    private int colsToSplitImage;
+    private int redundantPixels;
 
     public static void main(String[] args) throws IOException {
 
         try {
-            RunClient runClient = new RunClient();
-            CommonMain.showWelcomeMessage(TP_NUMBER, EXERCISE_NUMBER, EXERCISE_TITLE + " - Client side");
+            Properties properties = PropertiesManager.loadProperties(PROPERTIES_PATH);
+            CommonMain.showWelcomeMessage(properties);
+
+            if (PropertiesManager.propIsPath(properties, "IMAGES_PATH"))
+                throw new Exception("Images Path is not a valid directory");
+            if (PropertiesManager.propIsFileExists(properties, "REMOTE_PORTS_FILE"))
+                throw new Exception("Remote Ports file does not exists");
+
+
+            String imagesPath = properties.getProperty("IMAGES_PATH");
+            String remotePortsFile = properties.getProperty("REMOTE_PORTS_FILE");
+
+            RunClient runClient = new RunClient(imagesPath, remotePortsFile);
             runClient.start();
-        } catch (NotBoundException e) {
-            CommonMain.display("Error: " + e.toString());
-        } catch (NoPortsAvailableException e) {
-            CommonMain.display(e.getMessage());
+        } catch (Exception e) {
+            CommonMain.display("Error: " + e.getMessage());
+            System.exit(1);
         }
 
 
     }
 
-    public RunClient() throws IOException, NotBoundException, NoPortsAvailableException {
-        this.edgeDetectorClient = new EdgeDetectorClient();
+    public RunClient(String imagesPathString, String remotePortsFileString) throws IOException, NoPortsAvailableException {
+        this.imagesPath = this.setPathFromString(imagesPathString);
+        this.edgeDetectorClient = new EdgeDetectorClient(
+            new BufferedReader(
+                    new FileReader(
+                            remotePortsFileString
+                    )
+            )
+        );
+    }
 
+    private Path setPathFromString(String pathString) throws IOException {
+        File f = new File(pathString);
+
+        if (!(f.isDirectory()))
+            throw new IOException("Images path is not a valid directory");
+        if (!(f.exists()) && !(f.mkdir()))
+            throw new IOException("Failed creating images directory at " + f.getPath());
+
+        return f.toPath();
     }
 
 
     public void start() throws IOException, NoPortsAvailableException {
-        String imageUrl = askForImage();
-        BufferedImage originalImage = this.imageFromUrl(imageUrl);
+        this.setOriginalImage();
+        this.setSplitParameters();
 
-        BufferedImage finalImage = this.onCallingSobel(originalImage);
+        BufferedImage finalImage = this.onCallingSobel();
 
-        String filename = this.filenameFromPath(imageUrl) + "_edged";
-        String extension = this.getFilenameExtension(imageUrl);
-
+        String filename = this.filenameFromPath(this.originalImageUrl) + FILENAME_SUFFIX;
+        String extension = this.getFilenameExtension(this.originalImageUrl);
         System.out.println("Image saved in: " + this.saveImage(finalImage, filename, extension) );
     }
 
-    private BufferedImage onCallingSobel(BufferedImage originalImage) throws RemoteException, NoPortsAvailableException {
-        System.out.println("Image read. Starting...");
+    private void setSplitParameters() {
+        this.rowsToSplitImage = this.askForRows();
+        this.colsToSplitImage = this.askForCols();
+        this.redundantPixels = this.askForRedundantPixels();
+    }
+
+    private int askForRows() {
+        final int DEFAULT_ROWS = 3;
+        final int MIN_VALUE = 1;
+        int out = DEFAULT_ROWS;
+
+        System.out.print(String.format("Number of rows to split image [%d]: ", DEFAULT_ROWS));
+        String rowsEntered = sc.nextLine();
+        try {
+            int value = Integer.parseInt(rowsEntered);
+            if (!(value < MIN_VALUE))
+                out = value;
+        } catch (NumberFormatException e){}
+
+        return out;
+    }
+
+    private int askForCols() {
+        final int DEFAULT_COLS = 3;
+        final int MIN_VALUE = 1;
+        int out = DEFAULT_COLS;
+
+        System.out.print(String.format("Number of cols to split image [%d]: ", DEFAULT_COLS));
+        String rowsEntered = sc.nextLine();
+        try {
+            int value = Integer.parseInt(rowsEntered);
+            if (!(value < MIN_VALUE))
+                out = value;
+        } catch (NumberFormatException e){}
+
+        return out;
+    }
+
+    private int askForRedundantPixels() {
+        final int DEFAULT_REDUNDANT_PIXELS = 1;
+        final int MIN_VALUE = 0;
+        int out = DEFAULT_REDUNDANT_PIXELS;
+        System.out.print(String.format("Number of redundant pixels  [%d]: ", DEFAULT_REDUNDANT_PIXELS));
+        String rowsEntered = sc.nextLine();
+        try {
+            int value = Integer.parseInt(rowsEntered);
+            if (!(value < MIN_VALUE))
+                out = value;
+        } catch (NumberFormatException e){}
+        return out;
+    }
+
+    private void setOriginalImage() throws IOException {
+        this.originalImageUrl = askForImage();
+        this.originalImage = this.imageFromUrl(this.originalImageUrl);
+    }
+
+    private BufferedImage onCallingSobel() throws RemoteException, NoPortsAvailableException {
+        CommonMain.createSection("Applying Sobel Operator");
         long startTime = System.currentTimeMillis();
-        BufferedImage finalImage = this.edgeDetectorClient.detectEdges(originalImage);
+        BufferedImage finalImage = this.edgeDetectorClient.detectEdges(
+                this.originalImage,
+                this.rowsToSplitImage,
+                this.colsToSplitImage,
+                this.redundantPixels
+        );
         long endTime = System.currentTimeMillis();
         CommonMain.createSection("Execution time: " + (endTime - startTime) + " miliseconds");
 
@@ -71,7 +167,7 @@ public class RunClient {
     }
 
     private String saveImage(BufferedImage image, String filename, String extension) throws IOException {
-        File f = new File(IMAGES_PATH + filename + "." + extension);
+        File f = new File(this.imagesPath + "/" + filename + "." + extension);
         ImageIO.write(image, extension, f);
         return f.getAbsolutePath();
     }
@@ -91,9 +187,9 @@ public class RunClient {
         //DEFAULT = "http://www.smalljpg.com/temp/20170424223049.jpg";
         //DEFAULT = "http://www.smalljpg.com/temp/20170424224711.jpg";
         //DEFAULT = "https://s29.postimg.org/kjex7dx6f/300px-_Valve_original_1.png";
-        //DEFAULT = "http://4.bp.blogspot.com/_6ZIqLRChuQg/TF0-bhL6zoI/AAAAAAAAAoE/56OJXkRAFz4/s1600/lenaOriginal.png";
+        DEFAULT = "http://4.bp.blogspot.com/_6ZIqLRChuQg/TF0-bhL6zoI/AAAAAAAAAoE/56OJXkRAFz4/s1600/lenaOriginal.png";
         //DEFAULT = SUPER_BIG_IMAGE;
-        System.out.print("Enter image url (default image if no input): ");
+        System.out.print(String.format("Enter image url [%s]: ", DEFAULT));
         String imageUrl = sc.nextLine();
 
         return (imageUrl.isEmpty())? DEFAULT : imageUrl;
@@ -101,11 +197,8 @@ public class RunClient {
 
     private BufferedImage imageFromUrl(String imageUrl) throws IOException {
         URL url = new URL(imageUrl);
-
         System.out.println("Reading image from url: " + imageUrl);
-        BufferedImage image = ImageIO.read(url);
-
-        return image;
+        return ImageIO.read(url);
     }
 
 }

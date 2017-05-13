@@ -13,12 +13,12 @@ import java.io.IOException;
  * Date: 22/04/17
  * Time: 13:38
  */
-public class BackupAccountManager extends AccountsManager{
+public class AccountsManagerWithBackup extends AccountsManager{
 
     private String backupHost;
     private int backupPort;
 
-    public BackupAccountManager(String backupHost, int backupPort, String filesPathString) throws IOException {
+    public AccountsManagerWithBackup(String backupHost, int backupPort, String filesPathString) throws IOException {
         super(filesPathString);
         this.backupHost = backupHost;
         this.backupPort = backupPort;
@@ -29,8 +29,13 @@ public class BackupAccountManager extends AccountsManager{
         return this.backupPost(this.accountToTextFile(account));
     }
 
-    private boolean backupPost(TextFile textFile){
-        FileClient fileClient = new FileClient(this.backupHost, this.backupPort);
+    private boolean backupPost(TextFile textFile) throws BankException {
+        FileClient fileClient = null;
+        try {
+            fileClient = this.connectToBackup();
+        } catch (IOException e) {
+            throw new BankException(e.getMessage());
+        }
         boolean result = false;
         try {
             result = fileClient.post(textFile.getName(), textFile.getContent());
@@ -43,8 +48,8 @@ public class BackupAccountManager extends AccountsManager{
         }
     }
 
-    public TextFile get(String owner){
-        FileClient fileClient = new FileClient(this.backupHost, this.backupPort);
+    public TextFile get(String owner) throws IOException {
+        FileClient fileClient = this.connectToBackup();
         String content = null;
         try {
             content = fileClient.get(owner);
@@ -54,5 +59,14 @@ public class BackupAccountManager extends AccountsManager{
         }
         fileClient.close();
         return new TextFile(owner, content);
+    }
+
+    public FileClient connectToBackup() throws IOException {
+        try {
+            return new FileClient(this.backupHost, this.backupPort);
+        } catch (IOException e) {
+            String m = "Could not connect to backup server. Cause: " + e.getMessage();
+            throw new IOException(m);
+        }
     }
 }

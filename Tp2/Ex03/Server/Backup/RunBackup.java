@@ -1,9 +1,11 @@
 package Tp2.Ex03.Server.Backup;
 
 import Common.CommonMain;
+import Common.PropertiesManager;
 import Tp2.Ex01.Server.BackupServer.BackupServer;
 
 import java.io.IOException;
+import java.util.Properties;
 
 /**
  * User: juan
@@ -11,19 +13,16 @@ import java.io.IOException;
  * Time: 17:38
  */
 public class RunBackup {
-
-    private static final int DEFAULT_PORT = 5323;
-    private static final int TP_NUMBER = 2;
-    private static final int EXERCISE_NUMBER = 3;
-    private static final String TP_TITLE = "Bank server";
-
-    private static final String FILES_PATH = "distributed-systems-works/Tp2/Ex03/Server/Backup/Resources/Files/";
+    private static final String PROPERTIES_PATH = "distributed-systems-works/Tp2/Ex03/config.properties";
 
     public static void main(String[] args) {
         try {
-            CommonMain.showWelcomeMessage(TP_NUMBER, EXERCISE_NUMBER, TP_TITLE + " - Running backup");
-            int port = CommonMain.askForPort("Backup server port", DEFAULT_PORT);
-            BackupServer backupServer = new BackupServer(port, FILES_PATH);
+            Properties properties = PropertiesManager.loadProperties(PROPERTIES_PATH);
+            CommonMain.showWelcomeMessage(properties);
+            int port = Integer.parseInt(properties.getProperty("BACKUP_PORT"));
+            String backupAccountsPath = properties.getProperty("BACKUP_ACCOUNTS_PATH");
+            String backupLogPath = properties.getProperty("BACKUP_LOG_PATH");
+            BackupServer backupServer = new BackupServer(port, backupAccountsPath, backupLogPath);
             backupServer.startServer();
         } catch (IOException e) {
             e.printStackTrace();

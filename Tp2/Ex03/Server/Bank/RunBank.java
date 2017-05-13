@@ -1,10 +1,11 @@
 package Tp2.Ex03.Server.Bank;
 
 import Common.CommonMain;
-import Tp2.Ex01.Server.BackupServer.BackupServer;
+import Common.PropertiesManager;
 import Tp2.Ex02.Server.RunBankServer;
 
 import java.io.IOException;
+import java.util.Properties;
 
 /**
  * User: juan
@@ -12,26 +13,24 @@ import java.io.IOException;
  * Time: 14:05
  */
 public class RunBank {
-    private static final String LOCAL_ACCOUNTS_PATH = "distributed-systems-works/Tp2/Ex03/Server/Bank/Resources/Accounts";
-
-    private static final int DEFAULT_PORT_DEPOSIT = 5123;
-    private static final int DEFAULT_PORT_EXTRACT = 5223;
-
-    private static final String DEFAULT_BACKUP_HOST = "localhost";
-    private static final int DEFAULT_PORT_BACKUP = 5323;
-
-    private static final int TP_NUMBER = 2;
-    private static final int EXERCISE_NUMBER = 3;
-    private static final String TP_TITLE = "Bank Server with backup";
+    private static final String PROPERTIES_PATH = "distributed-systems-works/Tp2/Ex03/config.properties";
 
     public static void main(String[] args) throws IOException {
-        CommonMain.showWelcomeMessage(TP_NUMBER, EXERCISE_NUMBER, TP_TITLE);
 
-        String backupHost = CommonMain.askForHost("Backup server host", DEFAULT_BACKUP_HOST);
-        int backupPort = CommonMain.askForPort("Backup server port", DEFAULT_PORT_BACKUP);
-        BackupAccountManager backupAccountManager = new BackupAccountManager(backupHost, backupPort, LOCAL_ACCOUNTS_PATH);
+        Properties properties = PropertiesManager.loadProperties(PROPERTIES_PATH);
+        CommonMain.showWelcomeMessage(properties);
 
-        RunBankServer runBankServer = new RunBankServer(DEFAULT_PORT_DEPOSIT, DEFAULT_PORT_EXTRACT, backupAccountManager);
+        // Backup server data
+        String backupHost = properties.getProperty("BACKUP_HOST");
+        int backupPort = Integer.parseInt(properties.getProperty("BACKUP_PORT"));
+
+        // Main server data
+        int portToDeposit = Integer.parseInt(properties.getProperty("SERVER_PORT_DEPOSIT"));
+        int portToExtract = Integer.parseInt(properties.getProperty("SERVER_PORT_EXTRACT"));
+        String accountsPath = properties.getProperty("ACCOUNTS_PATH");
+        AccountsManagerWithBackup accountsManagerWithBackup = new AccountsManagerWithBackup(backupHost, backupPort, accountsPath);
+
+        RunBankServer runBankServer = new RunBankServer(portToDeposit, portToExtract, accountsManagerWithBackup);
         runBankServer.run();
     }
 }

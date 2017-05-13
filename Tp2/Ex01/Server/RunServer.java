@@ -1,5 +1,6 @@
 package Tp2.Ex01.Server;
 
+import Common.CommonMain;
 import Common.PropertiesManager;
 import Common.ServerInfo;
 import Tp2.Ex01.Server.BackupServer.BackupServer;
@@ -24,6 +25,7 @@ public class RunServer {
 
     public static void main(String[] args) throws IOException {
         Properties properties = PropertiesManager.loadProperties(PROPERTIES_PATH);
+        CommonMain.showWelcomeMessage(properties);
         RunServer runServer = new RunServer(properties);
         runServer.start();
     }

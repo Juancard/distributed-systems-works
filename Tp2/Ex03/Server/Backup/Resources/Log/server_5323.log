@@ -1,0 +1,12 @@
+2017-05-12 22:35:45.667 : Listening on port: 5323...
+2017-05-12 22:36:13.396 : Backup Server: Creating Backup Connection
+2017-05-12 22:36:13.398 : New connection with client: /127.0.0.1:41898
+2017-05-12 22:36:13.400  - Client: /127.0.0.1:41898 - Message: Request - GET
+2017-05-12 22:36:13.455  - Client: /127.0.0.1:41898 - Message: Response - TextFile{name='username', content='6.5'}
+2017-05-12 22:36:13.511  - Client: /127.0.0.1:41898 - Message: Connection lost.
+2017-05-12 22:36:13.514 : Backup Server: Creating Backup Connection
+2017-05-12 22:36:13.514 : New connection with client: /127.0.0.1:41899
+2017-05-12 22:36:13.515  - Client: /127.0.0.1:41899 - Message: Request - POST
+2017-05-12 22:36:13.551  - Client: /127.0.0.1:41899 - Message: Response - true
+2017-05-12 22:36:13.591  - Client: /127.0.0.1:41899 - Message: Connection lost.
+2017-05-12 22:39:23.141 : Listening on port: 5323...

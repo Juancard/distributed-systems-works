@@ -16,7 +16,6 @@ import java.util.Scanner;
 public class RunClient {
     public static final String PROPERTIES_PATH = "distributed-systems-works/Tp2/Ex06/config.properties";
 
-    private Scanner sc = new Scanner(System.in);
     private TimeClient timeClient;
 
     public static void main(String[] args) {

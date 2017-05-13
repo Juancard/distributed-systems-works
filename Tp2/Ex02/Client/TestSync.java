@@ -1,6 +1,9 @@
 package Tp2.Ex02.Client;
 
 import Common.CommonMain;
+import Common.PropertiesManager;
+
+import java.util.Properties;
 
 /**
  * User: juan
@@ -9,21 +12,22 @@ import Common.CommonMain;
  */
 
 /**
- *  To Solve this: "Forzar, y mostrar como se logra, errores en el acceso al uso compartido"
+ *  To Solve this exercise: "Forzar, y mostrar como se logra, errores en el acceso al uso compartido"
  */
 public class TestSync {
-    private static final String DEFAULT_HOST = "localhost";
-    private static final int DEFAULT_PORT_DEPOSIT = 5122;
-    private static final int DEFAULT_PORT_EXTRACT = 5222;
-    private static final int TP_NUMBER = 2;
-    private static final int EXERCISE_NUMBER = 2;
-    private static final String EXERCISE_TITLE = "Bank Server - Force to Synchronization Errors";
+    private static final String PROPERTIES_PATH = "distributed-systems-works/Tp2/Ex02/config.properties";
 
     public static void main(String[] args) throws Exception {
-        CommonMain.showWelcomeMessage(TP_NUMBER, EXERCISE_NUMBER, EXERCISE_TITLE);
+        Properties properties = PropertiesManager.loadProperties(PROPERTIES_PATH);
+        CommonMain.showWelcomeMessage(properties);
 
-        final AccountClient client1 = newClient();
-        final AccountClient client2 = newClient();
+        // Server data
+        String serverHost = properties.getProperty("SERVER_HOST");
+        int depositPort = Integer.parseInt(properties.getProperty("SERVER_PORT_DEPOSIT"));
+        int extractPort = Integer.parseInt(properties.getProperty("SERVER_PORT_EXTRACT"));
+
+        final AccountClient client1 = newClient(serverHost, depositPort, extractPort);
+        final AccountClient client2 = newClient(serverHost, depositPort, extractPort);
         final String accountToDepositIn = "juan";
         final double startingBalance = client1.deposit("juan", 0);
         final double firstDepositAmount = 10.0;
@@ -74,7 +78,7 @@ public class TestSync {
         CommonMain.display("Final balance should be: " + finalBalanceShouldBe);
     }
 
-    private static AccountClient newClient() {
-        return new AccountClient(DEFAULT_HOST, DEFAULT_PORT_DEPOSIT, DEFAULT_PORT_EXTRACT);
+    private static AccountClient newClient(String serverHost, int depositPort, int extractPort) {
+        return new AccountClient(serverHost, depositPort, extractPort);
     }
 }

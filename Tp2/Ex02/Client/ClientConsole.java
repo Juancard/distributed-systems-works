@@ -1,7 +1,10 @@
 package Tp2.Ex02.Client;
 
 import Common.CommonMain;
+import Common.PropertiesManager;
 
+import java.io.IOException;
+import java.util.Properties;
 import java.util.Scanner;
 
 /**
@@ -10,32 +13,24 @@ import java.util.Scanner;
  * Time: 12:20
  */
 public class ClientConsole {
-
-    private static final String DEFAULT_HOST = "localhost";
-    private static final int DEFAULT_PORT_DEPOSIT = 5122;
-    private static final int DEFAULT_PORT_EXTRACT = 5222;
-    private static final int TP_NUMBER = 2;
-    private static final int EXERCISE_NUMBER = 2;
-    private static final String EXERCISE_TITLE = "Bank Server";
+    private static final String PROPERTIES_PATH = "distributed-systems-works/Tp2/Ex02/config.properties";
 
     private Scanner sc = new Scanner(System.in);
     private AccountClient myAccountClient;
 
-    public static void main(String[] args) {
-        CommonMain.showWelcomeMessage(TP_NUMBER, EXERCISE_NUMBER, EXERCISE_TITLE + " - Client side");
-        ClientConsole clientConsole = new ClientConsole(DEFAULT_HOST, DEFAULT_PORT_DEPOSIT, DEFAULT_PORT_EXTRACT);
+    public static void main(String[] args) throws IOException {
+        Properties properties = PropertiesManager.loadProperties(PROPERTIES_PATH);
+        CommonMain.showWelcomeMessage(properties);
+
+        String serverHost = properties.getProperty("SERVER_HOST");
+        int depositPort = Integer.parseInt(properties.getProperty("SERVER_PORT_DEPOSIT"));
+        int extractPort = Integer.parseInt(properties.getProperty("SERVER_PORT_EXTRACT"));
+        ClientConsole clientConsole = new ClientConsole(serverHost, depositPort, extractPort);
     }
 
-    public ClientConsole(String defaultHost, int defaultPortDeposit, int defaultPortExtract){
-        newClient(defaultHost, defaultPortDeposit, defaultPortExtract);
+    public ClientConsole(String serverHost, int portDeposit, int portExtract){
+        myAccountClient = new AccountClient(serverHost, portDeposit, portExtract);
         handleMainOptions();
-    }
-
-    private void newClient(String defaultHost, int defaultPortDeposit, int defaultPortExtract) {
-        String host = CommonMain.askForHost(defaultHost);
-        int portToDeposit = CommonMain.askForPort("Enter deposit port", defaultPortDeposit);
-        int portToExtract = CommonMain.askForPort("Enter extraction port", defaultPortExtract);
-        myAccountClient = new AccountClient(host, portToDeposit, portToExtract);
     }
 
     private void handleMainOptions() {
@@ -100,7 +95,7 @@ public class ClientConsole {
     }
 
     public void showMain(){
-        CommonMain.createSection(EXERCISE_TITLE + " - Main");
+        CommonMain.createSection("Bank app - Main");
         System.out.println("1 - Deposit");
         System.out.println("2 - Extract");
         System.out.println("0 - Exit");

@@ -1,8 +1,10 @@
 package Tp2.Ex02.Server;
 
 import Common.CommonMain;
+import Common.PropertiesManager;
 
 import java.io.IOException;
+import java.util.Properties;
 
 /**
  * User: juan
@@ -10,12 +12,7 @@ import java.io.IOException;
  * Time: 14:05
  */
 public class RunBankServer implements Runnable{
-    private static final String ACCOUNTS_PATH = "distributed-systems-works/Tp2/Ex02/Server/Resources/Accounts";
-    private static final int DEFAULT_PORT_DEPOSIT = 5122;
-    private static final int DEFAULT_PORT_EXTRACT = 5222;
-    private static final int TP_NUMBER = 2;
-    private static final int EXERCISE_NUMBER = 2;
-    private static final String TP_TITLE = "Bank Server";
+    private static final String PROPERTIES_PATH = "distributed-systems-works/Tp2/Ex02/config.properties";
 
     private AccountsManager accountsManager;
     private int portToDeposit;
@@ -24,14 +21,21 @@ public class RunBankServer implements Runnable{
     private BankServer bankExtractServer;
 
     public static void main(String[] args) throws IOException {
-        CommonMain.showWelcomeMessage(TP_NUMBER, EXERCISE_NUMBER, TP_TITLE);
-        RunBankServer runBankServer = new RunBankServer(DEFAULT_PORT_DEPOSIT, DEFAULT_PORT_EXTRACT, new AccountsManager(ACCOUNTS_PATH));
+        Properties properties = PropertiesManager.loadProperties(PROPERTIES_PATH);
+        AccountsManager accountsManager = new AccountsManager(properties.getProperty("ACCOUNTS_PATH"));
+        int portToDeposit = Integer.parseInt(properties.getProperty("SERVER_PORT_DEPOSIT"));
+        int portToExtract = Integer.parseInt(properties.getProperty("SERVER_PORT_EXTRACT"));
+
+        CommonMain.showWelcomeMessage(properties);
+
+        RunBankServer runBankServer = new RunBankServer(portToDeposit, portToExtract, accountsManager);
         runBankServer.run();
     }
 
-    public RunBankServer(int defaultDepositPort, int defaultExtractPort, AccountsManager accountsManager) throws IOException {
+    public RunBankServer(int portToDeposit, int portToExtract, AccountsManager accountsManager) throws IOException {
         this.accountsManager = accountsManager;
-        this.setPorts(defaultDepositPort, defaultExtractPort);
+        this.portToDeposit = portToDeposit;
+        this.portToExtract = portToExtract;
         this.setServers();
     }
 
@@ -40,15 +44,17 @@ public class RunBankServer implements Runnable{
         this.bankExtractServer = new BankServer(this.portToExtract, this.accountsManager);
     }
 
-    private void setPorts(int defaultDepositPort, int defaultExtractPort) {
-        this.portToDeposit = CommonMain.askForPort("Enter deposit port", defaultDepositPort);
-        this.portToExtract = CommonMain.askForPort("Enter extract port", defaultExtractPort);
-    }
-
-
     @Override
     public void run() {
-        (new Thread(bankDepositServer)).start();
-        (new Thread(bankExtractServer)).start();
+        Thread depositThread = new Thread(bankDepositServer);
+        Thread extractThread = new Thread(bankExtractServer);
+
+        System.out.println("Opening ports:");
+        System.out.println("- " + this.portToDeposit + ": port to deposit.");
+        System.out.println("- " + this.portToExtract + ": port to extract.");
+        System.out.println();
+
+        depositThread.start();
+        extractThread.start();
     }
 }

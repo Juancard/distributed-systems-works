@@ -3,6 +3,8 @@ package Tp2.Ex02.Client;
 import Common.Socket.SocketConnection;
 import Tp2.Ex02.Common.AccountProtocol;
 
+import java.io.IOException;
+
 /**
  * User: juan
  * Date: 14/03/17
@@ -48,11 +50,11 @@ public class AccountClient{
         return (Double) response;
     }
 
-    private SocketConnection depositConnection(){
+    private SocketConnection depositConnection() throws IOException {
         return new SocketConnection(this.bankHost, this.portToDeposit);
     }
 
-    private SocketConnection extractConnection(){
+    private SocketConnection extractConnection() throws IOException {
         return new SocketConnection(this.bankHost, this.portToExtract);
     }
 }

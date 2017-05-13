@@ -24,16 +24,20 @@ public class EdgeDetectorClient {
     private Registry registry;
 
     // Will split image in 4 parts: 2 rows and 2 cols
-    public static final int IMAGE_ROWS = 1;
-    public static final int IMAGE_COLS = 1;
+    public static final int IMAGE_ROWS = 3;
+    public static final int IMAGE_COLS = 3;
     public static final int REDUNDANT_PIXELS = 1;
 
+
     // Many services will be called to apply sobel filter
+    private String[] servicesDNS;
     private ArrayList<IEdgeDetectorService> iEdgeDetectorServices;
     private HashMap<Integer, Runnable> runnables;
     HashMap<Integer, Thread> threads;
 
-    public EdgeDetectorClient(String host, int port) throws RemoteException, NotBoundException {
+
+    public EdgeDetectorClient(String host, int port, String[] servicesDNS) throws RemoteException, NotBoundException {
+        this.servicesDNS = servicesDNS;
         this.registry = LocateRegistry.getRegistry(host, port);
 
         this.iEdgeDetectorServices = new ArrayList<IEdgeDetectorService>();
@@ -44,16 +48,10 @@ public class EdgeDetectorClient {
     }
 
     private void connectToServices() throws RemoteException, NotBoundException {
-        String currentDns = "";
-        for (int i=1; i <= IMAGE_COLS * IMAGE_ROWS; i++){
-
-            try {
-                currentDns = (String) IEdgeDetectorService.class.getField("DNS_NAME_" + i).get(null);
-            } catch (IllegalAccessException e) {e.printStackTrace();} catch (NoSuchFieldException e) {e.printStackTrace();}
-
-            IEdgeDetectorService service = (IEdgeDetectorService) this.registry.lookup(currentDns);
-
-            this.iEdgeDetectorServices.add(service);
+        for (int i=0; i < this.servicesDNS.length; i++){
+            this.iEdgeDetectorServices.add(
+                (IEdgeDetectorService) this.registry.lookup(this.servicesDNS[i])
+            );
         }
     }
 
@@ -147,13 +145,15 @@ public class EdgeDetectorClient {
         // - thread id,
         // - image chunck id and
         // - runnable id.
+        int serviceNumber = 0;
         for (int i=0; i < images.length; i++) {
             BufferedImage chunk = images[i];
-            IEdgeDetectorService service = this.iEdgeDetectorServices.get(i);
+            IEdgeDetectorService service = this.iEdgeDetectorServices.get(serviceNumber);
             Runnable r = new EdgeDetectorRunnable(service, chunk, i);
             Thread t = new Thread(r);
             this.runnables.put(i, r);
             this.threads.put(i, t);
+            serviceNumber = (serviceNumber < servicesDNS.length - 1)? serviceNumber + 1 : 0;
         }
     }
 

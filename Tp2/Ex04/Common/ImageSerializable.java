@@ -1,6 +1,5 @@
 package Tp2.Ex04.Common;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
 

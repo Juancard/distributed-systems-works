@@ -1,21 +1,17 @@
 package Tp2.Ex04.Client;
 
 import Common.CommonMain;
-import Tp2.Ex04.Common.ImageChunkHandler;
-import Tp2.Ex04.Common.SobelEdgeDetector;
+import Common.PropertiesManager;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.ConnectException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.ArrayList;
+import java.util.Properties;
 import java.util.Scanner;
 
 /**
@@ -23,42 +19,45 @@ import java.util.Scanner;
  * Date: 22/04/17
  * Time: 17:30
  */
-public class MainMenu {
-    private static final String DEFAULT_HOST = "localhost";
-    private static final int DEFAULT_PORT = 5024;
-    private static final int TP_NUMBER = 2;
-    private static final int EXERCISE_NUMBER = 4;
-    private static final String EXERCISE_TITLE = "Sobel Operator";
+public class RunClient {
+    public static final String PROPERTIES_PATH = "distributed-systems-works/Tp2/Ex04/config.properties";
 
-    private static final String IMAGES_PATH = "distributed-systems-works/Tp2/Ex04/Resources/Images/";
+    public static void main(String[] args){
+
+        try {
+            Properties properties = PropertiesManager.loadProperties(PROPERTIES_PATH);
+            CommonMain.showWelcomeMessage(properties);
+
+            String serverHost = properties.getProperty("SERVER_HOST");
+            int serverPort = Integer.parseInt(properties.getProperty("SERVER_PORT"));
+            String imagesPath = properties.getProperty("IMAGES_PATH");
+            String[] servicesDNS = properties.getProperty("SERVICES_DNS").split(",");
+
+            RunClient runClient = new RunClient(serverHost, serverPort, imagesPath, servicesDNS);
+            runClient.start();
+        } catch (Exception e) {
+            CommonMain.display("Error: " + e.toString());
+            System.exit(1);
+        }
+    }
+
+    private static final String FILENAME_SUFFIX = "_sobel_filter";
 
     private Scanner sc = new Scanner(System.in);
     private String host;
     private int port;
+    private String imagesPath;
     private EdgeDetectorClient edgeDetectorClient;
 
-    public static void main(String[] args) throws IOException {
-        MainMenu mainMenu = null;
-
-        try {
-            mainMenu = new MainMenu(DEFAULT_HOST, DEFAULT_PORT);
-        } catch (NotBoundException e) {
-            CommonMain.display("Error starting RMI client: " + e.toString());
-            System.exit(1);
-        }
-
-        CommonMain.showWelcomeMessage(TP_NUMBER, EXERCISE_NUMBER, EXERCISE_TITLE + " - Client side");
-        mainMenu.start();
+    public RunClient(String serverHost, int serverPort, String imagesPath, String[] servicesDNS) throws RemoteException, NotBoundException, ConnectException {
+        newClient(serverHost, serverPort, servicesDNS);
+        this.imagesPath = imagesPath;
     }
 
-    public MainMenu(String defaultHost, int defaultPort) throws RemoteException, NotBoundException, ConnectException {
-        newClient(defaultHost, defaultPort);
-    }
-
-    private void newClient(String defaultHost, int defaultPort) throws RemoteException, NotBoundException {
-        this.host = CommonMain.askForHost(defaultHost);
-        this.port = CommonMain.askForPort(defaultPort);
-        this.edgeDetectorClient = new EdgeDetectorClient(host, port);
+    private void newClient(String host, int port, String[] servicesDNS) throws RemoteException, NotBoundException {
+        this.host = host;
+        this.port = port;
+        this.edgeDetectorClient = new EdgeDetectorClient(host, port, servicesDNS);
     }
 
     public void start() throws IOException {
@@ -67,7 +66,7 @@ public class MainMenu {
 
         BufferedImage finalImage = this.onCallingSobel(originalImage);
 
-        String filename = this.filenameFromPath(imageUrl) + "_edged";
+        String filename = this.filenameFromPath(imageUrl) + FILENAME_SUFFIX;
         String extension = this.getFilenameExtension(imageUrl);
 
         System.out.println("Image saved in: " + this.saveImage(finalImage, filename, extension) );
@@ -84,7 +83,7 @@ public class MainMenu {
     }
 
     private String saveImage(BufferedImage image, String filename, String extension) throws IOException {
-        File f = new File(IMAGES_PATH + filename + "." + extension);
+        File f = new File(this.imagesPath + filename + "." + extension);
         ImageIO.write(image, extension, f);
         return f.getAbsolutePath();
     }
@@ -103,7 +102,7 @@ public class MainMenu {
         //DEFAULT = "https://www.tutorialspoint.com/java_dip/images/grayscale.jpg";
         //DEFAULT = "http://www.smalljpg.com/temp/20170424223049.jpg";
         //DEFAULT = "http://www.smalljpg.com/temp/20170424224711.jpg";
-        //DEFAULT = "https://s29.postimg.org/kjex7dx6f/300px-_Valve_original_1.png";
+        DEFAULT = "https://s29.postimg.org/kjex7dx6f/300px-_Valve_original_1.png";
         //DEFAULT = "http://4.bp.blogspot.com/_6ZIqLRChuQg/TF0-bhL6zoI/AAAAAAAAAoE/56OJXkRAFz4/s1600/lenaOriginal.png";
         //DEFAULT = SUPER_BIG_IMAGE;
         System.out.print("Enter image url (default image if no input): ");

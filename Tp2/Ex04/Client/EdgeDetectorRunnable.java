@@ -4,7 +4,6 @@ import Tp2.Ex04.Common.IEdgeDetectorService;
 import Tp2.Ex04.Common.SobelEdgeDetector;
 
 import java.awt.image.BufferedImage;
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 /**

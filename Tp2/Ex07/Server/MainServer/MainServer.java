@@ -21,8 +21,8 @@ public class MainServer extends Tp2.Ex01.Server.MainServer.MainServer{
 
     private String databaseUrl;
 
-    public MainServer(int port, ServerInfo backupServer, String databaseUrl, String filesPath, String logPath) throws IOException {
-        super(port, backupServer, filesPath, logPath);
+    public MainServer(int port, ServerInfo backupServer, String databaseUrl, String filesPath) throws IOException {
+        super(port, backupServer, filesPath);
         this.databaseUrl = databaseUrl;
     }
 

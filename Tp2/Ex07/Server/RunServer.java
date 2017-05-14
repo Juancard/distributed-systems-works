@@ -10,6 +10,7 @@ import Tp2.Ex07.Server.MainServer.Database.ScriptRunner;
 import Tp2.Ex07.Server.MainServer.MainServer;
 
 import java.io.*;
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
@@ -70,9 +71,22 @@ public class RunServer {
         CommonMain.display("Will listen on port: " + port);
 
         String filesPath = properties.getProperty("BACKUP_FILES_PATH");
-        String logFilePath = properties.getProperty("BACKUP_LOG_FILE_PATH");
+        String logFilePath = properties.getProperty("BACKUP_LOG_PATH");
 
-        BackupServer backupServer = new BackupServer(port, filesPath, logFilePath);
+        BackupServer backupServer;
+        try {
+            backupServer = new BackupServer(port, filesPath);
+        } catch (IOException e) {
+            throw new IOException("Could not load path to files. Cause: " + e.getMessage());
+        }
+
+        if (new File(logFilePath).isDirectory())
+            logFilePath = new File(logFilePath).toString() + "/backup_server.log";
+
+        backupServer.setLogWriter(
+                this.createLogWriter(logFilePath)
+        );
+
         this.backupServer = new Thread(backupServer);
     }
 
@@ -130,7 +144,8 @@ public class RunServer {
 
         // Main server common data;
         String filesPath = properties.getProperty("SERVER_FILES_PATH");
-        String logFilePath = properties.getProperty("SERVER_LOG_FILE_PATH");
+        String logFilePath = properties.getProperty("SERVER_LOG_PATH");
+        File log = new File(logFilePath);
 
         // Backup server data
         String backupHost = properties.getProperty("BACKUP_SERVER_HOST");
@@ -138,6 +153,7 @@ public class RunServer {
         ServerInfo backupServerInfo = new ServerInfo(backupHost, backupPort);
 
         int port;
+        String mainServerLog;
         for (int i=0; i < numberOfMainServers; i++){
             port = this.mainServersInfo[i].getPort();
             CommonMain.display("Main server on port: " + port);
@@ -146,21 +162,33 @@ public class RunServer {
                     port,
                     backupServerInfo,
                     this.databaseUrl,
-                    filesPath,
-                    logFilePath
+                    filesPath
+            );
+
+            mainServerLog = log.toString();
+            if (log.isDirectory())
+                mainServerLog += "/main_server_" + port + ".log";
+
+            mainServer.setLogWriter(
+                    this.createLogWriter(mainServerLog)
             );
 
             this.mainServersThreads[i] = new Thread(mainServer);
         }
     }
 
-    private void prepareLoadBalancer() {
+    private void prepareLoadBalancer() throws IOException {
         CommonMain.createSection("Preparing Load Balancer");
 
         int port = Integer.parseInt(properties.getProperty("BALANCER_PORT"));
-        CommonMain.display("Will listen on port: " + port);
-
+        CommonMain.display("This server will listen on port: " + port);
         LoadBalancer loadBalancer = new LoadBalancer(port);
+
+        String logPath = properties.getProperty("BALANCER_LOG_PATH");
+        if (new File(logPath).isDirectory())
+            logPath = new File(logPath).toString() + "/load_balancer.log";
+        loadBalancer.setLogWriter(this.createLogWriter(logPath));
+
         for (ServerInfo mainServer : this.mainServersInfo)
             loadBalancer.addServer(mainServer);
 
@@ -174,6 +202,27 @@ public class RunServer {
         this.loadBalancerServer.start();
         for (Thread t : this.mainServersThreads)
             t.start();
+
         CommonMain.display("Server is up and running!");
+    }
+
+    private PrintStream createLogWriter(String logFilePath) throws IOException {
+        File logFile = new File(logFilePath);
+        if (! (logFile.exists())){
+            CommonMain.display("Log file was not found. Creating it...");
+            try {
+                logFile.createNewFile();
+            } catch (IOException e) {
+                throw new IOException("Could not create log file. Cause: " + e.getMessage());
+            }
+        }
+        CommonMain.display("Logs in: " + logFile.getPath());
+
+        return new PrintStream(
+                new FileOutputStream(
+                        logFile,
+                        true
+                )
+        );
     }
 }

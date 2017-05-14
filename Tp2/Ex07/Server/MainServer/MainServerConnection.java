@@ -6,7 +6,7 @@ import Tp2.Ex07.Common.FileProtocol;
 import Common.FileManager;
 import Common.Socket.SocketConnection;
 import Tp2.Ex01.Common.FileClient;
-import Tp2.Ex01.Server.Common.LogManager;
+import Common.LogManager;
 import Tp2.Ex07.Common.LoginException;
 import Tp2.Ex07.Common.PermissionException;
 import Tp2.Ex07.Common.User;
@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.function.Predicate;
 
 /**
  * User: juan

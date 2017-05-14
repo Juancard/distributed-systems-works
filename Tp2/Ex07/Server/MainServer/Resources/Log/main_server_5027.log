@@ -1,0 +1,14 @@
+2017-05-14 14:54:33.541 : Listening on port: 5027...
+2017-05-14 14:56:08.948 : Main Server. Starting Connection
+2017-05-14 14:56:08.955 : Main Server. Connected to backup localhost/127.0.0.1:5227
+2017-05-14 14:56:08.957 : New connection with client: /127.0.0.1:46624
+2017-05-14 14:56:23.814  - Client: /127.0.0.1:46624 - Message: Request - LOGIN
+2017-05-14 14:56:23.870  - Client: /127.0.0.1:46624 - Message: User trying to log: User{username='a', password='a'}
+2017-05-14 14:56:24.122  - Client: /127.0.0.1:46624 - Message: User logged successfully: User{username='a', password='a'}
+2017-05-14 14:56:24.123  - Client: /127.0.0.1:46624 - Message: Response - true
+2017-05-14 14:56:49.532  - Client: /127.0.0.1:46624 - Message: Request - DIR
+2017-05-14 14:56:49.563  - Client: /127.0.0.1:46624 - Message: Response - [Ljava.lang.String;@59f4fcaa
+2017-05-14 14:56:56.267  - Client: /127.0.0.1:46624 - Message: Request - GET
+2017-05-14 14:56:56.306  - Client: /127.0.0.1:46624 - Message: User a - GET ala
+2017-05-14 14:56:56.308  - Client: /127.0.0.1:46624 - Message: Response - Tp2.Ex07.Common.PermissionException: No sufficient permissions to get this file
+2017-05-14 14:57:00.497  - Client: /127.0.0.1:46624 - Message: Client disconnected

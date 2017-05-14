@@ -33,4 +33,9 @@ public class DatabaseManager {
         this.connection.close();
     }
 
+    public static void testConnection(String databaseUrl) throws SQLException {
+        Connection c = DriverManager.getConnection(databaseUrl);
+        c.close();
+    }
+
 }

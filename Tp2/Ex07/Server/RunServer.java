@@ -1,12 +1,17 @@
 package Tp2.Ex07.Server;
 
+import Common.CommonMain;
 import Common.PropertiesManager;
 import Common.ServerInfo;
 import Tp2.Ex01.Server.BackupServer.BackupServer;
 import Tp2.Ex07.Server.LoadBalancer.LoadBalancer;
+import Tp2.Ex07.Server.MainServer.Database.DatabaseManager;
+import Tp2.Ex07.Server.MainServer.Database.ScriptRunner;
 import Tp2.Ex07.Server.MainServer.MainServer;
 
-import java.io.IOException;
+import java.io.*;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Properties;
 
 /**
@@ -23,10 +28,12 @@ public class RunServer {
     private Thread loadBalancerServer;
     private ServerInfo[] mainServersInfo;
     private Thread[] mainServersThreads;
+    private String databaseUrl;
 
 
     public static void main(String[] args) throws IOException {
         Properties properties = PropertiesManager.loadProperties(PROPERTIES_PATH);
+        CommonMain.showWelcomeMessage(properties);
         RunServer runServer = new RunServer(properties);
         runServer.start();
     }
@@ -35,6 +42,7 @@ public class RunServer {
         this.properties = properties;
         this.mainServersInfo = this.loadMainServersInfo();
         this.prepareBackupServer();
+        this.prepareDatabase();
         this.prepareMainServers();
         this.prepareLoadBalancer();
     }
@@ -56,7 +64,11 @@ public class RunServer {
     }
 
     private void prepareBackupServer() throws IOException {
+        CommonMain.createSection("Preparing Backup Server");
+
         int port = Integer.parseInt(properties.getProperty("BACKUP_SERVER_PORT"));
+        CommonMain.display("Will listen on port: " + port);
+
         String filesPath = properties.getProperty("BACKUP_FILES_PATH");
         String logFilePath = properties.getProperty("BACKUP_LOG_FILE_PATH");
 
@@ -64,7 +76,55 @@ public class RunServer {
         this.backupServer = new Thread(backupServer);
     }
 
+    private void prepareDatabase() throws IOException {
+        /*
+            Sets up database:
+            - Checks if given db url is a valid database url.
+            - If database is not found in path:
+                - Creates it.
+                - fill it with data from script.
+            - Checks connection.
+
+            Finally: set attribute database url.
+         */
+        CommonMain.createSection("Preparing Database");
+
+        // Database data
+        String dbUrl = properties.getProperty("DB_URL");
+
+        if (!dbUrl.matches("^jdbc:.*:.*"))
+            throw new IOException("Not a valid database URL: " + dbUrl);
+
+        String dbName = dbUrl.split("^jdbc:.*:")[1];
+        File dbNameFile = new File(dbName);
+        if (! (dbNameFile.exists())){
+            CommonMain.display("Database was not found. Creating it...");
+            Connection connection;
+            try {
+                connection = new DatabaseManager(dbUrl).getConnection();
+            } catch (SQLException e) {
+                String m = "Could not connect to database. Cause: " + e.getMessage();
+                throw new IOException(m);
+            }
+            ScriptRunner scriptRunner = new ScriptRunner(connection, false, true);
+            scriptRunner.setLogWriter(null);
+            String scriptPath = this.properties.getProperty("DB_SCRIPT");
+            CommonMain.display("Filling database with script: " + scriptPath);
+            BufferedReader script = new BufferedReader(new FileReader(new File(scriptPath)));
+            try {
+                scriptRunner.runScript(script);
+            } catch (SQLException e) {
+                throw new IOException("Could not load db data from script. Cause: " + e.getMessage());
+            }
+        }
+
+        CommonMain.display("Database is ready.");
+        this.databaseUrl = dbUrl;
+    }
+
     private void prepareMainServers() throws IOException {
+        CommonMain.createSection("Preparing Main Servers");
+
         int numberOfMainServers = this.mainServersInfo.length;
         this.mainServersThreads = new Thread[numberOfMainServers];
 
@@ -77,23 +137,28 @@ public class RunServer {
         int backupPort = Integer.parseInt(properties.getProperty("BACKUP_SERVER_PORT"));
         ServerInfo backupServerInfo = new ServerInfo(backupHost, backupPort);
 
-        // Database data
-        String databaseUrl = properties.getProperty("DB_URL");
-
+        int port;
         for (int i=0; i < numberOfMainServers; i++){
+            port = this.mainServersInfo[i].getPort();
+            CommonMain.display("Main server on port: " + port);
+
             MainServer mainServer = new MainServer(
-                    this.mainServersInfo[i].getPort(),
+                    port,
                     backupServerInfo,
-                    databaseUrl,
+                    this.databaseUrl,
                     filesPath,
                     logFilePath
             );
+
             this.mainServersThreads[i] = new Thread(mainServer);
         }
     }
 
     private void prepareLoadBalancer() {
+        CommonMain.createSection("Preparing Load Balancer");
+
         int port = Integer.parseInt(properties.getProperty("BALANCER_PORT"));
+        CommonMain.display("Will listen on port: " + port);
 
         LoadBalancer loadBalancer = new LoadBalancer(port);
         for (ServerInfo mainServer : this.mainServersInfo)
@@ -103,9 +168,12 @@ public class RunServer {
     }
 
     private void start() {
+        CommonMain.createSection("Starting server");
+
         this.backupServer.start();
         this.loadBalancerServer.start();
         for (Thread t : this.mainServersThreads)
             t.start();
+        CommonMain.display("Server is up and running!");
     }
 }

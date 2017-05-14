@@ -42,6 +42,7 @@ public class MainServerConnection extends Tp2.Ex01.Server.MainServer.MainServerC
             objectToClient = this.onClientRequest(clientInput.toString());
         } catch (Exception e) {
             e.printStackTrace();
+            this.close();
         }
         if (objectToClient != null)
             this.sendToClient(objectToClient);

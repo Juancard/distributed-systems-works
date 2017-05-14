@@ -3,6 +3,7 @@ package Tp2.Ex07.Server.MainServer;
 import Common.ServerInfo;
 import Common.Socket.SocketConnection;
 import Tp2.Ex01.Common.FileClient;
+import Tp2.Ex07.Server.MainServer.Database.DatabaseManager;
 
 import java.io.IOException;
 import java.net.Socket;

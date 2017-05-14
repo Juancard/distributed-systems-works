@@ -36,6 +36,7 @@ public class FileWorker extends MyCustomWorker {
             objectToClient = this.onClientRequest(clientInput.toString());
         } catch (Exception e) {
             e.printStackTrace();
+            this.close();
         }
         if (objectToClient != null)
             this.sendToClient(objectToClient);

@@ -13,3 +13,22 @@
 2017-05-14 14:56:56.308  - Client: /127.0.0.1:46624 - Message: Response - Tp2.Ex07.Common.PermissionException: No sufficient permissions to get this file
 2017-05-14 14:57:00.497  - Client: /127.0.0.1:46624 - Message: Client disconnected
 2017-05-14 19:27:15.572 : Listening on port: 5027...
+2017-05-14 20:01:03.551 : Listening on port: 5027...
+2017-05-14 20:01:59.939 : Main Server. Starting Connection
+2017-05-14 20:01:59.961 : Main Server. Connected to backup localhost/127.0.0.1:5227
+2017-05-14 20:02:00.042 : New connection with client: /127.0.0.1:48259
+2017-05-14 20:02:22.618  - Client: /127.0.0.1:48259 - Message: Request - LOGIN
+2017-05-14 20:02:22.668  - Client: /127.0.0.1:48259 - Message: User trying to log: User{username='juan', password='juan'}
+2017-05-14 20:02:22.892  - Client: /127.0.0.1:48259 - Message: User logged successfully: User{username='juan', password='juan'}
+2017-05-14 20:02:22.893  - Client: /127.0.0.1:48259 - Message: Response - true
+2017-05-14 20:02:27.657  - Client: /127.0.0.1:48259 - Message: Request - DIR
+2017-05-14 20:02:27.680  - Client: /127.0.0.1:48259 - Message: Response - [Ljava.lang.String;@7231ba6c
+2017-05-14 20:02:47.951  - Client: /127.0.0.1:48259 - Message: Request - POST
+2017-05-14 20:02:47.993  - Client: /127.0.0.1:48259 - Message: User juan - POST TextFile{name='example2.txt', content='asd'}
+2017-05-14 20:02:48.007  - Client: /127.0.0.1:48259 - Message: Response - Tp2.Ex07.Common.PermissionException: User is not allowed to post file. Cause: filename already exists
+2017-05-14 20:03:00.581  - Client: /127.0.0.1:48259 - Message: Request - POST
+2017-05-14 20:03:00.617  - Client: /127.0.0.1:48259 - Message: User juan - POST TextFile{name='lala', content='alal'}
+2017-05-14 20:03:01.165  - Client: /127.0.0.1:48259 - Message: Response - true
+2017-05-14 20:03:03.468  - Client: /127.0.0.1:48259 - Message: Request - DIR
+2017-05-14 20:03:03.470  - Client: /127.0.0.1:48259 - Message: Response - [Ljava.lang.String;@22a9d9b2
+2017-05-14 20:03:08.441  - Client: /127.0.0.1:48259 - Message: Client disconnected

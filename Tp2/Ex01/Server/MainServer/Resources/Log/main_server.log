@@ -23,3 +23,19 @@
 2017-05-14 13:58:17.038  - Client: /127.0.0.1:48969 - Message: Client disconnected
 2017-05-14 13:58:19.105 : Main Server: Creating Server Thread
 2017-05-14 13:58:19.108 : New connection with client: /127.0.0.1:48974
+2017-05-14 19:42:15.007 : Listening on port: 5021...
+2017-05-14 19:42:31.457 : Main Server: Creating Server Thread
+2017-05-14 19:42:31.531 : New connection with client: /127.0.0.1:50474
+2017-05-14 19:42:35.980  - Client: /127.0.0.1:50474 - Message: Request - DIR
+2017-05-14 19:42:35.980  - Client: /127.0.0.1:50474 - Message: Response - [Ljava.lang.String;@488e2fb8
+2017-05-14 19:42:42.870  - Client: /127.0.0.1:50474 - Message: Request - POST
+2017-05-14 19:42:42.913  - Client: /127.0.0.1:50474 - Message: Response - Common.FileException: filename can not be an empty value
+2017-05-14 19:42:52.861  - Client: /127.0.0.1:50474 - Message: Request - POST
+2017-05-14 19:42:52.942  - Client: /127.0.0.1:50474 - Message: Response - true
+2017-05-14 19:43:01.936  - Client: /127.0.0.1:50474 - Message: Request - GET
+2017-05-14 19:43:01.939  - Client: /127.0.0.1:50474 - Message: Response - TextFile{name='lala', content='lala'}
+2017-05-14 19:43:08.069  - Client: /127.0.0.1:50474 - Message: Request - DEL
+2017-05-14 19:43:08.146  - Client: /127.0.0.1:50474 - Message: Response - true
+2017-05-14 19:43:13.758  - Client: /127.0.0.1:50474 - Message: Request - DIR
+2017-05-14 19:43:13.759  - Client: /127.0.0.1:50474 - Message: Response - [Ljava.lang.String;@2bb8142b
+2017-05-14 19:43:15.851  - Client: /127.0.0.1:50474 - Message: Client disconnected

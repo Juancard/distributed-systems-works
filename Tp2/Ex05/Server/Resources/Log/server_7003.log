@@ -5,3 +5,13 @@
 2017-05-13 16:32:47.929 : EDGE_DETECTOR_SERVICE_7003: In detect edges to image: 171x171
 2017-05-13 16:32:47.930 : EDGE_DETECTOR_SERVICE_7003: In detect edges to image: 171x172
 2017-05-13 16:33:31.880 : Server closed.
+2017-05-14 19:52:44.082 : RMI Server listening on port 7003...
+2017-05-14 19:52:44.095 : Edge detector service is up as "EDGE_DETECTOR_SERVICE" on port 7003
+2017-05-14 19:53:11.234 : EDGE_DETECTOR_SERVICE_7003: In detect edges to image: 171x172
+2017-05-14 19:54:33.067 : EDGE_DETECTOR_SERVICE_7003: In detect edges to image: 2596x1002
+2017-05-14 19:56:25.841 : RMI Server listening on port 7003...
+2017-05-14 19:56:25.841 : Edge detector service is up as "EDGE_DETECTOR_SERVICE" on port 7003
+2017-05-14 19:57:19.101 : RMI Server listening on port 7003...
+2017-05-14 19:57:19.101 : Edge detector service is up as "EDGE_DETECTOR_SERVICE" on port 7003
+2017-05-14 19:57:36.365 : EDGE_DETECTOR_SERVICE_7003: In detect edges to image: 171x172
+2017-05-14 19:57:58.987 : Server closed.

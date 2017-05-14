@@ -15,3 +15,11 @@
 2017-05-14 13:58:17.039  - Client: /127.0.0.1:58575 - Message: Client disconnected
 2017-05-14 13:58:19.107 : Backup Server: Creating Backup Connection
 2017-05-14 13:58:19.108 : New connection with client: /127.0.0.1:58580
+2017-05-14 19:42:15.005 : Listening on port: 5121...
+2017-05-14 19:42:31.528 : Backup Server: Creating Backup Connection
+2017-05-14 19:42:31.531 : New connection with client: /127.0.0.1:60080
+2017-05-14 19:42:52.899  - Client: /127.0.0.1:60080 - Message: Request - POST
+2017-05-14 19:42:52.938  - Client: /127.0.0.1:60080 - Message: Response - true
+2017-05-14 19:43:08.106  - Client: /127.0.0.1:60080 - Message: Request - DEL
+2017-05-14 19:43:08.146  - Client: /127.0.0.1:60080 - Message: Response - true
+2017-05-14 19:43:15.852  - Client: /127.0.0.1:60080 - Message: Client disconnected

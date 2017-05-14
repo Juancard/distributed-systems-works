@@ -2,7 +2,6 @@ package Tp2.Ex03.Client;
 
 import Common.CommonMain;
 import Common.PropertiesManager;
-import Tp2.Ex02.Client.ClientConsole;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -12,7 +11,7 @@ import java.util.Properties;
  * Date: 21/04/17
  * Time: 21:31
  */
-public class MainMenu {
+public class RunBankClient {
     private static final String PROPERTIES_PATH = "distributed-systems-works/Tp2/Ex03/config.properties";
 
     public static void main(String[] args) throws IOException {
@@ -22,7 +21,7 @@ public class MainMenu {
         String host = properties.getProperty("SERVER_HOST");
         int portToDeposit = Integer.parseInt(properties.getProperty("SERVER_PORT_DEPOSIT"));
         int portToExtract = Integer.parseInt(properties.getProperty("SERVER_PORT_EXTRACT"));
-        ClientConsole clientConsole = new ClientConsole(host, portToDeposit, portToExtract);
+        Tp2.Ex02.Client.RunBankClient runBankClient = new Tp2.Ex02.Client.RunBankClient(host, portToDeposit, portToExtract);
     }
 
 

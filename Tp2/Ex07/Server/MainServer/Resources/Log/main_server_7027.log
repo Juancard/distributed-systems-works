@@ -1,2 +1,13 @@
 2017-05-14 14:54:33.542 : Listening on port: 7027...
 2017-05-14 19:27:15.573 : Listening on port: 7027...
+2017-05-14 20:01:03.553 : Listening on port: 7027...
+2017-05-14 20:03:35.303 : Main Server. Starting Connection
+2017-05-14 20:03:35.306 : Main Server. Connected to backup localhost/127.0.0.1:5227
+2017-05-14 20:03:35.306 : New connection with client: /127.0.0.1:51534
+2017-05-14 20:04:01.847  - Client: /127.0.0.1:51534 - Message: Request - LOGIN
+2017-05-14 20:04:01.867  - Client: /127.0.0.1:51534 - Message: User trying to log: User{username='a', password='a'}
+2017-05-14 20:04:01.868  - Client: /127.0.0.1:51534 - Message: User logged successfully: User{username='a', password='a'}
+2017-05-14 20:04:01.868  - Client: /127.0.0.1:51534 - Message: Response - true
+2017-05-14 20:04:10.088  - Client: /127.0.0.1:51534 - Message: Request - GET
+2017-05-14 20:04:10.125  - Client: /127.0.0.1:51534 - Message: User a - GET example2.txt
+2017-05-14 20:04:10.127  - Client: /127.0.0.1:51534 - Message: Response - Tp2.Ex07.Common.PermissionException: No sufficient permissions to get this file

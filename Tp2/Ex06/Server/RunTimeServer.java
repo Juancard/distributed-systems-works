@@ -11,7 +11,7 @@ import java.util.Properties;
  * Date: 07/05/17
  * Time: 14:12
  */
-public class RunServer {
+public class RunTimeServer {
     public static final String PROPERTIES_PATH = "distributed-systems-works/Tp2/Ex06/config.properties";
 
     public static void main(String[] args) throws IOException {

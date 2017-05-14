@@ -12,7 +12,7 @@ import java.util.Scanner;
  * Date: 12/03/17
  * Time: 12:20
  */
-public class ClientConsole {
+public class RunBankClient {
     private static final String PROPERTIES_PATH = "distributed-systems-works/Tp2/Ex02/config.properties";
 
     private Scanner sc = new Scanner(System.in);
@@ -25,10 +25,10 @@ public class ClientConsole {
         String serverHost = properties.getProperty("SERVER_HOST");
         int depositPort = Integer.parseInt(properties.getProperty("SERVER_PORT_DEPOSIT"));
         int extractPort = Integer.parseInt(properties.getProperty("SERVER_PORT_EXTRACT"));
-        ClientConsole clientConsole = new ClientConsole(serverHost, depositPort, extractPort);
+        RunBankClient runBankClient = new RunBankClient(serverHost, depositPort, extractPort);
     }
 
-    public ClientConsole(String serverHost, int portDeposit, int portExtract){
+    public RunBankClient(String serverHost, int portDeposit, int portExtract){
         myAccountClient = new AccountClient(serverHost, portDeposit, portExtract);
         handleMainOptions();
     }
@@ -79,7 +79,7 @@ public class ClientConsole {
         } catch(NumberFormatException e){
             CommonMain.display("\nError: Not a valid amount to extract");
         } catch (Exception e) {
-            CommonMain.display("\nDeposit failed. ");
+            CommonMain.display("\nExtraction failed. ");
             if (e.getMessage() != null) CommonMain.display("Reason: " + e.getMessage());
         }
     }

@@ -11,3 +11,13 @@
 2017-05-14 19:27:15.570 : Load balancer adds server: localhost:6027
 2017-05-14 19:27:15.570 : Load balancer adds server: localhost:7027
 2017-05-14 19:27:15.571 : Listening on port: 5127...
+2017-05-14 20:01:03.537 : Load balancer adds server: localhost:5027
+2017-05-14 20:01:03.547 : Load balancer adds server: localhost:6027
+2017-05-14 20:01:03.547 : Load balancer adds server: localhost:7027
+2017-05-14 20:01:03.549 : Listening on port: 5127...
+2017-05-14 20:01:59.931 : Sending client: /127.0.0.1:59120 to server: localhost:5027
+2017-05-14 20:01:59.952 : New connection with client: /127.0.0.1:59120
+2017-05-14 20:03:12.562 : Sending client: /127.0.0.1:59124 to server: localhost:6027
+2017-05-14 20:03:12.564 : New connection with client: /127.0.0.1:59124
+2017-05-14 20:03:35.303 : Sending client: /127.0.0.1:59134 to server: localhost:7027
+2017-05-14 20:03:35.306 : New connection with client: /127.0.0.1:59134

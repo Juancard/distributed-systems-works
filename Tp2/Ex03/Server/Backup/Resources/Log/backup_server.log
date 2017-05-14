@@ -1,2 +1,18 @@
 2017-05-14 15:15:25.354 : Listening on port: 5323...
 2017-05-14 15:23:47.424 : Listening on port: 5323...
+2017-05-14 19:46:45.000 : Listening on port: 5323...
+2017-05-14 19:48:42.955 : Backup Server: Creating Backup Connection
+2017-05-14 19:48:42.959 : New connection with client: /127.0.0.1:34693
+2017-05-14 19:48:42.961  - Client: /127.0.0.1:34693 - Message: Request - GET
+2017-05-14 19:48:43.212  - Client: /127.0.0.1:34693 - Message: Response - TextFile{name='username', content='7.5'}
+2017-05-14 19:48:43.279  - Client: /127.0.0.1:34693 - Message: Client disconnected
+2017-05-14 19:48:43.419 : Backup Server: Creating Backup Connection
+2017-05-14 19:48:43.420 : New connection with client: /127.0.0.1:34694
+2017-05-14 19:48:43.422  - Client: /127.0.0.1:34694 - Message: Request - POST
+2017-05-14 19:48:43.459  - Client: /127.0.0.1:34694 - Message: Response - true
+2017-05-14 19:48:43.503  - Client: /127.0.0.1:34694 - Message: Client disconnected
+2017-05-14 19:49:15.139 : Backup Server: Creating Backup Connection
+2017-05-14 19:49:15.140 : New connection with client: /127.0.0.1:34761
+2017-05-14 19:49:15.140  - Client: /127.0.0.1:34761 - Message: Request - GET
+2017-05-14 19:49:15.177  - Client: /127.0.0.1:34761 - Message: Response - TextFile{name='username', content='12.5'}
+2017-05-14 19:49:15.218  - Client: /127.0.0.1:34761 - Message: Client disconnected

@@ -1,5 +1,6 @@
 package Tp2.Ex04.Server;
 
+import Common.CommonMain;
 import Common.PropertiesManager;
 import Tp2.Ex04.Common.IEdgeDetectorService;
 
@@ -21,12 +22,6 @@ public class RMIServer {
 
 
     public static final int SERVER_PORT = 5024;
-    public static final int EDGE_DETECTOR_SERVICE_PORT_1 = 5224;
-    public static final int EDGE_DETECTOR_SERVICE_PORT_2 = 5324;
-    public static final int EDGE_DETECTOR_SERVICE_PORT_3 = 5424;
-    public static final int EDGE_DETECTOR_SERVICE_PORT_4 = 5524;
-    public static final int EDGE_DETECTOR_OPEN_PORTS = 4;
-
 
     private Registry registry;
     private int serverPort;
@@ -36,6 +31,7 @@ public class RMIServer {
     public static void main(String[] args) {
         try {
             Properties properties = PropertiesManager.loadProperties(PROPERTIES_PATH);
+            CommonMain.showWelcomeMessage(properties);
 
             int serverPort = Integer.parseInt(properties.getProperty("SERVER_PORT"));
             String[] servicesDNSGiven = properties.getProperty("SERVICES_DNS").split(",");

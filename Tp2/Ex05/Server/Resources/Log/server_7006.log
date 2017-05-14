@@ -3,3 +3,13 @@
 2017-05-13 16:32:16.932 : RMI Server listening on port 7006...
 2017-05-13 16:32:16.933 : Edge detector service is up as "EDGE_DETECTOR_SERVICE" on port 7006
 2017-05-13 16:32:23.144 : Server closed.
+2017-05-14 19:52:44.098 : RMI Server listening on port 7006...
+2017-05-14 19:52:44.108 : Edge detector service is up as "EDGE_DETECTOR_SERVICE" on port 7006
+2017-05-14 19:53:11.234 : EDGE_DETECTOR_SERVICE_7006: In detect edges to image: 172x172
+2017-05-14 19:54:32.993 : EDGE_DETECTOR_SERVICE_7006: In detect edges to image: 2597x1002
+2017-05-14 19:56:25.844 : RMI Server listening on port 7006...
+2017-05-14 19:56:25.845 : Edge detector service is up as "EDGE_DETECTOR_SERVICE" on port 7006
+2017-05-14 19:57:19.104 : RMI Server listening on port 7006...
+2017-05-14 19:57:19.104 : Edge detector service is up as "EDGE_DETECTOR_SERVICE" on port 7006
+2017-05-14 19:57:36.377 : EDGE_DETECTOR_SERVICE_7006: In detect edges to image: 172x172
+2017-05-14 19:57:58.991 : Server closed.

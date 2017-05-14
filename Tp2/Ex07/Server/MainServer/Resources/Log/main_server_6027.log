@@ -1,2 +1,15 @@
 2017-05-14 14:54:33.542 : Listening on port: 6027...
 2017-05-14 19:27:15.573 : Listening on port: 6027...
+2017-05-14 20:01:03.553 : Listening on port: 6027...
+2017-05-14 20:03:12.563 : Main Server. Starting Connection
+2017-05-14 20:03:12.565 : Main Server. Connected to backup localhost/127.0.0.1:5227
+2017-05-14 20:03:12.565 : New connection with client: /127.0.0.1:51081
+2017-05-14 20:03:16.306  - Client: /127.0.0.1:51081 - Message: Request - LOGIN
+2017-05-14 20:03:16.333  - Client: /127.0.0.1:51081 - Message: User trying to log: User{username='juan', password='juan'}
+2017-05-14 20:03:16.335  - Client: /127.0.0.1:51081 - Message: User logged successfully: User{username='juan', password='juan'}
+2017-05-14 20:03:16.335  - Client: /127.0.0.1:51081 - Message: Response - true
+2017-05-14 20:03:18.769  - Client: /127.0.0.1:51081 - Message: Request - DIR
+2017-05-14 20:03:18.770  - Client: /127.0.0.1:51081 - Message: Response - [Ljava.lang.String;@7602a933
+2017-05-14 20:03:24.781  - Client: /127.0.0.1:51081 - Message: Request - DEL
+2017-05-14 20:03:24.821  - Client: /127.0.0.1:51081 - Message: User juan - DEL lala
+2017-05-14 20:03:24.992  - Client: /127.0.0.1:51081 - Message: Response - true

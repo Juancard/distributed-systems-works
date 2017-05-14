@@ -1,4 +1,4 @@
-package Tp2.Ex01.Server.Common;
+package Common;
 
 import java.io.PrintStream;
 import java.sql.Timestamp;
@@ -34,5 +34,9 @@ public class LogManager {
 
     public void setLogPrinter(PrintStream logPrinter) {
         this.logPrinter = logPrinter;
+    }
+
+    public PrintStream getLogPrinter() {
+        return this.logPrinter;
     }
 }

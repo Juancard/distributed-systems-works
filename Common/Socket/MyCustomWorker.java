@@ -1,7 +1,10 @@
 package Common.Socket;
 
+import Common.LogManager;
+
 import java.io.EOFException;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.net.Socket;
 import java.net.SocketException;
 
@@ -13,13 +16,20 @@ import java.net.SocketException;
 public class MyCustomWorker implements Runnable{
 
     protected SocketConnection clientConnection;
+    protected LogManager logManager;
 
     public MyCustomWorker(SocketConnection clientConnection) {
         this.clientConnection = clientConnection;
+        this.logManager = new LogManager(System.out);
     }
 
     public MyCustomWorker(Socket clientSocket) {
         this.clientConnection = new SocketConnection(clientSocket);
+        this.logManager = new LogManager(System.out);
+    }
+
+    public void setLogs(PrintStream writer){
+        this.logManager.setLogPrinter(writer);
     }
 
     @Override
@@ -71,7 +81,7 @@ public class MyCustomWorker implements Runnable{
     }
 
     public void display (String message){
-        System.out.println(this.clientConnection.getIdentity() + ": " + message);
+        this.logManager.log(this.clientIdentity(), message);
     }
 
     public void close(){

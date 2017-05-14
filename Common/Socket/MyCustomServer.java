@@ -1,9 +1,11 @@
 package Common.Socket;
 
 import java.io.IOException;
+import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
+import Common.LogManager;
 
 /**
  * User: juan
@@ -15,7 +17,7 @@ public class MyCustomServer {
     private int port;
     private ServerSocket serverSocket;
     private Map<Thread, Runnable> threadsPool;
-
+    protected LogManager logManager;
 
     public MyCustomServer(int port) {
         this.prepareServer(port);
@@ -24,6 +26,7 @@ public class MyCustomServer {
     private void prepareServer(int port) {
         this.port = port;
         this.threadsPool = new HashMap<Thread, Runnable>();
+        this.logManager = new LogManager(System.out);
     }
 
     public void startServer() throws IOException {
@@ -93,7 +96,15 @@ public class MyCustomServer {
         this.port = port;
     }
 
+    public void setLogWriter(PrintStream writer){
+        this.logManager.setLogPrinter(writer);
+    }
+
+    public void setLogManager(LogManager logManager){
+        this.logManager = logManager;
+    }
+
     public void out(String toPrint){
-        System.out.println(toPrint);
+        this.logManager.log(toPrint);
     }
 }

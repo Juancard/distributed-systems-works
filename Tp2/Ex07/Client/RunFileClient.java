@@ -15,7 +15,7 @@ import java.util.Scanner;
  * Date: 08/05/17
  * Time: 14:34
  */
-public class ClientMain {
+public class RunFileClient {
 
     public static final String PROPERTIES_PATH = "distributed-systems-works/Tp2/Ex07/config.properties";
 
@@ -35,8 +35,8 @@ public class ClientMain {
             String host = properties.getProperty("BALANCER_HOST");
             int port = Integer.parseInt(properties.getProperty("BALANCER_PORT"));
 
-            ClientMain clientMain = new ClientMain(host, port);
-            clientMain.start();
+            RunFileClient runFileClient = new RunFileClient(host, port);
+            runFileClient.start();
         } catch (Exception e) {
             String m = "Error: " + e.getMessage();
             CommonMain.display(m);
@@ -47,7 +47,7 @@ public class ClientMain {
     private FileClient fileClient;
     private Scanner scanner;
 
-    public ClientMain(String host, int port) throws IOException {
+    public RunFileClient(String host, int port) throws IOException {
         this.fileClient = this.connectToServer(host, port);
         this.scanner = new Scanner(System.in);
     }

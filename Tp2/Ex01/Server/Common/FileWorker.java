@@ -2,14 +2,13 @@ package Tp2.Ex01.Server.Common;
 
 import Common.FileException;
 import Common.FileManager;
+import Common.LogManager;
 import Common.Socket.MyCustomWorker;
 import Common.Socket.SocketConnection;
 import Tp2.Ex01.Common.FileProtocol;
 import Common.TextFile;
 
-import java.io.EOFException;
 import java.io.IOException;
-import java.net.SocketException;
 
 /**
  * User: juan
@@ -22,10 +21,13 @@ public class FileWorker extends MyCustomWorker {
     protected FileManager fileManager;
     protected LogManager logManager;
 
-    public FileWorker(SocketConnection clientConnection, FileManager fileManager, LogManager logManager) {
+    public FileWorker(SocketConnection clientConnection, FileManager fileManager) {
         super(clientConnection);
         this.fileProtocol = new FileProtocol();
         this.fileManager = fileManager;
+    }
+
+    public void setLogManager(LogManager logManager) {
         this.logManager = logManager;
     }
 

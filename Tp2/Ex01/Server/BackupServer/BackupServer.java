@@ -4,6 +4,7 @@ import Common.Socket.SocketConnection;
 import Tp2.Ex01.Server.Common.FileServer;
 
 import java.io.IOException;
+import java.io.PrintStream;
 import java.net.Socket;
 
 /**
@@ -12,10 +13,6 @@ import java.net.Socket;
  * Time: 13:53
  */
 public class BackupServer extends FileServer implements Runnable{
-
-    public BackupServer(int port, String filesPath, String logFilesPath) throws IOException {
-        super(port, filesPath, logFilesPath);
-    }
 
     public BackupServer(int port, String filesPath) throws IOException {
         super(port, filesPath);

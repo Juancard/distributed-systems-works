@@ -8,3 +8,18 @@
 2017-05-12 21:45:37.964 : New connection with client: /127.0.0.1:38010
 2017-05-12 21:45:42.955  - Client: /127.0.0.1:38010 - Message: Request - DIR
 2017-05-12 21:45:42.955  - Client: /127.0.0.1:38010 - Message: Response - [Ljava.lang.String;@50ebff79
+2017-05-14 13:03:38.205 : Listening on port: 5021...
+2017-05-14 13:04:13.781 : Main Server: Creating Server Thread
+2017-05-14 13:04:13.813 : New connection with client: /127.0.0.1:48810
+2017-05-14 13:04:25.843  - Client: /127.0.0.1:48810 - Message: Request - DIR
+2017-05-14 13:04:25.844  - Client: /127.0.0.1:48810 - Message: Response - [Ljava.lang.String;@387aeba6
+2017-05-14 13:53:36.946 : Listening on port: 5021...
+2017-05-14 13:54:36.066 : Listening on port: 5021...
+2017-05-14 13:56:29.377 : Listening on port: 5021...
+2017-05-14 13:56:49.245 : Main Server: Creating Server Thread
+2017-05-14 13:56:49.259 : New connection with client: /127.0.0.1:48969
+2017-05-14 13:57:43.918  - Client: /127.0.0.1:48969 - Message: Request - DIR
+2017-05-14 13:57:43.919  - Client: /127.0.0.1:48969 - Message: Response - [Ljava.lang.String;@488e2fb8
+2017-05-14 13:58:17.038  - Client: /127.0.0.1:48969 - Message: Client disconnected
+2017-05-14 13:58:19.105 : Main Server: Creating Server Thread
+2017-05-14 13:58:19.108 : New connection with client: /127.0.0.1:48974

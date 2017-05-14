@@ -1,6 +1,7 @@
 package Tp2.Ex01.Server.Common;
 
 import Common.FileManager;
+import Common.LogManager;
 import Common.Socket.MyCustomServer;
 import Common.Socket.SocketConnection;
 
@@ -14,19 +15,23 @@ import java.net.Socket;
  */
 public class FileServer extends MyCustomServer{
     protected FileManager fileManager;
-    protected LogManager logManager;
 
     public FileServer(int port, String filesPath) throws IOException {
         super(port);
         this.prepareFileServer(filesPath);
     }
 
-    public FileServer(int port, String filesPath, String logFilePath) throws IOException {
+    public FileServer(int port, String filesPath, PrintStream logWriter) throws IOException {
         super(port);
         this.prepareFileServer(filesPath);
-        this.setLogFile(logFilePath);
+        this.logManager.setLogPrinter(logWriter);
     }
 
+    private void prepareFileServer(String filesPath) throws IOException {
+        this.fileManager = new FileManager(filesPath);
+    }
+
+                               /*
     public void setLogFile(String logFilePath) throws FileNotFoundException {
         File f = new File(logFilePath);
         if (f.isDirectory()) {
@@ -38,18 +43,14 @@ public class FileServer extends MyCustomServer{
                     e.printStackTrace();
                 }
         }
-        this.logManager.setLogPrinter(new PrintStream(new FileOutputStream(f, true)));
+        this.setLogWriter(new PrintStream(new FileOutputStream(f, true)));
         System.out.println("Logs in: " + f.getPath());
-    }
-
-    private void prepareFileServer(String filesPath) throws IOException {
-        this.fileManager = new FileManager(filesPath);
-        PrintStream logPrinter = System.out;
-        this.logManager = new LogManager(logPrinter);
-    }
+    }               */
 
     protected Runnable newRunnable(Socket connection) throws IOException {
-        return new FileWorker(new SocketConnection(connection), this.fileManager, this.logManager);
+        FileWorker fileWorker = new FileWorker(new SocketConnection(connection), this.fileManager);
+        fileWorker.setLogManager(this.logManager);
+        return fileWorker;
     }
 
     public void out(String toPrint){

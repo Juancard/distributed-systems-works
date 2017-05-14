@@ -1,16 +1,14 @@
 package Tp2.Ex01.Server.MainServer;
 
 import Common.FileException;
-import Common.PropertiesManager;
 import Tp2.Ex01.Common.FileClient;
 import Common.TextFile;
 import Common.FileManager;
 import Common.Socket.SocketConnection;
 import Tp2.Ex01.Server.Common.FileWorker;
-import Tp2.Ex01.Server.Common.LogManager;
+import Common.LogManager;
 
 import java.io.*;
-import java.util.Properties;
 
 /**
  * User: juan
@@ -22,7 +20,8 @@ public class MainServerConnection extends FileWorker implements Runnable {
     private FileClient backupConnection;
 
     public MainServerConnection(SocketConnection clientConnection, FileClient backupConnection, FileManager fileManager, LogManager logManager) {
-        super(clientConnection, fileManager, logManager);
+        super(clientConnection, fileManager);
+        this.logManager = logManager;
         this.backupConnection = backupConnection;
     }
 

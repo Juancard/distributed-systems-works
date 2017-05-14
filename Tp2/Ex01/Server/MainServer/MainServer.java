@@ -1,6 +1,5 @@
 package Tp2.Ex01.Server.MainServer;
 
-import Common.PropertiesManager;
 import Common.ServerInfo;
 import Tp2.Ex01.Common.FileClient;
 import Tp2.Ex01.Server.Common.FileServer;
@@ -8,7 +7,6 @@ import Common.Socket.SocketConnection;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.Properties;
 
 /**
  * User: juan
@@ -19,8 +17,8 @@ public class MainServer extends FileServer implements Runnable{
 
     protected ServerInfo backupServer;
 
-    public MainServer(int port, ServerInfo backupServer, String filesPath, String logPath) throws IOException {
-        super(port, filesPath, logPath);
+    public MainServer(int port, ServerInfo backupServer, String filesPath) throws IOException {
+        super(port, filesPath);
         this.backupServer = backupServer;
     }
 

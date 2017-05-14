@@ -3,7 +3,7 @@ package Tp2.Ex01.Server.BackupServer;
 import Common.Socket.SocketConnection;
 import Common.FileManager;
 import Tp2.Ex01.Server.Common.FileWorker;
-import Tp2.Ex01.Server.Common.LogManager;
+import Common.LogManager;
 
 
 /**
@@ -14,7 +14,8 @@ import Tp2.Ex01.Server.Common.LogManager;
 public class BackupConnection extends FileWorker implements Runnable{
 
     public BackupConnection(SocketConnection clientConnection, FileManager fileManager, LogManager logManager) {
-        super(clientConnection, fileManager, logManager);
+        super(clientConnection, fileManager);
+        this.logManager = logManager;
     }
 
 }

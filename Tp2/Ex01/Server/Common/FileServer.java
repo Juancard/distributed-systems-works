@@ -31,22 +31,6 @@ public class FileServer extends MyCustomServer{
         this.fileManager = new FileManager(filesPath);
     }
 
-                               /*
-    public void setLogFile(String logFilePath) throws FileNotFoundException {
-        File f = new File(logFilePath);
-        if (f.isDirectory()) {
-            f = new File(logFilePath + "server_" + this.getPort() + ".log");
-            if (!(f.exists()))
-                try {
-                    f.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-        }
-        this.setLogWriter(new PrintStream(new FileOutputStream(f, true)));
-        System.out.println("Logs in: " + f.getPath());
-    }               */
-
     protected Runnable newRunnable(Socket connection) throws IOException {
         FileWorker fileWorker = new FileWorker(new SocketConnection(connection), this.fileManager);
         fileWorker.setLogManager(this.logManager);

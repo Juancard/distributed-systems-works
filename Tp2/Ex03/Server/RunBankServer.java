@@ -2,10 +2,7 @@ package Tp2.Ex03.Server;
 
 import Common.CommonMain;
 import Common.PropertiesManager;
-import Common.ServerInfo;
 import Tp2.Ex01.Server.BackupServer.BackupServer;
-import Tp2.Ex01.Server.MainServer.MainServer;
-import Tp2.Ex02.Server.RunBankServer;
 import Tp2.Ex03.Server.Bank.AccountsManagerWithBackup;
 
 import java.io.IOException;
@@ -16,7 +13,7 @@ import java.util.Properties;
  * Date: 12/05/17
  * Time: 15:26
  */
-public class RunServer {
+public class RunBankServer {
 
     public static final String PROPERTIES_PATH = "distributed-systems-works/Tp2/Ex03/config.properties";
 
@@ -28,11 +25,11 @@ public class RunServer {
     public static void main(String[] args) throws IOException {
         Properties properties = PropertiesManager.loadProperties(PROPERTIES_PATH);
         CommonMain.showWelcomeMessage(properties);
-        RunServer runServer = new RunServer(properties);
-        runServer.start();
+        RunBankServer runBankServer = new RunBankServer(properties);
+        runBankServer.start();
     }
 
-    public RunServer(Properties properties) throws IOException {
+    public RunBankServer(Properties properties) throws IOException {
         this.properties = properties;
         this.prepareBackupServer();
         this.prepareMainServer();
@@ -42,7 +39,9 @@ public class RunServer {
         int port = Integer.parseInt(properties.getProperty("BACKUP_PORT"));
         String backupAccountsPath = properties.getProperty("BACKUP_ACCOUNTS_PATH");
         String backupLogPath = properties.getProperty("BACKUP_LOG_PATH");
-        BackupServer backupServer = new BackupServer(port, backupAccountsPath, backupLogPath);
+
+        BackupServer backupServer = new BackupServer(port, backupAccountsPath);
+
 
         this.backupServer = new Thread(backupServer);
     }
@@ -59,7 +58,7 @@ public class RunServer {
         String accountsPath = properties.getProperty("ACCOUNTS_PATH");
         AccountsManagerWithBackup accountsManagerWithBackup = new AccountsManagerWithBackup(backupHost, backupPort, accountsPath);
 
-        RunBankServer runBankServer = new RunBankServer(portToDeposit, portToExtract, accountsManagerWithBackup);
+        Tp2.Ex02.Server.RunBankServer runBankServer = new Tp2.Ex02.Server.RunBankServer(portToDeposit, portToExtract, accountsManagerWithBackup);
 
         this.mainServer = new Thread(runBankServer);
 

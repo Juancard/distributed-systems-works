@@ -14,7 +14,7 @@ import java.util.Properties;
  * Date: 12/05/17
  * Time: 15:26
  */
-public class RunServer {
+public class RunFileServer {
 
     public static final String PROPERTIES_PATH = "distributed-systems-works/Tp2/Ex01/config.properties";
 
@@ -26,11 +26,11 @@ public class RunServer {
     public static void main(String[] args) throws IOException {
         Properties properties = PropertiesManager.loadProperties(PROPERTIES_PATH);
         CommonMain.showWelcomeMessage(properties);
-        RunServer runServer = new RunServer(properties);
-        runServer.start();
+        RunFileServer runFileServer = new RunFileServer(properties);
+        runFileServer.start();
     }
 
-    public RunServer(Properties properties) throws IOException {
+    public RunFileServer(Properties properties) throws IOException {
         this.properties = properties;
         this.prepareBackupServer();
         this.prepareMainServer();

@@ -2,7 +2,6 @@ package Tp2.Ex04.Client;
 
 import Tp2.Ex04.Common.IEdgeDetectorService;
 import Tp2.Ex04.Common.ImageChunkHandler;
-import Tp2.Ex04.Common.ImageSerializable;
 import Tp2.Ex04.Common.SobelEdgeDetector;
 
 import java.awt.image.BufferedImage;

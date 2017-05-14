@@ -5,7 +5,6 @@ import Tp2.Ex01.Server.Common.FileServer;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.net.Socket;
 
 /**

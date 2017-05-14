@@ -6,7 +6,6 @@ import Common.PropertiesManager;
 import java.io.EOFException;
 import java.io.IOException;
 import java.util.Properties;
-import java.util.Scanner;
 
 /**
  * User: juan

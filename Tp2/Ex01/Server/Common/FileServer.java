@@ -1,7 +1,6 @@
 package Tp2.Ex01.Server.Common;
 
 import Common.FileManager;
-import Common.LogManager;
 import Common.Socket.MyCustomServer;
 import Common.Socket.SocketConnection;
 

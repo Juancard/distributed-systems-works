@@ -3,10 +3,7 @@ package Tp2.Ex06.Server;
 import Common.Socket.MyCustomWorker;
 import Tp2.Ex06.Common.SharedDate;
 
-import java.io.EOFException;
-import java.io.IOException;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.Date;
 
 /**

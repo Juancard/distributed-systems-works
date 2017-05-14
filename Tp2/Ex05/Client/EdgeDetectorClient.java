@@ -5,7 +5,6 @@ import Tp2.Ex05.Common.*;
 
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;

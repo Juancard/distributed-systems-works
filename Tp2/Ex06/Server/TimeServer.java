@@ -5,7 +5,6 @@ import Tp2.Ex06.Common.SharedDate;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.util.Date;
 
 /**
  * User: juan
@@ -16,12 +15,10 @@ public class TimeServer extends MyCustomServer implements Runnable{
 
     private SharedDate sharedDate;
     private TimeSetter timeSetter;
-    private final int updatePeriod;
 
     public TimeServer(int port, int updatePeriod) {
         super(port);
         this.sharedDate = new SharedDate();
-        this.updatePeriod = updatePeriod;
         this.timeSetter = new TimeSetter(sharedDate, updatePeriod);
     }
 

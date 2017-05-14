@@ -14,7 +14,7 @@ public class BankServer extends MyCustomServer  implements Runnable{
 
     private AccountsManager accountsManager;
 
-    public BankServer(int port, AccountsManager accountsManager) throws IOException {
+    public BankServer(int port, AccountsManager accountsManager){
         super(port);
         this.accountsManager = accountsManager;
     }

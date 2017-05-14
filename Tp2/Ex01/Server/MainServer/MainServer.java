@@ -17,7 +17,7 @@ public class MainServer extends FileServer implements Runnable{
 
     protected ServerInfo backupServer;
 
-    public MainServer(int port, ServerInfo backupServer, String filesPath) throws IOException {
+    public MainServer(int port, ServerInfo backupServer, File filesPath) {
         super(port, filesPath);
         this.backupServer = backupServer;
     }

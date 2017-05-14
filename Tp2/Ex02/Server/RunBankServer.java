@@ -1,8 +1,10 @@
 package Tp2.Ex02.Server;
 
 import Common.CommonMain;
+import Common.FileManager;
 import Common.PropertiesManager;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -22,24 +24,28 @@ public class RunBankServer implements Runnable{
 
     public static void main(String[] args) throws IOException {
         Properties properties = PropertiesManager.loadProperties(PROPERTIES_PATH);
-        AccountsManager accountsManager = new AccountsManager(properties.getProperty("ACCOUNTS_PATH"));
+        CommonMain.showWelcomeMessage(properties);
+
+        String accountsPathValue = properties.getProperty("ACCOUNTS_PATH");
+        File accountsPath = FileManager.loadFilesPath(accountsPathValue);
+
+        AccountsManager accountsManager = new AccountsManager(accountsPath);
+
         int portToDeposit = Integer.parseInt(properties.getProperty("SERVER_PORT_DEPOSIT"));
         int portToExtract = Integer.parseInt(properties.getProperty("SERVER_PORT_EXTRACT"));
-
-        CommonMain.showWelcomeMessage(properties);
 
         RunBankServer runBankServer = new RunBankServer(portToDeposit, portToExtract, accountsManager);
         runBankServer.run();
     }
 
-    public RunBankServer(int portToDeposit, int portToExtract, AccountsManager accountsManager) throws IOException {
+    public RunBankServer(int portToDeposit, int portToExtract, AccountsManager accountsManager) {
         this.accountsManager = accountsManager;
         this.portToDeposit = portToDeposit;
         this.portToExtract = portToExtract;
         this.setServers();
     }
 
-    private void setServers() throws IOException {
+    private void setServers() {
         this.bankDepositServer = new BankServer(this.portToDeposit, this.accountsManager);
         this.bankExtractServer = new BankServer(this.portToExtract, this.accountsManager);
     }

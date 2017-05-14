@@ -1,6 +1,7 @@
 package Tp2.Ex01.Server;
 
 import Common.CommonMain;
+import Common.FileManager;
 import Common.PropertiesManager;
 import Common.ServerInfo;
 import Tp2.Ex01.Server.BackupServer.BackupServer;
@@ -40,16 +41,12 @@ public class RunFileServer {
         CommonMain.createSection("Preparing Backup Server");
 
         int port = Integer.parseInt(properties.getProperty("BACKUP_SERVER_PORT"));
-        String filesPath = properties.getProperty("BACKUP_FILES_PATH");
+        String filesPathValue = properties.getProperty("BACKUP_FILES_PATH");
+        File filesPath = FileManager.loadFilesPath(filesPathValue);
+
+        BackupServer backupServer = new BackupServer(port, filesPath);
+
         String logFilePath = properties.getProperty("BACKUP_LOG_FILE_PATH");
-
-        BackupServer backupServer;
-        try {
-            backupServer = new BackupServer(port, filesPath);
-        } catch (IOException e) {
-            throw new IOException("Could not load path to files. Cause: " + e.getMessage());
-        }
-
         backupServer.setLogWriter(this.createLogWriter(logFilePath));
         CommonMain.display("This server will be listening on port: " + port);
 
@@ -61,25 +58,22 @@ public class RunFileServer {
 
         // Main server data;
         int serverPort = Integer.parseInt(this.properties.getProperty("SERVER_PORT"));
-        String filesPath = properties.getProperty("SERVER_FILES_PATH");
-        String logFilePath = properties.getProperty("SERVER_LOG_FILE_PATH");
+
+        String filesPathValue = properties.getProperty("SERVER_FILES_PATH");
+        File filesPath = FileManager.loadFilesPath(filesPathValue);
 
         // Backup server data
         String backupHost = properties.getProperty("BACKUP_SERVER_HOST");
         int backupPort = Integer.parseInt(properties.getProperty("BACKUP_SERVER_PORT"));
         ServerInfo backupServerInfo = new ServerInfo(backupHost, backupPort);
 
-        MainServer mainServer = null;
-        try {
-            mainServer = new MainServer(
-                    serverPort,
-                    backupServerInfo,
-                    filesPath
-            );
-        } catch (IOException e) {
-            throw new IOException("Could not load path to files. Cause: " + e.getMessage());
-        }
+        MainServer mainServer = new MainServer(
+                serverPort,
+                backupServerInfo,
+                filesPath
+        );
 
+        String logFilePath = properties.getProperty("SERVER_LOG_FILE_PATH");
         mainServer.setLogWriter(this.createLogWriter(logFilePath));
         CommonMain.display("This server will be listening on port: " + serverPort);
 

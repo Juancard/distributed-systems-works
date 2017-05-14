@@ -2,7 +2,6 @@ package Tp2.Ex07.Server.LoadBalancer;
 
 import Common.ServerInfo;
 import Common.Socket.MyCustomServer;
-import Common.Socket.SocketConnection;
 
 import java.io.IOException;
 import java.net.Socket;

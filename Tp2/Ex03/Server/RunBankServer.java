@@ -1,6 +1,7 @@
 package Tp2.Ex03.Server;
 
 import Common.CommonMain;
+import Common.FileManager;
 import Common.PropertiesManager;
 import Tp2.Ex01.Server.BackupServer.BackupServer;
 import Tp2.Ex03.Server.Bank.AccountsManagerWithBackup;
@@ -45,9 +46,11 @@ public class RunBankServer {
         CommonMain.display("This server will be listening on port: " + port);
 
         String backupAccountsPath = properties.getProperty("BACKUP_ACCOUNTS_PATH");
-        String backupLogPath = properties.getProperty("BACKUP_LOG_PATH");
+        File backupAccounts = FileManager.loadFilesPath(backupAccountsPath);
 
-        BackupServer backupServer = new BackupServer(port, backupAccountsPath);
+        BackupServer backupServer = new BackupServer(port, backupAccounts);
+
+        String backupLogPath = properties.getProperty("BACKUP_LOG_PATH");
         if (new File(backupLogPath).isDirectory())
             backupLogPath = new File(backupLogPath).toString() + "/backup_server.log";
 
@@ -70,7 +73,9 @@ public class RunBankServer {
         int portToExtract = Integer.parseInt(properties.getProperty("SERVER_PORT_EXTRACT"));
         CommonMain.display("This server will be listening on ports: " + portToDeposit + " and " + portToExtract);
 
-        String accountsPath = properties.getProperty("ACCOUNTS_PATH");
+        String accountsPathValue = properties.getProperty("ACCOUNTS_PATH");
+        File accountsPath = FileManager.loadFilesPath(accountsPathValue);
+
         AccountsManagerWithBackup accountsManagerWithBackup = new AccountsManagerWithBackup(backupHost, backupPort, accountsPath);
 
         Tp2.Ex02.Server.RunBankServer runBankServer = new Tp2.Ex02.Server.RunBankServer(portToDeposit, portToExtract, accountsManagerWithBackup);

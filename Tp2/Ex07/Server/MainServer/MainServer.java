@@ -3,14 +3,10 @@ package Tp2.Ex07.Server.MainServer;
 import Common.ServerInfo;
 import Common.Socket.SocketConnection;
 import Tp2.Ex01.Common.FileClient;
-import Tp2.Ex07.Server.MainServer.Database.DatabaseManager;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 
 /**
  * User: juan
@@ -21,7 +17,7 @@ public class MainServer extends Tp2.Ex01.Server.MainServer.MainServer{
 
     private String databaseUrl;
 
-    public MainServer(int port, ServerInfo backupServer, String databaseUrl, String filesPath) throws IOException {
+    public MainServer(int port, ServerInfo backupServer, String databaseUrl, File filesPath) {
         super(port, backupServer, filesPath);
         this.databaseUrl = databaseUrl;
     }

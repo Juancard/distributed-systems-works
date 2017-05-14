@@ -1,6 +1,7 @@
 package Common;
 
 import java.io.*;
+import java.nio.file.Path;
 
 /**
  * User: juan
@@ -10,9 +11,13 @@ import java.io.*;
 public class FileManager {
 
     private File filesPath;
-
+        /*
     public FileManager(String filesPathString) throws IOException {
-        this.filesPath = this.loadFilesPath(filesPathString);
+        this.filesPath = loadFilesPath(filesPathString);
+    }
+          */
+    public FileManager(File filesPath){
+        this.filesPath = filesPath;
     }
 
     public synchronized String[] dir() {
@@ -53,7 +58,7 @@ public class FileManager {
         return this.getFilesByName(fileName).length > 0;
     }
 
-    private File loadFilesPath(String filesPathString) throws IOException {
+    public static File loadFilesPath(String filesPathString) throws IOException {
         File f = new File(filesPathString);
 
         if (!(f.exists())) throw new IOException("Path does not exist in file system");

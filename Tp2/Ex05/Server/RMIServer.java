@@ -1,6 +1,6 @@
 package Tp2.Ex05.Server;
 
-import Tp2.Ex01.Server.Common.LogManager;
+import Common.LogManager;
 import Tp2.Ex05.Common.IEdgeDetectorService;
 
 import java.io.*;

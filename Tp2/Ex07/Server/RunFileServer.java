@@ -1,6 +1,7 @@
 package Tp2.Ex07.Server;
 
 import Common.CommonMain;
+import Common.FileManager;
 import Common.PropertiesManager;
 import Common.ServerInfo;
 import Tp2.Ex01.Server.BackupServer.BackupServer;
@@ -67,18 +68,14 @@ public class RunFileServer {
         CommonMain.createSection("Preparing Backup Server");
 
         int port = Integer.parseInt(properties.getProperty("BACKUP_SERVER_PORT"));
-        CommonMain.display("Will listen on port: " + port);
+        CommonMain.display("This server will be listening on port: " + port);
 
-        String filesPath = properties.getProperty("BACKUP_FILES_PATH");
+        String filesPathValue = properties.getProperty("BACKUP_FILES_PATH");
+        File filesPath = FileManager.loadFilesPath(filesPathValue);
+
+        BackupServer backupServer = new BackupServer(port, filesPath);
+
         String logFilePath = properties.getProperty("BACKUP_LOG_PATH");
-
-        BackupServer backupServer;
-        try {
-            backupServer = new BackupServer(port, filesPath);
-        } catch (IOException e) {
-            throw new IOException("Could not load path to files. Cause: " + e.getMessage());
-        }
-
         if (new File(logFilePath).isDirectory())
             logFilePath = new File(logFilePath).toString() + "/backup_server.log";
 
@@ -142,7 +139,8 @@ public class RunFileServer {
         this.mainServersThreads = new Thread[numberOfMainServers];
 
         // Main server common data;
-        String filesPath = properties.getProperty("SERVER_FILES_PATH");
+        String filesPathValue = properties.getProperty("SERVER_FILES_PATH");
+        File filesPath = FileManager.loadFilesPath(filesPathValue);
         String logFilePath = properties.getProperty("SERVER_LOG_PATH");
         File log = new File(logFilePath);
 

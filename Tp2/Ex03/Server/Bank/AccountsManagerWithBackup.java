@@ -6,6 +6,7 @@ import Tp2.Ex02.Common.BankException;
 import Tp2.Ex02.Server.AccountsManager;
 import Tp2.Ex02.Server.BankAccount;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -18,8 +19,8 @@ public class AccountsManagerWithBackup extends AccountsManager{
     private String backupHost;
     private int backupPort;
 
-    public AccountsManagerWithBackup(String backupHost, int backupPort, String filesPathString) throws IOException {
-        super(filesPathString);
+    public AccountsManagerWithBackup(String backupHost, int backupPort, File filesPath) {
+        super(filesPath);
         this.backupHost = backupHost;
         this.backupPort = backupPort;
     }

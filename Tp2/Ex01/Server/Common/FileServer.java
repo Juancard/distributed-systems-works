@@ -16,18 +16,18 @@ import java.net.Socket;
 public class FileServer extends MyCustomServer{
     protected FileManager fileManager;
 
-    public FileServer(int port, String filesPath) throws IOException {
+    public FileServer(int port, File filesPath) {
         super(port);
         this.prepareFileServer(filesPath);
     }
 
-    public FileServer(int port, String filesPath, PrintStream logWriter) throws IOException {
+    public FileServer(int port, File filesPath, PrintStream logWriter) {
         super(port);
         this.prepareFileServer(filesPath);
         this.logManager.setLogPrinter(logWriter);
     }
 
-    private void prepareFileServer(String filesPath) throws IOException {
+    private void prepareFileServer(File filesPath) {
         this.fileManager = new FileManager(filesPath);
     }
 

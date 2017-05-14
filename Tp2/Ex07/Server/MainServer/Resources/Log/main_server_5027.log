@@ -12,3 +12,4 @@
 2017-05-14 14:56:56.306  - Client: /127.0.0.1:46624 - Message: User a - GET ala
 2017-05-14 14:56:56.308  - Client: /127.0.0.1:46624 - Message: Response - Tp2.Ex07.Common.PermissionException: No sufficient permissions to get this file
 2017-05-14 14:57:00.497  - Client: /127.0.0.1:46624 - Message: Client disconnected
+2017-05-14 19:27:15.572 : Listening on port: 5027...

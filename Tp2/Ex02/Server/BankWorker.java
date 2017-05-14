@@ -13,12 +13,10 @@ import java.net.Socket;
  */
 public class BankWorker extends MyCustomWorker{
 
-    private AccountProtocol accountProtocol;
     private AccountsManager accountsManager;
 
     public BankWorker(Socket clientSocket, AccountsManager accountsManager) {
         super(clientSocket);
-        this.accountProtocol = new AccountProtocol();
         this.accountsManager = accountsManager;
 
     }

@@ -3,6 +3,7 @@ package Tp2.Ex01.Server.BackupServer;
 import Common.Socket.SocketConnection;
 import Tp2.Ex01.Server.Common.FileServer;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
@@ -14,7 +15,7 @@ import java.net.Socket;
  */
 public class BackupServer extends FileServer implements Runnable{
 
-    public BackupServer(int port, String filesPath) throws IOException {
+    public BackupServer(int port, File filesPath) {
         super(port, filesPath);
     }
 

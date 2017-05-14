@@ -14,8 +14,8 @@ import java.io.*;
  */
 public class AccountsManager extends FileManager{
 
-    public AccountsManager(String filesPathString) throws IOException {
-        super(filesPathString);
+    public AccountsManager(File filesPath) {
+        super(filesPath);
     }
 
     public boolean add(BankAccount account) throws BankException {

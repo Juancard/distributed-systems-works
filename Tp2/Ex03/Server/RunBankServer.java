@@ -5,7 +5,10 @@ import Common.PropertiesManager;
 import Tp2.Ex01.Server.BackupServer.BackupServer;
 import Tp2.Ex03.Server.Bank.AccountsManagerWithBackup;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.Properties;
 
 /**
@@ -36,17 +39,27 @@ public class RunBankServer {
     }
 
     private void prepareBackupServer() throws IOException {
+        CommonMain.createSection("Preparing Backup Server");
+
         int port = Integer.parseInt(properties.getProperty("BACKUP_PORT"));
+        CommonMain.display("This server will be listening on port: " + port);
+
         String backupAccountsPath = properties.getProperty("BACKUP_ACCOUNTS_PATH");
         String backupLogPath = properties.getProperty("BACKUP_LOG_PATH");
 
         BackupServer backupServer = new BackupServer(port, backupAccountsPath);
+        if (new File(backupLogPath).isDirectory())
+            backupLogPath = new File(backupLogPath).toString() + "/backup_server.log";
 
+        backupServer.setLogWriter(
+                this.createLogWriter(backupLogPath)
+        );
 
         this.backupServer = new Thread(backupServer);
     }
 
     private void prepareMainServer() throws IOException {
+        CommonMain.createSection("Preparing Main Servers");
 
         // Backup server data
         String backupHost = properties.getProperty("BACKUP_HOST");
@@ -55,6 +68,8 @@ public class RunBankServer {
         // Main server data
         int portToDeposit = Integer.parseInt(properties.getProperty("SERVER_PORT_DEPOSIT"));
         int portToExtract = Integer.parseInt(properties.getProperty("SERVER_PORT_EXTRACT"));
+        CommonMain.display("This server will be listening on ports: " + portToDeposit + " and " + portToExtract);
+
         String accountsPath = properties.getProperty("ACCOUNTS_PATH");
         AccountsManagerWithBackup accountsManagerWithBackup = new AccountsManagerWithBackup(backupHost, backupPort, accountsPath);
 
@@ -64,8 +79,31 @@ public class RunBankServer {
 
     }
 
+    private PrintStream createLogWriter(String logFilePath) throws IOException {
+        File logFile = new File(logFilePath);
+        if (! (logFile.exists())){
+            CommonMain.display("Log file was not found. Creating it...");
+            try {
+                logFile.createNewFile();
+            } catch (IOException e) {
+                throw new IOException("Could not create log file. Cause: " + e.getMessage());
+            }
+        }
+        CommonMain.display("Logs in: " + logFile.getPath());
+
+        return new PrintStream(
+                new FileOutputStream(
+                        logFile,
+                        true
+                )
+        );
+    }
+
     private void start() {
+        CommonMain.createSection("Starting server");
+
         this.backupServer.start();
         this.mainServer.start();
+
     }
 }

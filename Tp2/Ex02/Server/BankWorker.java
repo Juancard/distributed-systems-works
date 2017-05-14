@@ -4,7 +4,6 @@ import Common.Socket.MyCustomWorker;
 import Tp2.Ex02.Common.AccountProtocol;
 import Tp2.Ex02.Common.BankException;
 
-import java.io.IOException;
 import java.net.Socket;
 
 /**
